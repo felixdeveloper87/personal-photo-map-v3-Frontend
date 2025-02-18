@@ -14,12 +14,16 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
     } else {
       setFiles([]);
     }
-  }; 
+  };
+
+  
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};
   };
+
+  //responsible to send the image to backend
 
   const handleImageUpload = async () => {
     if (files.length === 0) {
