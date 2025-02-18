@@ -7,19 +7,20 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    base: '/',
     define: {
-      // Escolhe a URL do backend dependendo do ambiente
-      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(
-      env.VITE_BACKEND_URL || env.VITE_BACKEND_URL_LOCAL || 'https://personal-photomap-backend.onrender.com'
-),
+      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || 'https://personal-photomap-backend.onrender.com'),
     },
-    
+
     server: {
       port: env.VITE_PORT || 5173, // Define a porta localmente
       host: true,
       watch: {
         usePolling: true, // Necessário para Docker
       },
+    },
+    build: {
+      outDir: 'dist', // Certifica que a pasta correta está sendo usada
     },
   };
 });
