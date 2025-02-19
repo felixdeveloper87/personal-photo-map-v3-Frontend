@@ -89,10 +89,11 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
             })
             .then((data) => {
                 if (Array.isArray(data)) {
-                    const imageUrls = data.map((image) => {
-                        const url = `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`;
-                        return { url, id: image.id, year: image.year };
-                    });
+                    const imageUrls = data.map((image) => ({
+                        url: image.filePath, // Agora `filePath` contém a URL do S3
+                        id: image.id,
+                        year: image.year
+                    }));
                     console.log('Imagens processadas:', imageUrls);
                     setImages(imageUrls);
                 } else {

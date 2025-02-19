@@ -54,7 +54,7 @@ const Timeline = ({ selectedYear }) => {
 
       if (Array.isArray(data)) {
         setImages(data.map(image => ({
-          url: `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
+          url: image.filePath,
           id: image.id,
           year: image.year,
         })));
@@ -99,6 +99,8 @@ const Timeline = ({ selectedYear }) => {
     }
   };
 
+
+
   // Exemplo de agrupamento por ano
   const sortedImages = [...images].sort((a, b) => b.year - a.year);
   const groupedByYear = sortedImages.reduce((acc, image) => {
@@ -131,6 +133,8 @@ const Timeline = ({ selectedYear }) => {
                 onDeleteSelectedImages={deleteImages}
               />
             </Suspense>
+
+
           </Box>
         ))
       ) : (

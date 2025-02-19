@@ -21,9 +21,7 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedImages, setSelectedImages] = useState([]);
 
-
-console.log("vaiiii")
-
+  
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
     onOpen();
