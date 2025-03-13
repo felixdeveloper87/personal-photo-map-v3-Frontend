@@ -1,70 +1,149 @@
 import React, { createContext, useState } from 'react';
 
-// Create and export AuthContext to manage user authentication globally
+/**
+ * AuthContext
+ * This context is used to manage and provide authentication information throughout the application.
+ * Exporting it allows any consumer to use AuthContext in other components.
+ */
 export const AuthContext = createContext();
 
 /**
  * AuthProvider Component
- * This component provides a context for managing authentication state across the application.
- * It stores login status, fullname, and email, and exposes methods to log in and log out.
- * Children components can consume this context to access authentication data and actions.
+ * This component acts as a wrapper that holds authentication-related state and methods.
+ * It provides the following:
+ *  - Authentication status (isLoggedIn)
+ *  - User's full name (fullname)
+ *  - User's email (email)
+ *  - Premium status (isPremium)
+ *  - Methods to log in, log out, and update the premium status
+ * 
+ * The context's state is kept in sync with localStorage to persist data across browser sessions.
+ * 
+ * @param {object} props - The properties for this component.
+ * @param {JSX.Element} props.children - The child components that will consume the authentication data.
+ * @returns {JSX.Element} A context provider that supplies authentication state and methods.
  */
 export const AuthProvider = ({ children }) => {
-  // State to track if the user is logged in. Defaults to true if a token is found in localStorage.
+  /**
+   * Determines if a user is logged in by checking the presence of a "token" in localStorage.
+   * This ensures that if a token exists, the state initializes as logged in.
+   */
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
-  // State to store the fullname of the currently logged-in user, retrieved from localStorage.
+
+  /**
+   * Stores the user's full name from localStorage, or defaults to an empty string if not found.
+   */
   const [fullname, setFullname] = useState(localStorage.getItem('fullname') || '');
-  // State to store the email of the currently logged-in user, retrieved from localStorage.
+
+  /**
+   * Stores the user's email address from localStorage, or defaults to an empty string if not found.
+   */
   const [email, setEmail] = useState(localStorage.getItem('email') || '');
 
   /**
-   * login - Handles the login process
-   * This function updates localStorage and sets the context state with user information.
-   * It also triggers a `storage` event to notify other parts of the application or browser tabs.
-   *
-   * @param {string} token - The authentication token for the user.
-   * @param {string} fullName - The full name of the logged-in user.
-   * @param {string} userEmail - The email address of the logged-in user.
+   * Determines if a user is a premium user by checking the "premium" value in localStorage.
+   * The initial state is converted to a boolean, avoiding issues on the first render.
    */
-  const login = (token, fullName, userEmail) => {
-    // Save user credentials and token in localStorage for persistence across sessions
+  const [isPremium, setIsPremium] = useState(() => {
+    return localStorage.getItem('premium') === 'true';
+  });
+
+  /**
+   * login
+   * Handles the process of storing new authentication data (token, fullname, email, premium) both
+   * in localStorage and in the component state. It also triggers a 'storage' event to notify
+   * any other listeners (e.g., other browser tabs) of changes in localStorage.
+   *
+   * @param {object} data - An object containing user information.
+   * @param {string} data.token - The authentication token for the user.
+   * @param {string} data.fullname - The user's full name.
+   * @param {string} data.email - The user's email address.
+   * @param {boolean|string} data.premium - Indicates whether the user is a premium member.
+   */
+  const login = (data) => {
+    console.log("Data received in login function:", data);
+
+    if (typeof data !== "object") {
+      console.error("Error: login data is not a valid object!", data);
+      return;
+    }
+
+    const { token, fullname, email, premium } = data;
+
+    // Convert 'premium' to a boolean if it is a string, otherwise check its boolean value
+    const isPremiumUser = premium === true || premium === "true";
+
+    // Store user data in localStorage
     localStorage.setItem('token', token);
-    localStorage.setItem('fullname', fullName);
-    localStorage.setItem('email', userEmail);
+    localStorage.setItem('fullname', fullname);
+    localStorage.setItem('email', email);
+    localStorage.setItem('premium', isPremiumUser ? "true" : "false");
 
-    // Update the local state to reflect the logged-in user
+    // Update state to reflect authenticated status
     setIsLoggedIn(true);
-    setFullname(fullName);
-    setEmail(userEmail);
+    setFullname(fullname);
+    setEmail(email);
+    setIsPremium(isPremiumUser);
 
-    // Dispatch a 'storage' event to notify other tabs or components
+    console.log("Premium status on the frontend after login:", isPremiumUser);
+
+    // Dispatch a storage event to notify other browser tabs or components
     window.dispatchEvent(new Event('storage'));
   };
 
   /**
-   * logout - Handles the logout process
-   * This function clears user information from localStorage and resets the context state.
-   * It also triggers a `storage` event to notify other parts of the application or browser tabs.
+   * logout
+   * Handles the logout process by removing user-related data from localStorage,
+   * resetting the relevant states, and dispatching a 'storage' event to inform
+   * other parts of the application of the change.
    */
   const logout = () => {
-    // Clear user credentials from localStorage
+    // Remove user credentials from localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('fullname');
     localStorage.removeItem('email');
+    // localStorage.setItem('premium', "false"); // Uncomment if needed
 
-    // Reset the local state to indicate no user is logged in
+    // Reset the local state to reflect that the user is no longer logged in
     setIsLoggedIn(false);
     setFullname('');
     setEmail('');
+    // setIsPremium(false); // Uncomment if you want to reset premium status on logout
 
-    // Dispatch a 'storage' event to notify other tabs or components
+    // Dispatch a storage event to notify other components or tabs
     window.dispatchEvent(new Event('storage'));
   };
 
+  /**
+   * updatePremiumStatus
+   * Updates the premium status in both localStorage and the component state.
+   *
+   * @param {boolean|string} status - The new premium status to be set. Can be a boolean or a string.
+   */
+  const updatePremiumStatus = (status) => {
+    const statusStr = String(status);
+    localStorage.setItem('premium', statusStr);
+    setIsPremium(statusStr === 'true');
+    console.log("Premium status updated to:", statusStr);
+  };
+
+  /**
+   * Render a Provider that makes all state variables and functions
+   * available to any child components through the AuthContext.
+   */
   return (
-    // Provide authentication state and functions to child components
-    <AuthContext.Provider value={{ isLoggedIn, fullname, email, login, logout }}>
-      {children} {/* Render the components wrapped by this provider */}
+    <AuthContext.Provider 
+      value={{ 
+        isLoggedIn, 
+        isPremium, 
+        fullname, 
+        email, 
+        login, 
+        logout, 
+        updatePremiumStatus 
+      }}
+    >
+      {children}
     </AuthContext.Provider>
   );
 };
