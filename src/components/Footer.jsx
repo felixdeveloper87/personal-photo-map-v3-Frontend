@@ -6,10 +6,8 @@ import { Box, Flex, Text, Link, HStack } from '@chakra-ui/react';
  * (e.g. About, Contact links) and displays a copyright
  * notice at the bottom of the page.
  *
- * @returns {JSX.Element} A responsive footer section...
+ * @returns {JSX.Element} A responsive footer section.
  */
-
-
 const Footer = () => {
   return (
     <Box

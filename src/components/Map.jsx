@@ -8,28 +8,46 @@ import { CountriesContext } from '../context/CountriesContext';
 import { Box } from '@chakra-ui/react';
 
 /**
- * Map Component:
- * This component displays an interactive world map using react-leaflet.
- * It highlights countries based on user interaction and their photo status.
+ * Map Component
+ *
+ * Renders an interactive world map using react-leaflet. It highlights:
+ * 1) Countries that the user (if logged in) has photos for.
+ * 2) Random countries for visual effect when the user is not logged in.
+ *
+ * Main Features:
+ * - Restricts map panning using bounding coordinates, preventing infinite scrolling.
+ * - Uses a background rectangle to display an "ocean" color fill behind all countries.
+ * - Applies a highlight effect for logged out users (randomly chosen countries) and
+ *   logged-in users (countries with photos).
+ * - On hover, changes the style of a country to visually indicate interactivity.
+ * - On click, navigates to that country's detail page if the user interacts with it.
+ *
+ * @returns {JSX.Element} The rendered map component.
  */
 const Map = () => {
-  // Setup navigation for routing to country details on click
+  // Navigation hook to route to a country detail page on click
   const navigate = useNavigate();
 
-  // Context to check if user is authenticated
+  // Auth and Countries context
   const { isLoggedIn } = useContext(AuthContext);
   const { countriesWithPhotos, loading } = useContext(CountriesContext);
 
-  // State to store countries with photos, highlighted countries, and effect activity
-  // const [countriesWithPhotos, setCountriesWithPhotos] = useState([]);
+  // State controlling highlight animation for users not logged in
   const [highlightedCountries, setHighlightedCountries] = useState([]);
   const [isEffectActive, setIsEffectActive] = useState(!isLoggedIn);
 
-  
+  /**
+   * Track changes to the logged in state: if user logs in,
+   * stop random highlighting; if user logs out, start highlighting again.
+   */
   useEffect(() => {
     setIsEffectActive(!isLoggedIn);
   }, [isLoggedIn]);
 
+  /**
+   * Periodically select and highlight random countries
+   * if the user is not logged in. This effect runs every 2 seconds.
+   */
   useEffect(() => {
     let interval;
 
@@ -39,12 +57,12 @@ const Map = () => {
           const allCountries = countriesData.features.map(
             (country) => country.properties.iso_a2.toLowerCase()
           );
-
           const maxCountries = Math.min(numCountries, allCountries.length);
           const shuffled = allCountries.sort(() => 0.5 - Math.random());
           return shuffled.slice(0, maxCountries);
         };
 
+        // Highlight up to 15 random countries for visual effect
         const randomCountries = selectRandomCountries(15);
         setHighlightedCountries(randomCountries);
       }, 2000);
@@ -53,13 +71,19 @@ const Map = () => {
     return () => clearInterval(interval);
   }, [isEffectActive, isLoggedIn]);
 
-
+  /**
+   * Dynamically style each country:
+   * - Highlight countries if user is not logged in (random pick).
+   * - Fill green if the user is logged in and has photos for that country.
+   * - Default fill for others.
+   */
   const countryStyle = useCallback(
     (feature) => {
       const countryId = feature.properties.iso_a2.toLowerCase();
       const hasPhotos = countriesWithPhotos.some((country) => country.id === countryId);
       const isHighlighted = highlightedCountries.includes(countryId);
 
+      // Random effect for logged-out users
       if (!isLoggedIn && isEffectActive && isHighlighted) {
         return {
           fillColor: '#2ecc71',
@@ -70,6 +94,7 @@ const Map = () => {
         };
       }
 
+      // Logged-in users with photos
       if (isLoggedIn && hasPhotos) {
         return {
           fillColor: '#2ecc71',
@@ -80,6 +105,7 @@ const Map = () => {
         };
       }
 
+      // Default fill
       return {
         fillColor: '#D4E6F1',
         weight: 2,
@@ -92,9 +118,10 @@ const Map = () => {
   );
 
   /**
-   * Function to handle interactions with each country:
-   * - Adds hover effect to change fill color.
-   * - Redirects to the country detail page on click.
+   * Called for each country (GeoJSON feature):
+   * - Adds mouseover (hover) effect with fill color change.
+   * - Reverts to original style on mouseout.
+   * - Navigates to country details page on click.
    */
   const onEachCountry = useCallback(
     (country, layer) => {
@@ -119,23 +146,28 @@ const Map = () => {
     [navigate, countryStyle]
   );
 
-  // Bounding box for the map to restrict panning to the world area
+  /**
+   * Restrict panning outside the world bounds. 
+   * We define bounding coordinates for the map container to avoid
+   * scrolling to an empty, off-world area.
+   */
   const bounds = [
     [-85, -180],
     [85, 180],
   ];
 
   /**
-   * Re-renders the GeoJSON component when countriesWithPhotos changes
-   * by incrementing the geoJsonKey to force a fresh render.
+   * Force GeoJSON to re-render if our countriesWithPhotos changes,
+   * ensuring the updated styling is applied.
    */
   const [geoJsonKey, setGeoJsonKey] = useState(0);
-
   useEffect(() => {
     setGeoJsonKey((prevKey) => prevKey + 1);
   }, [countriesWithPhotos]);
 
-  // Bounding box for ocean background fill
+  /**
+   * A bounding rectangle to provide a background color (ocean) behind all countries.
+   */
   const oceanBounds = [
     [-90, -180],
     [90, 180],
@@ -144,29 +176,31 @@ const Map = () => {
   return (
     <Box mt="-20px">
       <MapContainer
-        center={[20, 0]} // Initial map center position
-        zoom={2.6}        // Initial zoom level
-        minZoom={2.3}     // Prevent zooming out too far
-        maxZoom={7.5}     // Maximum zoom level allowed
-        maxBounds={bounds} // Restrict map bounds to prevent excessive panning
-        maxBoundsViscosity={1.0} // Bound "stickiness" at edges
-        worldCopyJump={false} // Prevents map duplication when panning
+        center={[20, 0]}
+        zoom={2.6}
+        minZoom={2.3}
+        maxZoom={7.5}
+        maxBounds={bounds}
+        maxBoundsViscosity={1.0}
+        worldCopyJump={false}
         style={{ height: '1000px', width: '100%' }}
       >
-        {/* Rectangle to add ocean background color */}
+        {/* Rectangle for the ocean background fill */}
         <Rectangle
           bounds={oceanBounds}
           pathOptions={{
-            fillColor: '#B3E5FC', // Ocean color fill
+            fillColor: '#B3E5FC', 
             fillOpacity: 1,
             stroke: false,
           }}
         />
+
+        {/* GeoJSON for Country Outlines */}
         <GeoJSON
-          key={geoJsonKey} // Unique key to force re-render on data change
-          data={countriesData} // GeoJSON data for countries
-          style={countryStyle} // Style function for country fill and borders
-          onEachFeature={onEachCountry} // Interaction handling function
+          key={geoJsonKey}
+          data={countriesData}
+          style={countryStyle}
+          onEachFeature={onEachCountry}
         />
       </MapContainer>
     </Box>
