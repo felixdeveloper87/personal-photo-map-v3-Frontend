@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Button,
   Modal,
@@ -14,15 +14,36 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { CountriesContext } from '../context/CountriesContext';
 
+/**
+ * SearchForm Component
+ *
+ * Opens a modal to allow the user to pick a country or year, then either:
+ * - Navigates to /countries/[countryId]?year=[year], or
+ * - Navigates to /timeline/[year], if only a year is selected.
+ *
+ * @param {function} onSearch - A callback function triggered when a country is selected (extra logic if needed).
+ * @returns {JSX.Element}
+ */
 export default function SearchForm({ onSearch }) {
+  // Chakra UI modal controls
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // Retrieve country data and available years from context
   const { countriesWithPhotos, availableYears } = useContext(CountriesContext);
+
+  // Local states for selected country and year
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
+
+  // React Router navigation
   const navigate = useNavigate();
 
-  console.log("🔍 Anos disponíveis no contexto:", availableYears); // Para debugging
-
+  /**
+   * Handles the form submission when the user clicks "Search".
+   * - If a country is selected, call onSearch (if provided).
+   * - If only a year is selected, navigate to /timeline/[year].
+   * - If neither is selected, prompt the user to pick an option.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -35,14 +56,18 @@ export default function SearchForm({ onSearch }) {
       return;
     }
 
+    // Close the modal after a successful search
     onClose();
   };
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="teal">
+      {/* Button to open the "Search Photos" modal */}
+      <Button onClick={onOpen} colorScheme="cyan">
         Search Photos
       </Button>
+
+      {/* Modal for selecting a country/year */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -50,7 +75,7 @@ export default function SearchForm({ onSearch }) {
           <ModalCloseButton />
           <ModalBody>
             <form id="search-form" onSubmit={handleSubmit}>
-              {/* Dropdown para selecionar país */}
+              {/* Country Selection */}
               <div style={{ marginBottom: '1rem' }}>
                 <label>Country:</label>
                 <Select
@@ -58,19 +83,19 @@ export default function SearchForm({ onSearch }) {
                   value={selectedCountry}
                   onChange={(e) => setSelectedCountry(e.target.value)}
                 >
-                  {countriesWithPhotos.length > 0 ? (
+                  {(countriesWithPhotos || []).length > 0 ? (
                     countriesWithPhotos.map((c) => (
                       <option key={c.id} value={c.id}>
                         {c.name}
                       </option>
                     ))
                   ) : (
-                    <option disabled>No countries available</option>
+                    <option disabled>No countries available yet</option>
                   )}
                 </Select>
               </div>
 
-              {/* Dropdown para selecionar ano */}
+              {/* Year Selection */}
               <div style={{ marginBottom: '1rem' }}>
                 <label>Year:</label>
                 <Select
@@ -91,11 +116,12 @@ export default function SearchForm({ onSearch }) {
               </div>
             </form>
           </ModalBody>
+
           <ModalFooter>
             <Button colorScheme="red" onClick={onClose}>
               Close
             </Button>
-            <Button type="submit" form="search-form" colorScheme="teal">
+            <Button type="submit" form="search-form" colorScheme="cyan">
               Search
             </Button>
           </ModalFooter>

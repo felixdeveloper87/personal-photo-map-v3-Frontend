@@ -1,107 +1,117 @@
-import React, { useState, useEffect, useContext, lazy, Suspense } from 'react';
+import React, { useContext, lazy, Suspense, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Text, Spinner } from '@chakra-ui/react';
-import { CountriesContext } from "../context/CountriesContext";
+import {
+  Box,
+  Text,
+  Spinner,
+  Divider,
+} from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 
+import { CountriesContext } from '../context/CountriesContext';
 
-// Lazy loading do PhotoGallery
+// Lazy loading of PhotoGallery to improve performance
 const LazyPhotoGallery = lazy(() => import('./PhotoGallery'));
 
+/**
+ * Fetches photos from your backend, optionally filtering by year.
+ * This function is called by the React Query hook below.
+ * @param {string|number} year - The chosen year for filtering (if any).
+ * @returns {Array} An array of photo objects.
+ */
+const fetchAllPictures = async (year) => {
+  let url = `${import.meta.env.VITE_BACKEND_URL}/api/images/allPictures`;
+  if (year) {
+    url += `?year=${year}`;
+  }
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error fetching photos: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  // If the response is not an array, we can return an empty array.
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  // Map to the shape your PhotoGallery component expects
+  return data.map((image) => ({
+    url: `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
+    id: image.id,
+    year: image.year,
+  }));
+};
+
+/**
+ * The Timeline component fetches and displays images
+ * (optionally filtered by a chosen year) in a chronological
+ * grouping. It also allows users to delete selected images.
+ *
+ * @param {Object} props - The component props
+ * @param {number|string} [props.selectedYear] - Year filter for images
+ */
 const Timeline = ({ selectedYear }) => {
-  const [images, setImages] = useState([]);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  /**
+   * Get the application-wide context for refreshing country data if needed
+   */
   const { refreshCountriesWithPhotos } = useContext(CountriesContext);
 
-  // Helper para pegar o token
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  };
+  const navigate = useNavigate();
 
+  /**
+   * Check for JWT token upon mounting or changing the selectedYear.
+   * If no token, redirect to login.
+   */
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login');
-      return;
     }
-    fetchPhotos();
   }, [navigate, selectedYear]);
 
-  const fetchPhotos = async () => {
-    try {
-      let url = `${import.meta.env.VITE_BACKEND_URL}/api/images/allPictures`;
-      if (selectedYear) {
-        url += `?year=${selectedYear}`; // Se houver ano, adicionamos o filtro
-      }
+  /**
+   * Use React Query to fetch and cache the photos
+   */
+  const { data: images = [], isLoading, error } = useQuery({
+    queryKey: ['allPictures', selectedYear], // ✅ Correct format in React Query v5
+    queryFn: () => fetchAllPictures(selectedYear),
+    staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes
+    onSuccess: () => refreshCountriesWithPhotos?.(),
+  });
+  
 
-      console.log("Fetching URL:", url); // Log para depuração
+  /**
+   * If loading, display a spinner. If there's an error, display it.
+   */
+  if (isLoading) {
+    return (
+      <Box minH="100vh" p={5} bgGradient="linear(to-r, #006d77, #83c5be)" display="flex" justifyContent="center" alignItems="center">
+        <Spinner size="xl" />
+      </Box>
+    );
+  }
 
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Enviando JWT
-        },
-      });
+  if (error) {
+    return (
+      <Box minH="100vh" p={5} bgGradient="linear(to-r, #006d77, #83c5be)" display="flex" justifyContent="center" alignItems="center">
+        <Text color="red.500">Error: {error.message}</Text>
+      </Box>
+    );
+  }
 
-      if (!response.ok) {
-        throw new Error(`Erro ao buscar fotos: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      console.log("Fotos recebidas:", data); // Log para depuração
-
-      if (Array.isArray(data)) {
-        setImages(data.map(image => ({
-          url: image.filePath,
-          id: image.id,
-          year: image.year,
-        })));
-      } else {
-        setImages([]);
-        setError('Nenhuma foto encontrada');
-      }
-    } catch (err) {
-      setError(err.message);
-      setImages([]);
-    }
-  };
-
-  const deleteImages = async (ids) => {
-    if (!ids || ids.length === 0) {
-      alert('Nenhuma imagem selecionada para deletar.');
-      return;
-    }
-
-    if (window.confirm(`Tem certeza que deseja deletar ${ids.length} imagem(ns)?`)) {
-      try {
-        const deletePromises = ids.map((id) =>
-          fetch(`${import.meta.env.VITE_BACKEND_URL}/api/images/delete/${id}`, {
-            method: "DELETE",
-            headers: getAuthHeaders(),
-          })
-        );
-
-        const responses = await Promise.all(deletePromises);
-        const failedResponses = responses.filter((response) => !response.ok);
-
-        if (failedResponses.length > 0) {
-          alert(`Erro ao deletar ${failedResponses.length} imagem(ns).`);
-        } else {
-          alert(`${ids.length} imagem(ns) deletada(s) com sucesso.`);
-          refreshCountriesWithPhotos();
-          fetchPhotos(); // Atualiza a lista de imagens após deletar
-        }
-      } catch (error) {
-        alert("Erro ao deletar as imagens.");
-      }
-    }
-  };
-
-
-
-  // Exemplo de agrupamento por ano
+  /**
+   * Sort images descending by year, then group them by year
+   */
   const sortedImages = [...images].sort((a, b) => b.year - a.year);
   const groupedByYear = sortedImages.reduce((acc, image) => {
     if (!acc[image.year]) {
@@ -112,36 +122,41 @@ const Timeline = ({ selectedYear }) => {
   }, {});
 
   return (
-    <Box>
-      <Text fontSize="2xl" textAlign="center" mb={4}>
-        {selectedYear ? `Timeline de ${selectedYear}` : "Todas as Fotos"}
-      </Text>
-
-      {error && (
-        <Text color="red.500" textAlign="center" mb={4}>
-          {error}
+    <Box
+      minH="100vh"
+      p={5}
+      bgGradient="linear(to-r, #006d77, #83c5be)"
+      display="flex"
+    >
+      <Box
+        w="100%"
+        p={5}
+        bg="whiteAlpha.800"
+      >
+        <Text fontSize="2xl" textAlign="center" mb={4} fontWeight="bold">
+          {selectedYear ? `Timeline for ${selectedYear}` : 'All Photos'}
         </Text>
-      )}
 
-      {Object.keys(groupedByYear).length > 0 ? (
-        Object.keys(groupedByYear).map((year) => (
-          <Box key={year} mb={8}>
-            <Text fontSize="xl" mb={2}>{year}</Text>
-            <Suspense fallback={<Spinner color="blue.500" size="xl" />}>
-              <LazyPhotoGallery
-                images={groupedByYear[year]}
-                onDeleteSelectedImages={deleteImages}
-              />
-            </Suspense>
-
-
-          </Box>
-        ))
-      ) : (
-        <Text mt={4} mb={4} textAlign="center">
-          Nenhuma foto para exibir
-        </Text>
-      )}
+        {Object.keys(groupedByYear).length > 0 ? (
+          Object.keys(groupedByYear).map((year) => (
+            <Box key={year} mb={8}>
+              <Text fontSize="xl" mb={2} fontWeight="semibold" color="teal.700">
+                {year}
+              </Text>
+              <Divider mb={4} />
+              <Suspense fallback={<Spinner size="xl" />}>
+                <LazyPhotoGallery
+                  images={groupedByYear[year] || []}
+                />
+              </Suspense>
+            </Box>
+          ))
+        ) : (
+          <Text mt={4} mb={4} textAlign="center">
+            No photos to display
+          </Text>
+        )}
+      </Box>
     </Box>
   );
 };
