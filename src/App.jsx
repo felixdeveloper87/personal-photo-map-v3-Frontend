@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react'; // Chakra UI components for layout styling
 import Home from './pages/Home';
 import Header from './components/Header';
 import Login from './components/Login';
@@ -10,46 +10,52 @@ import Register from './components/Register';
 import NotFound from './components/Notfound.jsx';
 import About from './pages/About';
 import TimelinePage from './pages/TimelinePage';
-import { AuthProvider } from './context/AuthContext'; // Importa o AuthProvider
-import { CountriesProvider } from './context/CountriesContext';
+import { AuthProvider } from './context/AuthContext'; // Authentication context provider
+import { CountriesProvider } from './context/CountriesContext'; // Context provider for managing country-related data
 
+/**
+ * App Component
+ * 
+ * This is the root component of the application. It sets up global providers,
+ * the main layout structure (Header, Footer, and Content), and defines the
+ * routing structure using React Router.
+ * 
+ * It also manages a state (`updateCounts`) to trigger updates when an upload
+ * event occurs.
+ * 
+ * @returns {JSX.Element} The main application wrapper.
+ */
 function App() {
-  const [updateCounts, setUpdateCounts] = useState(false);
-
-  const handleUploadCounts = () => {
-    setUpdateCounts((prev) => prev + 1); // Atualiza estado
-  };
 
   return (
-    <AuthProvider>
-      <CountriesProvider> {/* Envolvendo a aplicação com o CountriesProvider */}
-        <Flex direction="column" minH="100vh">
-          {/* Header */}
+    <AuthProvider> {/* Provides authentication context to the entire app */}
+      <CountriesProvider> {/* Provides country-related data to the app */}
+        <Flex direction="column" minH="100vh"> {/* Ensures a full-height layout */}
+          
+          {/* Header Section */}
           <Box as="header">
             <Header />
           </Box>
 
-          {/* Main Content */}
-          <Box as="main" flex="1" p={4}>
+          {/* Main Content Section */}
+          <Box as="main" flex="1" p={4}> {/* Ensures the content takes up available space */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<About />} />
-              <Route
-                path="/countries/:countryId"
-                element={<CountryDetails onUploadSuccess={handleUploadCounts} />}
-              />
+              <Route path="/countries/:countryId" element={<CountryDetails />} />
               <Route path="/timeline" element={<TimelinePage />} />
               <Route path="/timeline/:year" element={<TimelinePage />} />
-              <Route path="*" element={<NotFound />} /> {/* Página 404 */}
+              <Route path="*" element={<NotFound />} /> {/* 404 Page */}
             </Routes>
           </Box>
 
-          {/* Footer */}
+          {/* Footer Section */}
           <Box as="footer">
             <Footer />
           </Box>
+          
         </Flex>
       </CountriesProvider>
     </AuthProvider>
