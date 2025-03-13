@@ -2,26 +2,37 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  // Carrega as variáveis de ambiente do .env correto
+  // Load environment variables from the correct .env file
   const env = loadEnv(mode, process.cwd());
 
   return {
     plugins: [react()],
     base: '/',
+
     define: {
-      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || 'https://personal-photomap-backend.onrender.com'),
+      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(
+        env.VITE_BACKEND_URL || 'https://personal-photomap-backend.onrender.com'
+      ),
     },
 
     server: {
-      port: env.VITE_PORT || 5173, // Define a porta localmente
+      port: env.VITE_PORT || 5173,
       host: true,
       watch: {
-        usePolling: true, // Necessário para Docker
+        usePolling: true,
       },
     },
+
+    optimizeDeps: {
+      include: ['@tanstack/react-query'], // Ensures it's bundled properly
+    },
+
     build: {
-      outDir: 'dist', // Certifica que a pasta correta está sendo usada
+      outDir: 'dist',
+
+      rollupOptions: {
+        external: ['@tanstack/react-query'], // Ensures Vite resolves it properly
+      },
     },
   };
 });
-
