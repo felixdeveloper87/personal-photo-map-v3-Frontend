@@ -1,3 +1,6 @@
+
+
+
 import React, { createContext, useState, useEffect } from 'react';
 import countries from 'i18n-iso-countries';
 
@@ -38,11 +41,10 @@ export const CountriesProvider = ({ children }) => {
             // API call to fetch photo and country counts
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/images/count`, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Include the token for authentication
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
-            // If the response is not successful, throw an error
             if (!response.ok) {
                 throw new Error('Error fetching photo and country counts');
             }
@@ -124,7 +126,7 @@ export const CountriesProvider = ({ children }) => {
             }
 
             const data = await response.json();
-            console.log("📅 Anos disponíveis recebidos:", data);
+            // console.log("📅 Anos disponíveis recebidos:", data);
             setAvailableYears(data && Array.isArray(data) ? data : []);
             setAvailableYears(data);
         } catch (error) {
@@ -186,3 +188,4 @@ export const CountriesProvider = ({ children }) => {
         </CountriesContext.Provider>
     );
 };
+
