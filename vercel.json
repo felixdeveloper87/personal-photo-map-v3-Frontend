@@ -1,14 +1,9 @@
 {
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    },
-    "installCommand": "npm install"
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/index.html"
+      }
+    ]
+  }
+  
