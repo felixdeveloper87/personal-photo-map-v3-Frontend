@@ -16,33 +16,76 @@ import {
 import { FiZoomIn, FiZoomOut, FiX } from 'react-icons/fi';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
-const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
+/**
+ * PhotoGallery Component
+ *
+ * Displays a grid of images with the following features:
+ * - Selecting and deleting multiple images
+ * - Enlarge images in a modal view
+ * - Zoom in/out and reset within the modal
+ * - Navigate between images using arrows or keyboard events
+ *
+ * @param {Array}   images               - An array of images to display (each object should contain `url` and `id`)
+ * @param {Function} onDeleteSelectedImages - A callback for deleting selected images
+ * @param {Array}   selectedImageIds     - An array storing the IDs of selected images
+ * @param {Function} setSelectedImageIds - State setter for selected image IDs
+ *
+ * @returns {JSX.Element} A customizable photo gallery with zoom and deletion functionalities
+ */
+const PhotoGallery = ({
+  images,
+  onDeleteSelectedImages,
+  selectedImageIds,
+  setSelectedImageIds,
+}) => {
+  // Chakra UI's modal control
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedImages, setSelectedImages] = useState([]);
 
-  
+  // Tracks the index of the currently displayed image in the modal
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  /**
+   * Opens the modal at the clicked image's index.
+   * @param {number} index - The index of the clicked image in the `images` array
+   */
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
     onOpen();
   };
 
+  /**
+   * Closes the modal.
+   */
   const closeModal = () => {
     onClose();
   };
 
+  /**
+   * Moves to the next image in the array. Loops around if at the end.
+   * @param {Event} e - Optional click event to stop propagation
+   */
   const showNextImage = (e) => {
     if (e) e.stopPropagation();
     const nextIndex = (currentImageIndex + 1) % images.length;
     setCurrentImageIndex(nextIndex);
   };
 
+  /**
+   * Moves to the previous image in the array. Loops around if at the beginning.
+   * @param {Event} e - Optional click event to stop propagation
+   */
   const showPrevImage = (e) => {
     if (e) e.stopPropagation();
     const prevIndex = (currentImageIndex - 1 + images.length) % images.length;
     setCurrentImageIndex(prevIndex);
   };
 
+  /**
+   * Keyboard listeners for modal navigation:
+   * - Right Arrow -> next image
+   * - Left Arrow  -> previous image
+   * - Escape      -> close modal
+   */
   useEffect(() => {
     if (isOpen) {
       const handleKeyDown = (event) => {
@@ -61,40 +104,44 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
     }
   }, [isOpen, currentImageIndex, images.length]);
 
+  /**
+   * Toggles the selection state of a specific image by ID.
+   * @param {string|number} imageId - The ID of the image to select/deselect
+   */
   const toggleImageSelection = (imageId) => {
-    setSelectedImages((prevSelected) =>
-      prevSelected.includes(imageId)
-        ? prevSelected.filter((id) => id !== imageId)
-        : [...prevSelected, imageId]
+    setSelectedImageIds((prev) =>
+      prev.includes(imageId)
+        ? prev.filter((id) => id !== imageId)
+        : [...prev, imageId]
     );
   };
 
+  /**
+   * Invokes the callback to delete all selected images,
+   * then clears the selectedImageIds array.
+   */
   const handleDeleteSelected = () => {
-    onDeleteSelectedImages(selectedImages);
-    setSelectedImages([]); // Clear selection after deletion
+    onDeleteSelectedImages(selectedImageIds);
+    setSelectedImageIds([]); // Reset selection after deletion
   };
 
-  const handleCreateEvent = () => {
-    if (onCreateEvent) onCreateEvent(selectedImages);
-  };
-
-  if (!images || images.length === 0) {
+  // If there are no images to display, provide a simple fallback message
+  if (!Array.isArray(images) || images.length === 0) {
     return <Text fontSize="lg">You haven't been here yet.</Text>;
   }
 
   return (
     <Box>
-      {selectedImages.length > 0 && (
+      {/* Show delete button only if there are selected images */}
+      {Array.isArray(selectedImageIds) && selectedImageIds.length > 0 && (
         <Flex mb={4} gap={4}>
           <Button colorScheme="red" onClick={handleDeleteSelected}>
-            Delete {selectedImages.length} image(s)
-          </Button>
-          <Button colorScheme="blue" onClick={handleCreateEvent}>
-            Create a new event
+            Delete {selectedImageIds.length} image(s)
           </Button>
         </Flex>
       )}
 
+      {/* Image Grid */}
       <Flex wrap="wrap" justifyContent="center">
         {images.map((image, index) => (
           <Box
@@ -102,26 +149,36 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
             position="relative"
             m={2}
             border={
-              selectedImages.includes(image.id) ? '4px solid red' : '2px solid gray'
+              Array.isArray(selectedImageIds) &&
+                selectedImageIds.includes(image.id)
+                ? '4px solid red'
+                : '2px solid gray'
             }
             borderRadius="md"
             cursor="pointer"
           >
+            {/* Selection indicator in the top-left corner */}
             <Box
               position="absolute"
               top="2px"
               left="2px"
-              bg={selectedImages.includes(image.id) ? 'red.500' : 'white'}
+              bg={
+                Array.isArray(selectedImageIds) &&
+                  selectedImageIds.includes(image.id)
+                  ? 'red.500'
+                  : 'white'
+              }
               borderRadius="full"
               boxSize="1rem"
               onClick={() => toggleImageSelection(image.id)}
             ></Box>
+            {/* Thumbnail display */}
             <Image
               src={image.url}
-              alt={`Imagem do país ${index + 1}`}
+              alt={`Country image ${index + 1}`}
               boxSize="200px"
               objectFit="cover"
-              loading="lazy"  
+              loading="lazy"
               fallbackSrc="https://via.placeholder.com/200"
               onClick={() => handleImageClick(index)}
             />
@@ -129,13 +186,15 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
         ))}
       </Flex>
 
+      {/* Full-size image modal */}
       <Modal isOpen={isOpen} onClose={closeModal} size="4xl">
         <ModalOverlay />
         <ModalContent>
           <ModalBody p={4}>
+            {/* Close button */}
             <IconButton
               icon={<FiX />}
-              aria-label="Fechar"
+              aria-label="Close modal"
               position="absolute"
               top="10px"
               right="10px"
@@ -144,8 +203,9 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
               zIndex="10"
             />
 
+            {/* Zoom & Pan controls */}
             <TransformWrapper
-              defaultScale={1}
+              initialScale={1}
               wheel={{ step: 0.2 }}
               doubleClick={{ disabled: true }}
               pinch={{ step: 5 }}
@@ -154,20 +214,29 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
                 <VStack spacing={4}>
                   <Flex justifyContent="center" mb={4}>
                     <IconButton
-                      onClick={zoomOut}
+                      // Wrap zoomOut in an arrow function
+                      onClick={() => zoomOut()}
                       icon={<FiZoomOut />}
                       aria-label="Zoom out"
                       mx={2}
                       colorScheme="blue"
                     />
+
                     <IconButton
-                      onClick={zoomIn}
+                      // Wrap zoomIn in an arrow function
+                      onClick={() => zoomIn()}
                       icon={<FiZoomIn />}
                       aria-label="Zoom in"
                       mx={2}
                       colorScheme="blue"
                     />
-                    <Button onClick={resetTransform} mx={2} colorScheme="blue">
+
+                    <Button
+                      // Wrap resetTransform in an arrow function
+                      onClick={() => resetTransform()}
+                      mx={2}
+                      colorScheme="blue"
+                    >
                       Reset
                     </Button>
                   </Flex>
@@ -175,7 +244,7 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
                   <TransformComponent>
                     <Image
                       src={images[currentImageIndex].url}
-                      alt={`Imagem do país ${currentImageIndex + 1}`}
+                      alt={`Country image ${currentImageIndex + 1}`}
                       boxSize="full"
                       objectFit="contain"
                     />
@@ -184,6 +253,7 @@ const PhotoGallery = ({ images, onDeleteSelectedImages, onCreateEvent }) => {
               )}
             </TransformWrapper>
 
+            {/* Navigation between multiple images */}
             {images.length > 1 && (
               <Flex justifyContent="space-between" mt={4}>
                 <Button onClick={showPrevImage}>&#10094;</Button>
