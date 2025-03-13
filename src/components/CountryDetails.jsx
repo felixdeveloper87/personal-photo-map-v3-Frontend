@@ -134,7 +134,7 @@ const CountryDetails = () => {
 
   return (
     <Box
-      minH="100vh"
+      minH="50vh"
       p={5}
       bgGradient="linear(to-r, #006d77, #83c5be)"
 
