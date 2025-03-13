@@ -29,10 +29,6 @@ export default defineConfig(({ mode }) => {
 
     build: {
       outDir: 'dist',
-
-      rollupOptions: {
-        external: ['@tanstack/react-query'], // Ensures Vite resolves it properly
-      },
     },
   };
 });
