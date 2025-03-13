@@ -1,75 +1,97 @@
 import React, { useState, useRef } from 'react';
-import { Box, Button, Input, Heading, NumberInput, NumberInputField, Flex } from '@chakra-ui/react';
+import { Box, Button, Input, Heading, Flex, Select } from '@chakra-ui/react';
 
+/**
+ * ImageUploader Component
+ * 
+ * This component allows users to upload images for a specific country and year.
+ * It supports multiple image uploads and authentication through a token stored in localStorage.
+ * 
+ * Props:
+ * - `countryId`: The ID of the country where the images will be associated.
+ * - `onUpload`: Callback function that receives the uploaded image URLs and year.
+ * - `onUploadSuccess`: Callback function triggered after a successful upload.
+ */
 const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [isUploading, setIsUploading] = useState(false);
-  const [files, setFiles] = useState([]); // Armazena os arquivos selecionados
-  const fileInputRef = useRef(null);
+  const currentYear = new Date().getFullYear();
+  const [year, setYear] = useState(currentYear); // Selected year for image upload
+  const [isUploading, setIsUploading] = useState(false); // Tracks the upload status
+  const [files, setFiles] = useState([]); // Stores selected files for upload
+  const fileInputRef = useRef(null); // Reference to the file input field
 
+  // Generate an array of years from 1900 to the current year for selection
+  const years = Array.from({ length: currentYear - 1899 }, (_, i) => 1900 + i);
+
+  /**
+   * Handles file selection from the input field.
+   * Converts the selected files into an array and stores them in state.
+   */
   const handleFileSelection = (event) => {
     const selectedFiles = event.target.files;
-    if (selectedFiles.length > 0) {
-      setFiles(Array.from(selectedFiles));
-    } else {
-      setFiles([]);
-    }
+    setFiles(selectedFiles.length > 0 ? Array.from(selectedFiles) : []);
   };
 
+  /**
+   * Retrieves authentication headers with the stored token.
+   * Ensures secure API requests by including the Authorization header.
+   */
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};
   };
 
-  //responsible to send the image to backend
-
+  /**
+   * Handles the image upload process.
+   * - Validates if at least one file is selected.
+   * - Constructs a FormData object with images, countryId, and year.
+   * - Sends the request to the backend using the Fetch API.
+   * - Calls the provided callbacks upon success.
+   */
   const handleImageUpload = async () => {
     if (files.length === 0) {
-      alert('Nenhum arquivo selecionado.');
+      alert('No file selected.');
       return;
     }
-  
+
     const formData = new FormData();
-    // Adiciona todos os arquivos com o mesmo nome do parâmetro "images"
-    files.forEach((file) => {
-      formData.append("images", file);
-    });
+    files.forEach((file) => formData.append("images", file)); // Append all selected files
     formData.append("countryId", countryId);
     formData.append("year", year);
-  
+
     setIsUploading(true);
-  
+
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/images/upload`, {
         method: 'POST',
         headers: {
           ...getAuthHeaders(),
-          // NÃO defina o Content-Type manualmente; o browser fará isso automaticamente (incluindo o boundary).
         },
         body: formData,
       });
-  
+
       if (!response.ok) {
-        throw new Error('Erro ao enviar imagem(s) para o servidor.');
+        throw new Error('Error uploading image(s) to the server.');
       }
-  
+
       const data = await response.json();
-      // Supondo que o backend retorne { message, imageUrls }
-      const uploadedImageUrls = data.imageUrls;
-      alert('Imagem(s) enviada(s) com sucesso!');
-  
+      const uploadedImageUrls = data.imageUrls; // Assuming backend returns image URLs
+
+      alert('Image(s) uploaded successfully!');
+
+      // Invoke callbacks if provided
       if (onUpload) {
         onUpload(uploadedImageUrls, year);
       }
       if (onUploadSuccess) {
         onUploadSuccess();
       }
-  
+
+      // Reset the file input and selected files
       setFiles([]);
       if (fileInputRef.current) fileInputRef.current.value = null;
     } catch (error) {
-      console.error('Erro ao fazer upload:', error);
-      alert(`Erro ao fazer upload: ${error.message}`);
+      console.error('Upload error:', error);
+      alert(`Upload error: ${error.message}`);
     } finally {
       setIsUploading(false);
     }
@@ -78,17 +100,16 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
   return (
     <Box p={5} bg="gray.100" borderRadius="md" boxShadow="md" maxWidth="600px" mx="auto">
       <Heading as="h2" mb={4} textAlign="center">Upload Images</Heading>
-      
+
       <Flex justify="space-between" align="center" mb={4}>
-        <NumberInput
-          value={year}
-          onChange={(valueString) => setYear(Number(valueString))}
-          min={1900}
-          max={new Date().getFullYear()}
-          width="150px"
-        >
-          <NumberInputField placeholder="Year" />
-        </NumberInput>
+        {/* Dropdown for selecting the year */}
+        <Select value={year} onChange={(e) => setYear(e.target.value)} width="150px">
+          {years.map((yr) => (
+            <option key={yr} value={yr}>{yr}</option>
+          ))}
+        </Select>
+
+        {/* File input for selecting images */}
         <Input
           type="file"
           onChange={handleFileSelection}
@@ -99,6 +120,7 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
         />
       </Flex>
 
+      {/* Upload button */}
       <Button
         isLoading={isUploading}
         loadingText="Uploading"
@@ -113,4 +135,4 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
   );
 };
 
-export default ImageUploader; 
+export default ImageUploader;
