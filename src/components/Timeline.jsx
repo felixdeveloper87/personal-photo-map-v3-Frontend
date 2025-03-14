@@ -46,7 +46,7 @@ const fetchAllPictures = async (year) => {
 
   // Map to the shape your PhotoGallery component expects
   return data.map((image) => ({
-    url: `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
+    url: image.filePath.startsWith('http') ? image.filePath : `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
     id: image.id,
     year: image.year,
   }));
@@ -88,7 +88,7 @@ const Timeline = ({ selectedYear }) => {
     staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes
     onSuccess: () => refreshCountriesWithPhotos?.(),
   });
-  
+
 
   /**
    * If loading, display a spinner. If there's an error, display it.
