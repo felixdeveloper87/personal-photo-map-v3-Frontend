@@ -46,7 +46,7 @@ const fetchAllPictures = async (year) => {
 
   // Map to the shape your PhotoGallery component expects
   return data.map((image) => ({
-    url: image.filePath.startsWith('http') ? image.filePath : `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
+    url: image.filePath.includes('s3.') ? image.filePath : `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
     id: image.id,
     year: image.year,
   }));
