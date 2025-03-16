@@ -15,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { FiZoomIn, FiZoomOut, FiX } from 'react-icons/fi';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import countries from 'i18n-iso-countries';
+import en from 'i18n-iso-countries/langs/en.json';
 
 /**
  * PhotoGallery Component
@@ -32,6 +34,9 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
  *
  * @returns {JSX.Element} A customizable photo gallery with zoom and deletion functionalities
  */
+
+countries.registerLocale(en);
+
 const PhotoGallery = ({
   images,
   onDeleteSelectedImages,
@@ -195,7 +200,7 @@ const PhotoGallery = ({
               borderRadius="md"
             >
               <Text fontSize="xs">
-                {images[currentImageIndex]?.countryId ?? ""}
+              {countries.getName(image.countryId?.toUpperCase(), 'en') || image.countryId?.toUpperCase()}
               </Text>
             </Box>
           </Box>
