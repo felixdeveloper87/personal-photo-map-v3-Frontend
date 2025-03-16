@@ -182,6 +182,22 @@ const PhotoGallery = ({
               fallbackSrc="https://via.placeholder.com/200"
               onClick={() => handleImageClick(index)}
             />
+
+            {/* Water Mark */}
+            <Box
+              position="absolute"
+              bottom="5px"
+              right="5px"
+              bg="rgba(0, 0, 0, 0.5)"
+              color="white"
+              px={2}
+              py={1}
+              borderRadius="md"
+            >
+              <Text fontSize="xs">
+                {images[currentImageIndex]?.countryId ?? ""}
+              </Text>
+            </Box>
           </Box>
         ))}
       </Flex>

@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useQuery } from '@tanstack/react-query';
-
 import { CountriesContext } from '../context/CountriesContext';
 
 // Lazy loading of PhotoGallery to improve performance
@@ -51,6 +50,7 @@ const fetchAllPictures = async (year) => {
     url: image.filePath.includes('s3.') ? image.filePath : `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
     id: image.id,
     year: image.year,
+    countryId: image.countryId,
   }));
 };
 
