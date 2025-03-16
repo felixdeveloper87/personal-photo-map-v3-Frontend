@@ -5,7 +5,9 @@ import {
   Text,
   Spinner,
   Divider,
+  IconButton,
 } from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useQuery } from '@tanstack/react-query';
 
 import { CountriesContext } from '../context/CountriesContext';
@@ -65,6 +67,7 @@ const Timeline = ({ selectedYear }) => {
    * Get the application-wide context for refreshing country data if needed
    */
   const { refreshCountriesWithPhotos } = useContext(CountriesContext);
+  const [collapsedYears, setCollapsedYears] = useState({});
 
   const navigate = useNavigate();
 
@@ -121,43 +124,54 @@ const Timeline = ({ selectedYear }) => {
     return acc;
   }, {});
 
+  const toggleYear = (year) => {
+    setCollapsedYears((prev) => ({
+      ...prev,
+      [year]: !prev[year],
+    }));
+  };
+
   return (
     <Box
-      minH="100vh"
-      p={5}
-      bgGradient="linear(to-r, #006d77, #83c5be)"
-      display="flex"
-    >
-      <Box
-        w="100%"
-        p={5}
-        bg="whiteAlpha.800"
-      >
-        <Text fontSize="2xl" textAlign="center" mb={4} fontWeight="bold">
-          {selectedYear ? `Timeline for ${selectedYear}` : 'All Photos'}
-        </Text>
+    minH="100vh"
+    p={5}
+    bgGradient="linear(to-r, #006d77, #83c5be)"
+    display="flex"
+  >
+    <Box w="100%" p={5} bg="whiteAlpha.800">
+      <Text fontSize="2xl" textAlign="center" mb={4} fontWeight="bold">
+        {selectedYear ? `Timeline for ${selectedYear}` : 'All Photos'}
+      </Text>
 
-        {Object.keys(groupedByYear).length > 0 ? (
-          Object.keys(groupedByYear).map((year) => (
-            <Box key={year} mb={8}>
-              <Text fontSize="xl" mb={2} fontWeight="semibold" color="teal.700">
+      {Object.keys(groupedByYear).length > 0 ? (
+        Object.keys(groupedByYear).map((year) => (
+          <Box key={year} mb={8}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" cursor="pointer" onClick={() => toggleYear(year)}>
+              <Text fontSize="xl" fontWeight="semibold" color="teal.700">
                 {year}
               </Text>
-              <Divider mb={4} />
-              <Suspense fallback={<Spinner size="xl" />}>
-                <LazyPhotoGallery
-                  images={groupedByYear[year] || []}
-                />
-              </Suspense>
+              <IconButton
+                aria-label={`Toggle photos for ${year}`}
+                icon={collapsedYears[year] ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                size="sm"
+                variant="ghost"
+              />
             </Box>
-          ))
-        ) : (
-          <Text mt={4} mb={4} textAlign="center">
-            No photos to display
-          </Text>
-        )}
-      </Box>
+            <Divider mb={4} />
+            {!collapsedYears[year] && (
+              <Suspense fallback={<Spinner size="xl" />}>
+                <LazyPhotoGallery images={groupedByYear[year] || []} />
+              </Suspense>
+            )}
+          </Box>
+        ))
+      ) : (
+        <Text mt={4} mb={4} textAlign="center">
+          No photos to display
+        </Text>
+      )}
     </Box>
+  </Box>
   );
 };
 
