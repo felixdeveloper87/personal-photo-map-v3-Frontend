@@ -40,7 +40,7 @@ const getAuthHeaders = () => {
  */
 async function fetchYears(countryId) {
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/images/${countryId}/years`,
+    `${import.meta.env.VITE_BACKEND_URL}/api/images/${countryId}/available-years`,
     { headers: getAuthHeaders() }
   );
   if (!response.ok) {
