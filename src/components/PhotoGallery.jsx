@@ -36,7 +36,6 @@ import en from 'i18n-iso-countries/langs/en.json';
  */
 
 countries.registerLocale(en);
-
 const PhotoGallery = ({
   images,
   onDeleteSelectedImages,
@@ -187,7 +186,6 @@ const PhotoGallery = ({
               fallbackSrc="https://via.placeholder.com/200"
               onClick={() => handleImageClick(index)}
             />
-
             {/* Water Mark */}
             <Box
               position="absolute"
@@ -203,6 +201,7 @@ const PhotoGallery = ({
               {countries.getName(image.countryId?.toUpperCase(), 'en') || image.countryId?.toUpperCase()}
               </Text>
             </Box>
+
           </Box>
         ))}
       </Flex>
