@@ -86,6 +86,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if password has at least 6 characters
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      setSuccess('');
+      return;
+    }
+
     const data = { fullname, email, password, country };
 
     try {
@@ -163,17 +170,22 @@ const Register = () => {
         </FormControl>
 
         {/* Password Field */}
-        <FormControl mb={4}>
+        <FormControl mb={4} isInvalid={password.length > 0 && password.length < 6}>
           <FormLabel>Password</FormLabel>
           <Input
             type="password"
             placeholder="Type your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            isRequired
             focusBorderColor="teal.500"
           />
+          {password.length > 0 && password.length < 6 && (
+            <Text color="red.500" fontSize="sm">
+              Password must be at least 6 characters long.
+            </Text>
+          )}
         </FormControl>
+
 
         {/* Country Select */}
         <FormControl mb={4}>
