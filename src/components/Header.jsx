@@ -25,7 +25,7 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../context/AuthContext";
 import { CountriesContext } from "../context/CountriesContext";
 import SearchForm from "../components/SearchForm";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo.png";
 
 
 /**
@@ -149,17 +149,16 @@ function Header() {
             w="60px"
             objectFit="contain"
             mr={2}
-            _hover={{ transform: "scale(1.1)", transition: "0.2s ease-in-out" }}
           />
           <Heading
             as="h1"
             size="lg"
             color="white"
-            fontFamily="'Playfair Display', serif"
+            fontFamily="'Rock Salt', cursive"
             fontWeight="bold"
             _hover={{ color: "cyan.300", transition: "0.2s ease-in-out" }} // 
           >
-            My Personal Photo Map
+            Personal Photo Map
           </Heading>
         </Flex>
 

@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Footer from './components/Footer';
 import CountryDetails from './components/CountryDetails';
 import Register from './components/Register';
+import Contact from "./pages/Contact";
 import NotFound from './components/Notfound.jsx';
 import About from './pages/About';
 import TimelinePage from './pages/TimelinePage';
@@ -44,6 +45,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/countries/:countryId" element={<CountryDetails />} />
               <Route path="/timeline" element={<TimelinePage />} />
               <Route path="/timeline/:year" element={<TimelinePage />} />
