@@ -198,7 +198,7 @@ const PhotoGallery = ({
               borderRadius="md"
             >
               <Text fontSize="xs">
-              {countries.getName(image.countryId?.toUpperCase(), 'en') || image.countryId?.toUpperCase()}
+                {countries.getName(image.countryId?.toUpperCase(), 'en') || image.countryId?.toUpperCase()}
               </Text>
             </Box>
 
@@ -265,10 +265,14 @@ const PhotoGallery = ({
                     <Image
                       src={images[currentImageIndex].url}
                       alt={`Country image ${currentImageIndex + 1}`}
-                      boxSize="full"
+                      maxWidth="80vw"  // Máximo de 80% da largura da tela
+                      maxHeight="80vh" // Máximo de 80% da altura da tela
+                      width="auto"
+                      height="auto"
                       objectFit="contain"
                     />
                   </TransformComponent>
+
                 </VStack>
               )}
             </TransformWrapper>
