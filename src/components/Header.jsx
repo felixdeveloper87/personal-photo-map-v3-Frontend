@@ -342,7 +342,7 @@ function Header() {
               </Button>
               <Button
                 colorScheme="cyan"
-                variant="outline"
+                variant="solid"
                 onClick={() => {
                   navigate("/register");
                   onClose();
