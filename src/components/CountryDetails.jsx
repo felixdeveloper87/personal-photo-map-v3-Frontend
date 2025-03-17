@@ -126,7 +126,7 @@ const CountryDetails = () => {
 
   // Format current time based on the country's timezone
   const currentTime = weatherData?.timezone
-    ? moment().utcOffset(weatherData.timezone / 60).format('YYYY-MM-DD HH:mm:ss')
+    ? moment().utcOffset(weatherData.timezone / 60).format('HH:mm:ss')
     : null;
 
   // Build a link to Google Flights for traveling from London to this capital
@@ -147,7 +147,7 @@ const CountryDetails = () => {
 
         <Flex direction={['column', 'row']} align="center" justify="center" mb={8}>
           <Box flex="0 0 auto" mb={[4, 0]} mr={[0, 8]}>
-            <Flag code={countryId.toUpperCase()} style={{ width: '300px', height: 'auto' }} />
+            <Flag code={countryId.toUpperCase()} style={{ width: '350px', height: 'auto' }} />
           </Box>
           <Box textAlign={['center', 'left']}>
             <Text>
@@ -163,9 +163,15 @@ const CountryDetails = () => {
               <b>Population:</b> {countryInfo.population.toLocaleString('en-US')}
             </Text>
             {currentTime && (
-              <Text mt={2}>
-                <b>Current Time in {countryInfo.capital}:</b> {currentTime}
-              </Text>
+              <Box>
+                <Text>
+                  <b>Actual day in {countryInfo.capital}:</b>{" "}
+                  {new Date().toLocaleDateString("en-GB")} {/* Formato: DD/MM/YYYY */}
+                </Text>
+                <Text>
+                  <b>Actual Time in {countryInfo.capital}:</b> {currentTime}
+                </Text>
+              </Box>
             )}
             {weatherData?.temperature && (
               <Text mt={2}>
