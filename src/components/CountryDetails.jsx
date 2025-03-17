@@ -164,29 +164,29 @@ const CountryDetails = () => {
             </Text>
             {currentTime && (
               <Box>
-                <Text>
+                <Text mt={1/2}>
                   <b>Actual day in {countryInfo.capital}:</b>{" "}
                   {new Date().toLocaleDateString("en-GB")} {/* Formato: DD/MM/YYYY */}
                 </Text>
-                <Text>
+                <Text mt={1/2}>
                   <b>Actual Time in {countryInfo.capital}:</b> {currentTime}
                 </Text>
               </Box>
             )}
             {weatherData?.temperature && (
-              <Text mt={2}>
+              <Text mt={1/2}>
                 <b>Current Temperature in {countryInfo.capital}:</b>{' '}
                 {weatherData.temperature}°C
               </Text>
             )}
             {exchangeRate && (
-              <Text mt={2}>
+              <Text mt={1/2}>
                 <b>Exchange Rate (1 £ to {countryInfo.currency}):</b> 1 £ = {exchangeRate}{' '}
                 {countryInfo.currency}
               </Text>
             )}
             {countryInfo.capital && countryInfo.capital !== 'N/A' && (
-              <Text mt={2}>
+              <Text mt={1/2}>
                 <b>Flights from London:</b>{' '}
                 <Link
                   href={googleFlightsUrl}
