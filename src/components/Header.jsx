@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -140,16 +140,16 @@ function Header() {
           cursor="pointer"
           onClick={() => navigate("/")}
           flex="1"
-          _hover={{ transform: "scale(1.05)", transition: "0.2s ease-in-out" }} 
+          _hover={{ transform: "scale(1.05)", transition: "0.2s ease-in-out" }}
         >
           <Image
             src={logo}
             alt="Home logo"
-            h="60px" 
+            h="60px"
             w="60px"
             objectFit="contain"
             mr={2}
-            _hover={{ transform: "scale(1.1)", transition: "0.2s ease-in-out" }} 
+            _hover={{ transform: "scale(1.1)", transition: "0.2s ease-in-out" }}
           />
           <Heading
             as="h1"
@@ -190,9 +190,9 @@ function Header() {
                 bg="whiteAlpha.300"
                 p={2}
                 borderRadius="md"
-                cursor="pointer" 
+                cursor="pointer"
                 _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }} // 
-                onClick={photoStorageModal.onOpen} 
+                onClick={photoStorageModal.onOpen}
               >
                 📸 Photos: {photoCount}
               </Text>
@@ -201,9 +201,9 @@ function Header() {
                 bg="whiteAlpha.300"
                 p={2}
                 borderRadius="md"
-                cursor="pointer" 
+                cursor="pointer"
                 _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }} // 
-                onClick={countriesModal.onOpen} 
+                onClick={countriesModal.onOpen}
               >
                 🌍 Countries: {countryCount}
               </Text>
@@ -281,10 +281,27 @@ function Header() {
         >
           {isLoggedIn ? (
             <VStack align="start" spacing={3}>
-              <Text fontSize="md" bg="whiteAlpha.300" p={2} borderRadius="md">
+              <Text
+                fontSize="md"
+                bg="whiteAlpha.300"
+                p={2}
+                borderRadius="md"
+                cursor="pointer"
+                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }}
+                onClick={photoStorageModal.onOpen}
+              >
                 📸 Photos: {photoCount}
               </Text>
-              <Text fontSize="md" bg="whiteAlpha.300" p={2} borderRadius="md">
+
+              <Text
+                fontSize="md"
+                bg="whiteAlpha.300"
+                p={2}
+                borderRadius="md"
+                cursor="pointer"
+                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }}
+                onClick={countriesModal.onOpen}
+              >
                 🌍 Countries: {countryCount}
               </Text>
 
