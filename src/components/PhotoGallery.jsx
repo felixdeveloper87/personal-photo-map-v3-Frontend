@@ -180,7 +180,7 @@ const PhotoGallery = ({
             <Image
               src={image.url}
               alt={`Country image ${index + 1}`}
-              boxSize="200px"
+              boxSize="300px"
               objectFit="cover"
               loading="lazy"
               fallbackSrc="https://via.placeholder.com/200"
@@ -265,7 +265,7 @@ const PhotoGallery = ({
                     <Image
                       src={images[currentImageIndex].url}
                       alt={`Country image ${currentImageIndex + 1}`}
-                      maxWidth="40vw"
+                      maxWidth="90%"
                       maxHeight="80vh"
                       width="auto"
                       height="auto"
