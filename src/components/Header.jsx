@@ -156,6 +156,7 @@ function Header() {
             color="white"
             fontFamily="'Rock Salt', cursive"
             fontWeight="bold"
+            mr={5}
             _hover={{ color: "cyan.300", transition: "0.2s ease-in-out" }} // 
           >
             Personal Photo Map
