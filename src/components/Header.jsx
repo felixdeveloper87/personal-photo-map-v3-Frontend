@@ -130,7 +130,7 @@ function Header() {
       <Flex
         justify="space-between"
         align="center"
-        maxW="1200px"
+        maxW="1400px"
         mx="auto"
         wrap="wrap"
       >
