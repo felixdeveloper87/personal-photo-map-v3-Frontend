@@ -265,8 +265,8 @@ const PhotoGallery = ({
                     <Image
                       src={images[currentImageIndex].url}
                       alt={`Country image ${currentImageIndex + 1}`}
-                      maxWidth="100%"
-                      maxHeight="70%"
+                      maxWidth="90%"
+                      maxHeight="80vh"
                       width="auto"
                       height="auto"
                       objectFit="contain"
