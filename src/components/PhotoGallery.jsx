@@ -265,8 +265,8 @@ const PhotoGallery = ({
                     <Image
                       src={images[currentImageIndex].url}
                       alt={`Country image ${currentImageIndex + 1}`}
-                      maxWidth="40vw"  
-                      maxHeight="80vh" 
+                      maxWidth="40vw"
+                      maxHeight="80vh"
                       width="auto"
                       height="auto"
                       objectFit="contain"
@@ -279,10 +279,34 @@ const PhotoGallery = ({
 
             {/* Navigation between multiple images */}
             {images.length > 1 && (
-              <Flex justifyContent="space-between" mt={4}>
-                <Button onClick={showPrevImage}>&#10094;</Button>
-                <Button onClick={showNextImage}>&#10095;</Button>
-              </Flex>
+              <>
+                <IconButton
+                  icon={<Text fontSize="2xl">&#10094;</Text>}
+                  onClick={showPrevImage}
+                  aria-label="Previous Image"
+                  position="absolute"
+                  top="50%"
+                  left="20px"
+                  transform="translateY(-50%)"
+                  zIndex="10"
+                  variant="ghost"
+                  size="lg"
+                  colorScheme="blackAlpha"
+                />
+                <IconButton
+                  icon={<Text fontSize="2xl">&#10095;</Text>}
+                  onClick={showNextImage}
+                  aria-label="Next Image"
+                  position="absolute"
+                  top="50%"
+                  right="20px"
+                  transform="translateY(-50%)"
+                  zIndex="10"
+                  variant="ghost"
+                  size="lg"
+                  colorScheme="blackAlpha"
+                />
+              </>
             )}
           </ModalBody>
         </ModalContent>
