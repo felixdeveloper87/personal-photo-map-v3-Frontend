@@ -282,6 +282,23 @@ function Header() {
           {isLoggedIn ? (
             <VStack align="start" spacing={3}>
               <Text
+                fontWeight="bold"
+                cursor="pointer"
+                onClick={profileModal.onOpen}
+              >
+                Welcome, {fullname} {isPremium && "(Premium 🌟)"}
+              </Text>
+
+              {!isPremium && (
+                <Button
+                  colorScheme="yellow"
+                  variant="solid"
+                  onClick={premiumModal.onOpen}
+                >
+                  Upgrade to Premium 🌟
+                </Button>
+              )}
+              <Text
                 fontSize="md"
                 bg="whiteAlpha.300"
                 p={2}
