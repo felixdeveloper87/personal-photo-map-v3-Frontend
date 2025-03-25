@@ -616,7 +616,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
               colorScheme={selectedAlbum === album.id ? 'purple' : 'gray'}
               onClick={() => toggleAlbumSelection(album.id)}
             >
-              {album.name}
+              {album.albumName}
             </Button>
             <Button
               ml={2}
