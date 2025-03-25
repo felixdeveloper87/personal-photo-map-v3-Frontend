@@ -258,7 +258,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       });
       setNewAlbumName('');
       setSelectedImageIds([]);
-      queryClient.invalidateQueries(['albums']);
+      queryClient.invalidateQueries(['albums', countryId]);
     },
     onError: () => {
       toast({
