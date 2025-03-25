@@ -555,17 +555,17 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
    */
   const images = Array.isArray(imagesData)
     ? imagesData.map((image) => ({
-        url: image.filePath, // The full S3 URL is used directly
-        id: image.id,
-        year: image.year,
-      }))
+      url: image.filePath, // The full S3 URL is used directly
+      id: image.id,
+      year: image.year,
+    }))
     : [];
 
   /**
    * Filter albums to only those that actually have images to display.
    */
   const albumsWithImages = Array.isArray(albumsData)
-    ? albumsData.filter((album) => album.images && album.images.length > 0)
+    ? albumsData.filter((album) => album.numberOfImages > 0)
     : [];
 
   return (
