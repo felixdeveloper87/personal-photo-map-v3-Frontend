@@ -2,13 +2,15 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import {
-  Box,
-  Input,
-  Button,
-  Heading,
-  FormControl,
-  FormLabel,
-  Text,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useToast,
 } from '@chakra-ui/react';
 
 /**
@@ -24,6 +26,11 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [resetEmail, setResetEmail] = useState('');
+  const toast = useToast();
+
 
   // Navigation hook for redirecting upon successful login
   const navigate = useNavigate();
@@ -60,6 +67,20 @@ function Login() {
       setError(error.message);
     }
   };
+
+  const handleResetPassword = () => {
+    onClose();
+    toast({
+      title: 'Password reset',
+      description: 'You will soon receive an email with instructions to reset your password.',
+      status: 'info',
+      duration: 6000,
+      isClosable: true,
+      position: 'top',
+    });
+    setResetEmail('');
+  };
+
 
   return (
     <Box
@@ -110,8 +131,46 @@ function Login() {
         <Button type="submit" colorScheme="teal" width="100%" mt={6}>
           Login
         </Button>
+        <Text mt={4} textAlign="center">
+          <Button variant="link" color="teal.500" onClick={onOpen}>
+            I've forgotten my password
+          </Button>
+        </Text>
+
+
       </form>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Reset your password</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Enter your email</FormLabel>
+              <Input
+                type="email"
+                placeholder="your-email@example.com"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="teal" mr={3} onClick={handleResetPassword}>
+              Reset my password
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
     </Box>
+
+
   );
 }
 
