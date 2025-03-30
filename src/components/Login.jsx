@@ -2,16 +2,23 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import {
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useToast,
-} from '@chakra-ui/react';
+    Box,
+    Input,
+    Button,
+    Heading,
+    FormControl,
+    FormLabel,
+    Text,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useToast,
+  } from '@chakra-ui/react';
 
 /**
  * The Login component handles user authentication by:
