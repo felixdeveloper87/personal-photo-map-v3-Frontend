@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FiZoomIn, FiZoomOut, FiX } from 'react-icons/fi';
+import { FiZoomIn, FiZoomOut, FiX, FiMaximize } from 'react-icons/fi';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
@@ -47,6 +47,9 @@ const PhotoGallery = ({
 
   // Tracks the index of the currently displayed image in the modal
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const fullscreenRef = useRef(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   /**
    * Opens the modal at the clicked image's index.
@@ -133,6 +136,29 @@ const PhotoGallery = ({
   if (!Array.isArray(images) || images.length === 0) {
     return <Text fontSize="lg">You haven't been here yet.</Text>;
   }
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      // Entra em full screen
+      if (fullscreenRef.current) {
+        fullscreenRef.current.requestFullscreen();
+      }
+    } else if (document.exitFullscreen) {
+      // Sai do full screen
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   return (
     <Box>
@@ -224,58 +250,61 @@ const PhotoGallery = ({
             />
 
             {/* Zoom & Pan controls */}
-            <TransformWrapper
-              initialScale={1}
-              wheel={{ step: 0.2 }}
-              doubleClick={{ disabled: true }}
-              pinch={{ step: 5 }}
-            >
-              {({ zoomIn, zoomOut, resetTransform }) => (
-                <VStack spacing={4}>
-                  <Flex justifyContent="center" mb={4}>
-                    <IconButton
-                      // Wrap zoomOut in an arrow function
-                      onClick={() => zoomOut()}
-                      icon={<FiZoomOut />}
-                      aria-label="Zoom out"
-                      mx={2}
-                      colorScheme="blue"
-                    />
+            <Box ref={fullscreenRef}>
+              <TransformWrapper
+                initialScale={1}
+                wheel={{ step: 0.2 }}
+                doubleClick={{ disabled: true }}
+                pinch={{ step: 5 }}
+              >
+                {({ zoomIn, zoomOut, resetTransform }) => (
+                  <VStack spacing={4}>
+                    <Flex justifyContent="center" mb={4}>
+                      <IconButton
+                        onClick={() => zoomOut()}
+                        icon={<FiZoomOut />}
+                        aria-label="Zoom out"
+                        mx={2}
+                        colorScheme="blue"
+                      />
+                      <IconButton
+                        onClick={() => zoomIn()}
+                        icon={<FiZoomIn />}
+                        aria-label="Zoom in"
+                        mx={2}
+                        colorScheme="blue"
+                      />
+                      <Button
+                        onClick={() => resetTransform()}
+                        mx={2}
+                        colorScheme="blue"
+                      >
+                        Reset
+                      </Button>
+                      <IconButton
+                        onClick={toggleFullScreen}
+                        icon={<FiMaximize />}
+                        aria-label="Fullscreen"
+                        mx={2}
+                        colorScheme="blue"
+                      />
+                    </Flex>
 
-                    <IconButton
-                      // Wrap zoomIn in an arrow function
-                      onClick={() => zoomIn()}
-                      icon={<FiZoomIn />}
-                      aria-label="Zoom in"
-                      mx={2}
-                      colorScheme="blue"
-                    />
-
-                    <Button
-                      // Wrap resetTransform in an arrow function
-                      onClick={() => resetTransform()}
-                      mx={2}
-                      colorScheme="blue"
-                    >
-                      Reset
-                    </Button>
-                  </Flex>
-
-                  <TransformComponent>
-                    <Image
-                      src={images[currentImageIndex].url}
-                      alt={`Country image ${currentImageIndex + 1}`}
-                      maxWidth="90%"
-                      maxHeight="80vh"
-                      width="auto"
-                      height="auto"
-                      objectFit="contain"
-                    />
-                  </TransformComponent>
-
-                </VStack>
-              )}
-            </TransformWrapper>
+                    <TransformComponent>
+                      <Image
+                        src={images[currentImageIndex].url}
+                        alt={`Country image ${currentImageIndex + 1}`}
+                        maxWidth={isFullscreen ? '100%' : '90%'}
+                        maxHeight={isFullscreen ? '90vh' : '80vh'}
+                        width="auto"
+                        height="auto"
+                        objectFit="contain"
+                      />
+                    </TransformComponent>
+                  </VStack>
+                )}
+              </TransformWrapper>
+            </Box>
 
             {/* Navigation between multiple images */}
             {images.length > 1 && (
