@@ -66,6 +66,7 @@ async function fetchAlbums(countryId) {
   return response.json();
 }
 
+
 /**
  * fetchImages
  * Retrieves images for a given country, optionally filtered by year or album.
