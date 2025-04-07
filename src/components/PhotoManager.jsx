@@ -57,7 +57,7 @@ async function fetchYears(countryId) {
  */
 async function fetchAlbums(countryId) {
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/albums/${countryId}`,
+    `${import.meta.env.VITE_BACKEND_URL}/api/albums/user/${countryId}`,
     { headers: getAuthHeaders() }
   );
   if (!response.ok) {
