@@ -577,7 +577,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       </Box>
 
       {/* (Optional) Album Creation Section - Requires Premium */}
-      {isPremium && (
+      {isPremium && images.length > 0 && (
         <Flex mb={4} justify="center">
           <Input
             placeholder="Album Name"
@@ -631,14 +631,16 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
         ))}
 
         {/* Show All Images Button */}
-        <WrapItem>
-          <Button
-            colorScheme={showAllSelected ? 'teal' : 'gray'}
-            onClick={toggleShowAll}
-          >
-            Show All
-          </Button>
-        </WrapItem>
+        {images.length > 0 && (
+          <WrapItem>
+            <Button
+              colorScheme={showAllSelected ? 'teal' : 'gray'}
+              onClick={toggleShowAll}
+            >
+              Show All
+            </Button>
+          </WrapItem>
+        )}
       </Wrap>
 
       {/* Main Image Display */}
