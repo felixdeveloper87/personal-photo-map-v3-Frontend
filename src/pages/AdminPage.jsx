@@ -1,6 +1,6 @@
 import React from 'react';
-import AdminPanel from './AdminPanel';
 import AdminLogin from '../components/AdminLogin';
+import AdminPanel from './AdminPanel'; 
 
 const AdminPage = () => {
   const token = localStorage.getItem('token');
