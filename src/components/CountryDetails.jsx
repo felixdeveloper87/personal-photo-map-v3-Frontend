@@ -15,22 +15,56 @@ import moment from 'moment-timezone';
 countries.registerLocale(en);
 
 /**
- * Fetches country metadata (language, currency, capital, population)
- * from restcountries.com.
+ * Fetches country metadata from RestCountries or falls back to GeoDB.
  * @param {string} countryId - ISO alpha-2 or alpha-3 country code
  */
 const fetchCountryData = async (countryId) => {
-  const response = await fetch(`https://restcountries.com/v3.1/alpha/${countryId}`);
-  if (!response.ok) throw new Error('Country not found');
-  const data = await response.json();
-  const countryData = data[0];
-  return {
-    officialLanguage: Object.values(countryData.languages || {})[0] || 'N/A',
-    currency: Object.keys(countryData.currencies || {})[0] || 'N/A',
-    capital: countryData.capital ? countryData.capital[0] : 'N/A',
-    population: countryData.population || 0,
-  };
+  try {
+    // Primeiro tenta a RestCountries
+    const response = await fetch(`https://restcountries.com/v3.1/alpha/${countryId}`);
+    if (!response.ok) throw new Error('Primary API failed');
+    const data = await response.json();
+    const countryData = data[0];
+
+    return {
+      officialLanguage: Object.values(countryData.languages || {})[0] || 'N/A',
+      currency: Object.keys(countryData.currencies || {})[0] || 'N/A',
+      capital: countryData.capital ? countryData.capital[0] : 'N/A',
+      population: countryData.population || 0,
+    };
+
+  } catch (error) {
+    console.warn('RestCountries API failed. Trying GeoDB API...', error);
+
+    try {
+      const geoDbUrl = `https://wft-geo-db.p.rapidapi.com/v1/geo/countries/${countryId.toUpperCase()}`;
+
+      const geoDbResponse = await fetch(geoDbUrl, {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': 'daf418934fmshf85c3a6a3375a4dp11c91ejsnd32ae998c868',
+          'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
+        },
+      });
+
+      if (!geoDbResponse.ok) throw new Error('GeoDB API also failed');
+      const result = await geoDbResponse.json();
+      const country = result.data;
+
+      return {
+        officialLanguage: 'N/A', // GeoDB não fornece isso
+        currency: 'N/A',          // Também não fornece diretamente
+        capital: country.capital || 'N/A',
+        population: country.population || 0,
+      };
+    } catch (fallbackError) {
+      console.error('Ambas APIs falharam:', fallbackError);
+      throw new Error('Unable to fetch country data from any API');
+    }
+  }
 };
+
+
 
 /**
  * Fetches current weather data for the provided capital city.
@@ -164,29 +198,29 @@ const CountryDetails = () => {
             </Text>
             {currentTime && (
               <Box>
-                <Text mt={1/2}>
+                <Text mt={1 / 2}>
                   <b>Actual day in {countryInfo.capital}:</b>{" "}
                   {new Date().toLocaleDateString("en-GB")} {/* Formato: DD/MM/YYYY */}
                 </Text>
-                <Text mt={1/2}>
+                <Text mt={1 / 2}>
                   <b>Actual Time in {countryInfo.capital}:</b> {currentTime}
                 </Text>
               </Box>
             )}
             {weatherData?.temperature && (
-              <Text mt={1/2}>
+              <Text mt={1 / 2}>
                 <b>Current Temperature in {countryInfo.capital}:</b>{' '}
                 {weatherData.temperature}°C
               </Text>
             )}
             {exchangeRate && (
-              <Text mt={1/2}>
+              <Text mt={1 / 2}>
                 <b>Exchange Rate (1 £ to {countryInfo.currency}):</b> 1 £ = {exchangeRate}{' '}
                 {countryInfo.currency}
               </Text>
             )}
             {countryInfo.capital && countryInfo.capital !== 'N/A' && (
-              <Text mt={1/2}>
+              <Text mt={1 / 2}>
                 <b>Flights from London:</b>{' '}
                 <Link
                   href={googleFlightsUrl}
