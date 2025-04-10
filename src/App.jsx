@@ -10,6 +10,7 @@ import Register from './components/Register';
 import Contact from "./pages/Contact";
 import NotFound from './components/Notfound.jsx';
 import About from './pages/About';
+import AdminLogin from './pages/AdminLogin';
 import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext'; // Authentication context provider
 import { CountriesProvider } from './context/CountriesContext'; // Context provider for managing country-related data
