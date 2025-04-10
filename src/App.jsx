@@ -11,6 +11,8 @@ import Contact from "./pages/Contact";
 import NotFound from './components/Notfound.jsx';
 import About from './pages/About';
 import AdminLogin from './components/AdminLogin';
+import AdminPanel from './pages/AdminPanel';
+import AdminRoute from './components/AdminRoute'
 import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext'; // Authentication context provider
 import { CountriesProvider } from './context/CountriesContext'; // Context provider for managing country-related data
@@ -33,7 +35,7 @@ function App() {
     <AuthProvider> {/* Provides authentication context to the entire app */}
       <CountriesProvider> {/* Provides country-related data to the app */}
         <Flex direction="column" minH="100vh"> {/* Ensures a full-height layout */}
-          
+
           {/* Header Section */}
           <Box as="header">
             <Header />
@@ -44,7 +46,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/admin-login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminPage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
@@ -59,7 +61,7 @@ function App() {
           <Box as="footer">
             <Footer />
           </Box>
-          
+
         </Flex>
       </CountriesProvider>
     </AuthProvider>

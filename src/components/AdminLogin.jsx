@@ -34,7 +34,7 @@ const AdminLogin = () => {
         if (email === 'admin@personalphotomap.co.uk') {
           // Armazena o token e redireciona
           localStorage.setItem('token', data.token);
-          navigate('/admin');
+          window.location.href = '/admin';
         } else {
           setError('Você não tem permissão de administrador.');
         }
