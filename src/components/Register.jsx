@@ -55,10 +55,11 @@ const Register = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
+        // 1. Tenta RestCountries (v3.1)
         const response = await fetch('https://restcountries.com/v3.1/all');
+        if (!response.ok) throw new Error('RestCountries API failed');
         const data = await response.json();
 
-        // Sort with "United Kingdom" on top, then alphabetical
         const sortedCountries = [
           { code: 'GB', name: 'United Kingdom' },
           ...data
@@ -71,12 +72,46 @@ const Register = () => {
         ];
         setCountries(sortedCountries);
       } catch (err) {
-        console.error('Error fetching countries:', err);
+        console.warn('RestCountries API failed, falling back to GeoDB');
+
+        // 2. Fallback: GeoDB (RapidAPI)
+        try {
+          const geoDbResponse = await fetch(
+            'https://wft-geo-db.p.rapidapi.com/v1/geo/countries?limit=250',
+            {
+              method: 'GET',
+              headers: {
+                'X-RapidAPI-Key': 'daf418934fmshf85c3a6a3375a4dp11c91ejsnd32ae998c868',
+                'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
+              },
+            }
+          );
+
+          if (!geoDbResponse.ok) throw new Error('GeoDB also failed');
+          const geoData = await geoDbResponse.json();
+
+          const sortedCountries = [
+            { code: 'GB', name: 'United Kingdom' },
+            ...geoData.data
+              .filter((country) => country.name !== 'United Kingdom')
+              .map((country) => ({
+                code: country.code,
+                name: country.name,
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name)),
+          ];
+
+          setCountries(sortedCountries);
+        } catch (geoErr) {
+          console.error('Both APIs failed:', geoErr);
+          setError('Could not load countries. Please try again later.');
+        }
       }
     };
 
     fetchCountries();
   }, []);
+
 
   /**
    * Submits the registration data to the backend.
