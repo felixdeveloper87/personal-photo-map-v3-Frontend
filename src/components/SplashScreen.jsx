@@ -1,6 +1,7 @@
 // src/components/SplashScreen.jsx
 import { Box, Center, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import logo from "../assets/logo.png";
 
 const SplashScreen = ({ onFinish }) => {
   const [fadeOut, setFadeOut] = useState(false);
@@ -29,7 +30,7 @@ const SplashScreen = ({ onFinish }) => {
     >
       <Center h="100%">
         <Box textAlign="center">
-          <Image src="/logo.png" alt="Photomap Logo" boxSize="100px" mb={4} />
+        <Image src={logo} alt="Photomap Logo" boxSize="100px" mb={4} />
           <Text fontSize="3xl" fontWeight="bold" color="gray.700">
             Photomap
           </Text>
