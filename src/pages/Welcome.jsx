@@ -10,15 +10,15 @@ const Welcome = () => {
     <Flex
       minH="100vh"
       justify="center"
-      pt={20}
-      px={6}
+      align="flex-start"
       bgImage={`url(${bgImage})`}
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
+      px={6}
     >
-      {/* Overlay escuro para melhor contraste do texto */}
+      {/* Overlay escuro */}
       <Box
         position="absolute"
         top={0}
@@ -29,8 +29,15 @@ const Welcome = () => {
         zIndex={0}
       />
 
-      {/* Conteúdo acima da imagem */}
-      <Box textAlign="center" maxW="xl" position="relative" zIndex={1} color="white">
+      {/* Conteúdo principal */}
+      <Box
+        textAlign="center"
+        maxW="xl"
+        position="relative"
+        zIndex={1}
+        color="white"
+        py={[16, 24]} // padding vertical responsivo
+      >
         <Heading mb={4}>Welcome to Photomap 🌍</Heading>
         <Text fontSize="lg" mb={6}>
           Explore new ideas, cultures and history around the world. Get real time information about countries, register your memories and explore our beautiful planet.
