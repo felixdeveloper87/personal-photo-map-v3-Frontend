@@ -22,7 +22,7 @@ const SplashScreen = ({ onFinish }) => {
       position="fixed"
       top={0}
       left={0}
-      w="100vw"
+      w="101vw"
       h="100vh"
       zIndex={9999}
       opacity={fadeOut ? 0 : 1}
