@@ -1,12 +1,12 @@
 // src/pages/Welcome.jsx
-import { Box, Button, Center, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack, Text, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const Welcome = () => {
   const navigate = useNavigate();
 
   return (
-    <Center minH="100vh" bg="blue.50" px={6}>
+    <Flex bg="blue.50" minH="100vh" justify="center" pt={20} px={6}>
       <Box textAlign="center" maxW="xl">
         <Heading mb={4}>Bem-vindo ao Photomap 🌍</Heading>
         <Text fontSize="lg" mb={6}>
@@ -22,7 +22,7 @@ const Welcome = () => {
           </Button>
         </Stack>
       </Box>
-    </Center>
+    </Flex>
   );
 };
 
