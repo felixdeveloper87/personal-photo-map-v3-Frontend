@@ -2,7 +2,7 @@
 import { Box, Center, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
-import bgImage from "../assets/background.jpg";
+import bgImage from "../assets/background.JPG";
 
 const SplashScreen = ({ onFinish }) => {
   const [fadeOut, setFadeOut] = useState(false);
