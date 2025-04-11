@@ -8,7 +8,7 @@ const SplashScreen = ({ onFinish }) => {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setFadeOut(true), 2000); // inicia fade
+    const timer1 = setTimeout(() => setFadeOut(true), 2000); // inicia fade ee
     const timer2 = setTimeout(() => onFinish(), 3000); // remove completamente
 
     return () => {
@@ -22,7 +22,7 @@ const SplashScreen = ({ onFinish }) => {
       position="fixed"
       top={0}
       left={0}
-      w="100vw"
+      w="101vw"
       h="100vh"
       zIndex={9999}
       opacity={fadeOut ? 0 : 1}
