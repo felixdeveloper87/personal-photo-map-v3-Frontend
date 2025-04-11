@@ -127,7 +127,8 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
     if (!token) {
-      navigate('/login');
+      // navigate('/login');
+      navigate('/welcome');
     }
   }, [navigate]);
 

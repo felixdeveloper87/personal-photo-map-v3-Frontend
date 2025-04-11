@@ -10,6 +10,7 @@ import Register from './components/Register';
 import Contact from "./pages/Contact";
 import NotFound from './components/Notfound.jsx';
 import About from './pages/About';
+import Welcome from './pages/Welcome.jsx';
 import AdminPage from './pages/AdminPage';
 import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
@@ -52,6 +53,7 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/countries/:countryId" element={<CountryDetails />} />
                 <Route path="/timeline" element={<TimelinePage />} />
+                <Route path="/welcome" element={<Welcome />} />
                 <Route path="/timeline/:year" element={<TimelinePage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
