@@ -12,8 +12,9 @@ import NotFound from './components/Notfound.jsx';
 import About from './pages/About';
 import AdminPage from './pages/AdminPage';
 import TimelinePage from './pages/TimelinePage';
-import { AuthProvider } from './context/AuthContext'; // Authentication context provider
-import { CountriesProvider } from './context/CountriesContext'; // Context provider for managing country-related data
+import { AuthProvider } from './context/AuthContext';
+import { CountriesProvider } from './context/CountriesContext';
+import SplashScreen from './components/SplashScreen';
 
 /**
  * App Component
@@ -29,38 +30,37 @@ import { CountriesProvider } from './context/CountriesContext'; // Context provi
  */
 function App() {
 
+  const [showSplash, setShowSplash] = useState(true);
+
   return (
-    <AuthProvider> {/* Provides authentication context to the entire app */}
-      <CountriesProvider> {/* Provides country-related data to the app */}
-        <Flex direction="column" minH="100vh"> {/* Ensures a full-height layout */}
-
-          {/* Header Section */}
-          <Box as="header">
-            <Header />
-          </Box>
-
-          {/* Main Content Section */}
-          <Box as="main" flex="1" p={4}> {/* Ensures the content takes up available space */}
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/countries/:countryId" element={<CountryDetails />} />
-              <Route path="/timeline" element={<TimelinePage />} />
-              <Route path="/timeline/:year" element={<TimelinePage />} />
-              <Route path="*" element={<NotFound />} /> {/* 404 Page */}
-            </Routes>
-          </Box>
-
-          {/* Footer Section */}
-          <Box as="footer">
-            <Footer />
-          </Box>
-
-        </Flex>
+    <AuthProvider>
+      <CountriesProvider>
+        {showSplash ? (
+          <SplashScreen onFinish={() => setShowSplash(false)} />
+        ) : (
+          <Flex direction="column" minH="100vh">
+            <Box as="header">
+              <Header />
+            </Box>
+            <Box as="main" flex="1" p={4}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/countries/:countryId" element={<CountryDetails />} />
+                <Route path="/timeline" element={<TimelinePage />} />
+                <Route path="/timeline/:year" element={<TimelinePage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Box>
+            <Box as="footer">
+              <Footer />
+            </Box>
+          </Flex>
+        )}
       </CountriesProvider>
     </AuthProvider>
   );
