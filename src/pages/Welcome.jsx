@@ -9,10 +9,11 @@ const Welcome = () => {
   return (
     <Flex
       minH="100vh"
+      direction="column"
       justify="center"
-      align="flex-start"
+      align="center"
       bgImage={`url(${bgImage})`}
-      bgSize="cover"
+      bgSize="contain" // <-- mostra toda a imagem
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
@@ -36,18 +37,21 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
-        py={[16, 24]} // padding vertical responsivo
+        py={[10, 16, 24]} // padding vertical responsivo
+        px={[4, 6, 8]}
       >
-        <Heading mb={4}>Welcome to Photomap 🌍</Heading>
-        <Text fontSize="lg" mb={6}>
-          Explore new ideas, cultures and history around the world. Get real time information about countries, register your memories and explore our beautiful planet.
+        <Heading fontSize={["2xl", "3xl", "4xl"]} mb={4}>
+          Welcome to Photomap 🌍
+        </Heading>
+        <Text fontSize={["md", "lg"]} mb={6}>
+          Explore new ideas, cultures and history around the world. Get real-time information about countries, register your memories and explore our beautiful planet.
         </Text>
 
         <Stack direction={["column", "row"]} spacing={4} justify="center">
-          <Button colorScheme="blue" onClick={() => navigate("/login")}>
+          <Button colorScheme="blue" size="lg" onClick={() => navigate("/login")}>
             Sign In
           </Button>
-          <Button variant="outline" colorScheme="blue" onClick={() => navigate("/register")}>
+          <Button variant="outline" colorScheme="blue" size="lg" onClick={() => navigate("/register")}>
             Sign Up
           </Button>
         </Stack>
