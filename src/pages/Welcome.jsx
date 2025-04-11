@@ -8,17 +8,17 @@ const Welcome = () => {
   return (
     <Flex bg="blue.50" minH="100vh" justify="center" pt={20} px={6}>
       <Box textAlign="center" maxW="xl">
-        <Heading mb={4}>Bem-vindo ao Photomap 🌍</Heading>
+        <Heading mb={4}>Welcome to Photomap 🌍</Heading>
         <Text fontSize="lg" mb={6}>
-          Descubra países, culturas e histórias ao redor do mundo. Receba informações em tempo real sobre os destinos, registre suas memórias de viagem e explore nosso planeta com propósito.
+          Explore new ideas, cultures and history around the world. Get real time information about countries, register your memories and explore our beatiful planet.
         </Text>
 
         <Stack direction={["column", "row"]} spacing={4} justify="center">
           <Button colorScheme="blue" onClick={() => navigate("/login")}>
-            Fazer Login
+            Sign In
           </Button>
           <Button variant="outline" colorScheme="blue" onClick={() => navigate("/register")}>
-            Criar Conta
+            Sign Up
           </Button>
         </Stack>
       </Box>
