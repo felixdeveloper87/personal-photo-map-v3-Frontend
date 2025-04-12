@@ -95,7 +95,7 @@ const SplashScreen = ({ onFinish }) => {
           maxW="90%"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 1.2 }}
+          transition={{ delay: 0.8, duration: 1.2 }}
         >
           Discover cultures, save memories, and explore the world — one photo at a time.
         </MotionText>
