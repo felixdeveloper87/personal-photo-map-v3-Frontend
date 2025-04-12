@@ -65,7 +65,7 @@ const SplashScreen = ({ onFinish }) => {
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
+          transition={{ delay: 0.4, duration: 0.4 }}
         >
           Welcome to Photomap
         </MotionText>
@@ -85,7 +85,7 @@ const SplashScreen = ({ onFinish }) => {
           bgColor="black"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
         />
 
         {/* SUBTÍTULO */}
@@ -95,7 +95,7 @@ const SplashScreen = ({ onFinish }) => {
           maxW="90%"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 1.2 }}
+          transition={{ delay: 0.8, duration: 0.4 }}
         >
           Discover cultures, save memories, and explore the world — one photo at a time.
         </MotionText>
