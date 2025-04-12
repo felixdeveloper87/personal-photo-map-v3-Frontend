@@ -50,6 +50,7 @@ const SplashScreen = ({ onFinish }) => {
           bgSize="contain"
           bgPosition="center"
           bgRepeat="no-repeat"
+          bgColor="black"
           position="relative"
         >
           {/* Overlay preto sobre a imagem */}
