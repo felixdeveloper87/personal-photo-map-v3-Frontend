@@ -20,6 +20,7 @@ const Welcome = () => {
       px={[4, 6, 8]}
       pt={0}
     >
+      {/* overlay */}
       <Box
         position="absolute"
         top={0}
@@ -38,7 +39,6 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
-        mt={[4, 6]}
         py={[6, 10, 12]}
         px={[2, 4, 6]}
       >
@@ -47,7 +47,7 @@ const Welcome = () => {
           mb={4}
           textShadow="0 1px 2px black"
         >
-          Welcome to Photomap 🌍
+          Welcome to Photomap
         </Heading>
         <Text
           fontSize={["md", "lg", "xl"]}
