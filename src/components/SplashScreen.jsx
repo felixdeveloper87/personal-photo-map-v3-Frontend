@@ -62,7 +62,7 @@ const SplashScreen = ({ onFinish }) => {
           bgPosition="center"
           bgRepeat="no-repeat"
           position="relative"
-          borderRadius="lg"
+          borderRadius="2x1"
           overflow="hidden"
           mb={6}
           bgColor="black"
@@ -70,17 +70,6 @@ const SplashScreen = ({ onFinish }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          {/* Overlay escuro
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            w="100%"
-            h="100%"
-            bg="blackAlpha.700"
-            zIndex={1}
-          /> */}
-
           {/* Texto central */}
           <Flex
             align="center"
