@@ -14,7 +14,7 @@ const Welcome = () => {
       align="center"
       bgImage={`url(${bgImage})`}
       // bgSize="contain"
-      bgSize="70%"  
+      bgSize="contain"  
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
