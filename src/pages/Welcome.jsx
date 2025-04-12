@@ -27,7 +27,7 @@ const Welcome = () => {
         w="100%"
         h="100%"
         bg="gray.700"
-        opacity={0.5}
+        opacity={0.1}
         zIndex={0}
       />
 
