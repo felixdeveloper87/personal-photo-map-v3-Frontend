@@ -13,8 +13,7 @@ const Welcome = () => {
       justify="flex-start"
       align="center"
       bgImage={`url(${bgImage})`}
-      // bgSize="contain"
-      bgSize="contain"  
+      bgSize="contain" // <-- mostra toda a imagem
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
@@ -38,7 +37,7 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
-        mt={[10, 12, 16]}
+        mt={[20, 24, 8]}
         py={[10, 16, 24]} // padding vertical responsivo
         px={[4, 6, 8]}
       >
