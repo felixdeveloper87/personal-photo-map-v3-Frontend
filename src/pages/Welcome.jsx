@@ -18,7 +18,7 @@ const Welcome = () => {
       bgRepeat="no-repeat"
       position="relative"
       px={[4, 6, 8]}
-      pt={[10, 12, 16]}
+      pt={0}
     >
       <Box
         position="absolute"
@@ -38,13 +38,22 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
+        mt={[4, 6]}
         py={[6, 10, 12]}
         px={[2, 4, 6]}
       >
-        <Heading fontSize={["2xl", "3xl", "4xl"]} mb={4}>
+        <Heading
+          fontSize={["3xl", "4xl", "5xl"]}
+          mb={4}
+          textShadow="0 1px 2px black"
+        >
           Welcome to Photomap 🌍
         </Heading>
-        <Text fontSize={["md", "lg"]} mb={6}>
+        <Text
+          fontSize={["md", "lg", "xl"]}
+          mb={6}
+          textShadow="0 1px 2px black"
+        >
           Explore new ideas, cultures and history around the world. Get real-time information about countries, register your memories and explore our beautiful planet.
         </Text>
 
