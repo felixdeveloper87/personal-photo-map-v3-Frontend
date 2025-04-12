@@ -42,15 +42,22 @@ const SplashScreen = ({ onFinish }) => {
         bg="blackAlpha.700"
       />
 
-      <Center h="100%" position="relative" zIndex={1}>
-        <Box textAlign="center">
-          <Image src={logo} alt="Photomap Logo" boxSize="100px" mb={4} />
-          <Text fontSize="3xl" fontWeight="bold" color="white">
-            Welcome to Photomap
-          </Text>
-        </Box>
-      </Center>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        mt={[20, 28, 36]} // <-- ajusta o espaço do topo responsivamente
+        position="relative"
+        zIndex={1}
+        textAlign="center"
+      >
+        <Image src={logo} alt="Photomap Logo" boxSize="100px" mb={4} />
+        <Text fontSize="3xl" fontWeight="bold" color="white">
+          Welcome to Photomap
+        </Text>
+      </Box>
     </Box>
+
   );
 };
 
