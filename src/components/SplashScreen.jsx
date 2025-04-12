@@ -26,7 +26,7 @@ const SplashScreen = ({ onFinish }) => {
       zIndex={9999}
       opacity={fadeOut ? 0 : 1}
       transition="opacity 1s ease"
-      bg="gray.800"
+      bg="blackAlpha.700"
     >
       {/* LOGO ACIMA DO MAPA */}
       <Box textAlign="center" pt={[10, 12]} zIndex={2} position="relative">
