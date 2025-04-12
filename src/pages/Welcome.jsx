@@ -27,7 +27,7 @@ const Welcome = () => {
         left={0}
         w="100%"
         h="100%"
-        bg="blackAlpha.700"
+        bg="gray.700"
         zIndex={0}
       />
 
