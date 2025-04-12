@@ -10,7 +10,7 @@ const Welcome = () => {
     <Flex
       minH="100vh"
       direction="column"
-      justify="center"
+      justify="flex-start"
       align="center"
       bgImage={`url(${bgImage})`}
       bgSize="contain" // <-- mostra toda a imagem
@@ -37,6 +37,7 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
+        mt={[20, 24, 32]}
         py={[10, 16, 24]} // padding vertical responsivo
         px={[4, 6, 8]}
       >
