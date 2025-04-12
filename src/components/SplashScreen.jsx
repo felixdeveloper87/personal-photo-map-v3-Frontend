@@ -45,7 +45,7 @@ const SplashScreen = ({ onFinish }) => {
 
         <Box
           w={["90%", "80%", "70%"]}
-          h={["250px", "300px", "400px"]}
+          h={["250px", "300px", "800px"]}
           bgImage={`url(${bgImage})`}
           bgSize="contain"
           bgPosition="center"
