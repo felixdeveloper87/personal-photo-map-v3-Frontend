@@ -20,7 +20,6 @@ const Welcome = () => {
       px={[4, 6, 8]}
       pt={[10, 12, 16]}
     >
-      {/* Overlay escuro */}
       <Box
         position="absolute"
         top={0}
@@ -28,6 +27,7 @@ const Welcome = () => {
         w="100%"
         h="100%"
         bg="gray.700"
+        opacity={0.5}
         zIndex={0}
       />
 
