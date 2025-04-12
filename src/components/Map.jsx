@@ -142,6 +142,13 @@ const Map = () => {
           navigate(`/countries/${countryId}`);
         },
       });
+
+      // Adiciona tooltip com o nome do país
+      layer.bindTooltip(country.properties.name || country.properties.name_long, {
+        permanent: false,
+        direction: 'top',
+        className: 'country-tooltip',
+      });
     },
     [navigate, countryStyle]
   );
@@ -189,7 +196,7 @@ const Map = () => {
         <Rectangle
           bounds={oceanBounds}
           pathOptions={{
-            fillColor: '#B3E5FC', 
+            fillColor: '#B3E5FC',
             fillOpacity: 1,
             stroke: false,
           }}

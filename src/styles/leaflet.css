@@ -1,0 +1,11 @@
+.country-tooltip {
+    background-color: white;
+    color: #2D3748; /* Chakra gray.700 */
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Inter', sans-serif;
+  }
+  

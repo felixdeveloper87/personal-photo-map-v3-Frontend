@@ -16,6 +16,8 @@ import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
 import { CountriesProvider } from './context/CountriesContext';
 import SplashScreen from './components/SplashScreen';
+import './styles/leaflet.css';
+
 
 /**
  * App Component
