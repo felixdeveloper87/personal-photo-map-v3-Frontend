@@ -73,7 +73,7 @@ const SplashScreen = ({ onFinish }) => {
         {/* MAPA (imagem de fundo) */}
         <MotionBox
           w={["90%", "80%", "60%"]}
-          h={["250px", "400px", "700px"]}
+          h={["250px", "400px", "600px"]}
           bgImage={`url(${bgImage})`}
           bgSize="150%" // ou ajuste conforme necessário
           bgPosition="center"
