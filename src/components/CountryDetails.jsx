@@ -215,7 +215,7 @@ const CountryDetails = () => {
             )}
             {exchangeRate && (
               <Text mt={1 / 2}>
-                <b>Exchange Rate (1 £ to {countryInfo.currency}):</b> 1 £ = {exchangeRate}{' '}
+                <b>Exchange Rate: </b> 1 £ = {exchangeRate}{' '}
                 {countryInfo.currency}
               </Text>
             )}
