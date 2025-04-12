@@ -42,7 +42,7 @@ const SplashScreen = ({ onFinish }) => {
         px={4}
         textAlign="center"
       >
-        {/* LOGO animado */}
+        {/* LOGO */}
         <MotionImage
           src={logo}
           alt="Photomap Logo"
@@ -53,64 +53,56 @@ const SplashScreen = ({ onFinish }) => {
           transition={{ duration: 0.8 }}
         />
 
-        {/* MAPA COM OVERLAY + TEXTO */}
+        {/* TÍTULO: Welcome to Photomap */}
+        <MotionText
+          fontSize={["2xl", "3xl", "5xl"]}
+          fontWeight="extrabold"
+          color="white"
+          mb={3}
+          sx={{
+            WebkitTextStroke: "1px black",
+            textStroke: "1px black",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        >
+          Welcome to Photomap
+        </MotionText>
+
+        {/* MAPA (imagem de fundo) */}
         <MotionBox
           w={["90%", "80%", "60%"]}
           h={["250px", "400px", "800px"]}
           bgImage={`url(${bgImage})`}
-          bgSize="contain"
+          bgSize="150%" // ou ajuste conforme necessário
           bgPosition="center"
           bgRepeat="no-repeat"
           position="relative"
           borderRadius="3xl"
           overflow="hidden"
-          mb={6}
+          mb={4}
           bgColor="black"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-        >
-          {/* Texto central */}
-          <Flex
-            align="center"
-            justify="center"
-            h="100%"
-            position="relative"
-            zIndex={2}
-          >
-            <MotionText
-              fontSize={["2xl", "3xl", "5xl"]} // ← fonte maior
-              fontWeight="extrabold"
-              color="white"
-              sx={{
-                WebkitTextStroke: "1px black", // ← borda preta fina
-                textStroke: "1px black",       // ← fallback pra outros browsers
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 0.6 }}
-            >
-              Welcome to Photomap
-            </MotionText>
-          </Flex>
-        </MotionBox>
+          transition={{ delay: 0.8, duration: 0.8 }}
+        />
 
         {/* SUBTÍTULO */}
         <MotionText
-          fontSize={["md", "lg", "xl"]} // 👈 mais visível
+          fontSize={["md", "lg", "xl"]}
           color="gray.300"
           maxW="90%"
-          mt={1} // 👈 margem superior depois do mapa
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6, duration: 1.2 }} // 👈 aparece depois e mais suave
+          transition={{ delay: 1.4, duration: 1.2 }}
         >
           Discover cultures, save memories, and explore the world — one photo at a time.
         </MotionText>
-
       </Flex>
     </MotionBox>
   );
+
 };
 
 export default SplashScreen;
