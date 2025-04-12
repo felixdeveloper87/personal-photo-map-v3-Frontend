@@ -47,7 +47,7 @@ const SplashScreen = ({ onFinish }) => {
           src={logo}
           alt="Photomap Logo"
           boxSize={["60px", "80px", "100px"]}
-          mb={3}
+          mb={1}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -62,7 +62,7 @@ const SplashScreen = ({ onFinish }) => {
           bgPosition="center"
           bgRepeat="no-repeat"
           position="relative"
-          borderRadius="3x1"
+          borderRadius="3xl"
           overflow="hidden"
           mb={6}
           bgColor="black"
@@ -100,7 +100,7 @@ const SplashScreen = ({ onFinish }) => {
           fontSize={["md", "lg", "xl"]} // 👈 mais visível
           color="gray.300"
           maxW="90%"
-          mt={2} // 👈 margem superior depois do mapa
+          mt={1} // 👈 margem superior depois do mapa
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.6, duration: 1.2 }} // 👈 aparece depois e mais suave

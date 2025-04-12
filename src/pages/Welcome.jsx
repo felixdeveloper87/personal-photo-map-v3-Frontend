@@ -37,7 +37,7 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
-        mt={[20, 24, 32]}
+        mt={[10, 12, 16]}
         py={[10, 16, 24]} // padding vertical responsivo
         px={[4, 6, 8]}
       >
