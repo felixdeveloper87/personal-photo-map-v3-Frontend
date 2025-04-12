@@ -65,7 +65,7 @@ const SplashScreen = ({ onFinish }) => {
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
         >
           Welcome to Photomap
         </MotionText>
