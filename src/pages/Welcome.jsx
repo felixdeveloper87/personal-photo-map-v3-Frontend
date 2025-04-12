@@ -19,7 +19,7 @@ const Welcome = () => {
       position="relative"
       px={6}
     >
-      {/* Overlay escuro */}
+      {/* Overlay escuro
       <Box
         position="absolute"
         top={0}
@@ -28,7 +28,7 @@ const Welcome = () => {
         h="100%"
         bg="blackAlpha.700"
         zIndex={0}
-      />
+      /> */}
 
       {/* Conteúdo principal */}
       <Box
