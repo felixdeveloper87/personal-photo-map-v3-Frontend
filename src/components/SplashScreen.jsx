@@ -62,7 +62,6 @@ const SplashScreen = ({ onFinish }) => {
           bgPosition="center"
           bgRepeat="no-repeat"
           position="relative"
-          boxShadow="lg"
           borderRadius="lg"
           overflow="hidden"
           mb={6}
