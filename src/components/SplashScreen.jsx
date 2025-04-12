@@ -56,13 +56,13 @@ const SplashScreen = ({ onFinish }) => {
         {/* MAPA COM OVERLAY + TEXTO */}
         <MotionBox
           w={["90%", "80%", "60%"]}
-          h={["250px", "300px", "400px"]}
+          h={["250px", "400px", "800px"]}
           bgImage={`url(${bgImage})`}
           bgSize="contain"
           bgPosition="center"
           bgRepeat="no-repeat"
           position="relative"
-          borderRadius="2x1"
+          borderRadius="3x1"
           overflow="hidden"
           mb={6}
           bgColor="black"
@@ -79,9 +79,13 @@ const SplashScreen = ({ onFinish }) => {
             zIndex={2}
           >
             <MotionText
-              fontSize={["xl", "2xl", "3xl"]}
-              fontWeight="bold"
+              fontSize={["2xl", "3xl", "5xl"]} // ← fonte maior
+              fontWeight="extrabold"
               color="white"
+              sx={{
+                WebkitTextStroke: "1px black", // ← borda preta fina
+                textStroke: "1px black",       // ← fallback pra outros browsers
+              }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 0.6 }}
