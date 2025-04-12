@@ -13,12 +13,11 @@ const Welcome = () => {
       justify="flex-start"
       align="center"
       bgImage={`url(${bgImage})`}
-      bgSize={["200%", "150%", "contain"]}
+      bgSize={["100%", "150%", "contain"]}
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
-      px={[4, 6, 8]}
-      pt={[10, 12, 16]} 
+      px={6}
     >
       {/* Overlay escuro
       <Box
@@ -38,8 +37,9 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
-        py={[6, 10, 12]}
-        px={[2, 4, 6]}
+        mt={[20, 24, 8]}
+        py={[10, 16, 24]} // padding vertical responsivo
+        px={[4, 6, 8]}
       >
         <Heading fontSize={["2xl", "3xl", "4xl"]} mb={4}>
           Welcome to Photomap 🌍
