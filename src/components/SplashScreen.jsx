@@ -1,13 +1,13 @@
-import { Box, Flex, Image, Text, keyframes } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import logo from "../assets/logo.png";
 import bgImage from "../assets/background.jpg";
 
-// Animações simples
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
+// Componentes animados com motion
+const MotionBox = motion(Box);
+const MotionImage = motion(Image);
+const MotionText = motion(Text);
 
 const SplashScreen = ({ onFinish }) => {
   const [fadeOut, setFadeOut] = useState(false);
@@ -22,7 +22,7 @@ const SplashScreen = ({ onFinish }) => {
   }, [onFinish]);
 
   return (
-    <Box
+    <MotionBox
       position="fixed"
       top={0}
       left={0}
@@ -30,8 +30,9 @@ const SplashScreen = ({ onFinish }) => {
       h="100vh"
       bg="black"
       zIndex={9999}
-      opacity={fadeOut ? 0 : 1}
-      transition="opacity 1s ease"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: fadeOut ? 0 : 1 }}
+      transition={{ duration: 1 }}
     >
       <Flex
         direction="column"
@@ -41,17 +42,19 @@ const SplashScreen = ({ onFinish }) => {
         px={4}
         textAlign="center"
       >
-        {/* LOGO */}
-        <Image
+        {/* LOGO animado */}
+        <MotionImage
           src={logo}
           alt="Photomap Logo"
           boxSize={["60px", "80px", "100px"]}
           mb={6}
-          animation={`${fadeIn} 1s ease-in`}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         />
 
-        {/* MAPA COM OVERLAY */}
-        <Box
+        {/* MAPA COM OVERLAY + TEXTO */}
+        <MotionBox
           w={["90%", "80%", "60%"]}
           h={["250px", "300px", "400px"]}
           bgImage={`url(${bgImage})`}
@@ -63,6 +66,10 @@ const SplashScreen = ({ onFinish }) => {
           borderRadius="lg"
           overflow="hidden"
           mb={6}
+          bgColor="black"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
         >
           {/* Overlay escuro */}
           <Box
@@ -75,7 +82,7 @@ const SplashScreen = ({ onFinish }) => {
             zIndex={1}
           />
 
-          {/* Texto sobre o mapa */}
+          {/* Texto central */}
           <Flex
             align="center"
             justify="center"
@@ -83,28 +90,32 @@ const SplashScreen = ({ onFinish }) => {
             position="relative"
             zIndex={2}
           >
-            <Text
+            <MotionText
               fontSize={["xl", "2xl", "3xl"]}
               fontWeight="bold"
               color="white"
-              animation={`${fadeIn} 1.5s ease-in`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 0.6 }}
             >
               Welcome to Photomap
-            </Text>
+            </MotionText>
           </Flex>
-        </Box>
+        </MotionBox>
 
-        {/* SUBTÍTULO OPCIONAL */}
-        <Text
+        {/* SUBTÍTULO */}
+        <MotionText
           fontSize={["sm", "md"]}
           color="gray.400"
           maxW="80%"
-          animation={`${fadeIn} 2s ease-in`}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
         >
           Discover cultures, save memories, and explore the world — one photo at a time.
-        </Text>
+        </MotionText>
       </Flex>
-    </Box>
+    </MotionBox>
   );
 };
 
