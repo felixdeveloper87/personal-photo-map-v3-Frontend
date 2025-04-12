@@ -47,7 +47,7 @@ const SplashScreen = ({ onFinish }) => {
           src={logo}
           alt="Photomap Logo"
           boxSize={["60px", "80px", "100px"]}
-          mb={6}
+          mb={3}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -97,15 +97,17 @@ const SplashScreen = ({ onFinish }) => {
 
         {/* SUBTÍTULO */}
         <MotionText
-          fontSize={["sm", "md"]}
-          color="gray.400"
-          maxW="80%"
+          fontSize={["md", "lg", "xl"]} // 👈 mais visível
+          color="gray.300"
+          maxW="90%"
+          mt={2} // 👈 margem superior depois do mapa
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.6 }}
+          transition={{ delay: 1.6, duration: 1.2 }} // 👈 aparece depois e mais suave
         >
           Discover cultures, save memories, and explore the world — one photo at a time.
         </MotionText>
+
       </Flex>
     </MotionBox>
   );
