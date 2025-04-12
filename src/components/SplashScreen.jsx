@@ -71,7 +71,7 @@ const SplashScreen = ({ onFinish }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          {/* Overlay escuro */}
+          {/* Overlay escuro
           <Box
             position="absolute"
             top={0}
@@ -80,7 +80,7 @@ const SplashScreen = ({ onFinish }) => {
             h="100%"
             bg="blackAlpha.700"
             zIndex={1}
-          />
+          /> */}
 
           {/* Texto central */}
           <Flex
