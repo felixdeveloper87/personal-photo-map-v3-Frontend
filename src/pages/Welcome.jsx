@@ -13,7 +13,7 @@ const Welcome = () => {
       justify="flex-start"
       align="center"
       bgImage={`url(${bgImage})`}
-      bgSize={["100%", "150%", "contain"]}
+      bgSize={["150%", "150%", "contain"]}
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
