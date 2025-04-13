@@ -14,8 +14,7 @@ const Welcome = () => {
       align="center"
       bgImage={`url(${bgImage})`}
       // bgSize={["150%", "150%", "contain"]}
-      // bgSize={["cover", "cover", "contain"]}
-      bgSize="contain"
+      bgSize={["cover", "cover", "contain"]}
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
@@ -54,7 +53,7 @@ const Welcome = () => {
         <Text
           fontSize={["md", "lg", "xl"]}
           mb={6}
-          textShadow="0 4px 2px black"
+          textShadow="0 2px 4px black"
         >
           Explore new ideas, cultures and history around the world. Get real-time information about countries, register your memories and explore our beautiful planet.
         </Text>
