@@ -13,7 +13,8 @@ const Welcome = () => {
       justify="flex-start"
       align="center"
       bgImage={`url(${bgImage})`}
-      bgSize={["150%", "150%", "contain"]}
+      // bgSize={["150%", "150%", "contain"]}
+      bgSize={["cover", "cover", "contain"]}
       bgPosition="center"
       bgRepeat="no-repeat"
       position="relative"
@@ -39,7 +40,7 @@ const Welcome = () => {
         position="relative"
         zIndex={1}
         color="white"
-        py={[6, 10, 12]}
+        py={[2, 4, 8]}
         px={[2, 4, 6]}
       >
         <Heading
