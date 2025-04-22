@@ -35,18 +35,8 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Backend base URL (docker-compose or local)
-  // const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8092';
-
   // React Router hook for navigation after a successful registration
   const navigate = useNavigate();
-
-  // /**
-  //  * Logs the backend URL for debugging.
-  //  */
-  // useEffect(() => {
-  //   console.log('Backend URL:', backendUrl);
-  // }, [backendUrl]);
 
   /**
    * Fetches country data from RestCountries, placing "United Kingdom" at the top,
