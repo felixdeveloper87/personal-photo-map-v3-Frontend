@@ -181,7 +181,7 @@ const Map = () => {
   ];
 
   return (
-    <Box mt="-20px" bg="white">
+    <Box mt="-20px">
       <MapContainer
         center={[20, 0]}
         zoom={2.6}
@@ -190,7 +190,7 @@ const Map = () => {
         maxBounds={bounds}
         maxBoundsViscosity={1.0}
         worldCopyJump={false}
-        style={{ height: '1000px', width: '100%' }}
+        style={{ height: '1000px', width: '100%', backgroundColor: 'white' }}
       >
         {/* Rectangle for the ocean background fill */}
         <Rectangle
