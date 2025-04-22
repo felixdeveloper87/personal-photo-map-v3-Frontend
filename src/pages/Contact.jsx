@@ -1,17 +1,34 @@
-import { Box, Container, Heading, Text, VStack, HStack, Link, Icon, Divider } from "@chakra-ui/react";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaTwitter, FaFacebook, FaLinkedin } from "react-icons/fa";
+import { 
+  Box, Container, Heading, Text, VStack, HStack, Link, Icon, Divider, Avatar 
+} from "@chakra-ui/react";
+import { 
+  FaEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaTwitter, FaFacebook, FaLinkedin 
+} from "react-icons/fa";
+import leandroPhoto from "../assets/leandro.jpg"; // 🖼️ Sua foto
 
 const Contact = () => {
   return (
     <Container maxW="container.md" py={10}>
-      <VStack spacing={6} align="center">
-        <Heading as="h1" size="xl">
+      <VStack spacing={8} align="center">
+        <Heading as="h1" size="xl" textAlign="center">
           📍 Contact Us
         </Heading>
-        <Text fontSize="lg" textAlign="center">
+        <Text fontSize="lg" textAlign="center" maxW="lg">
           We'd love to hear from you! Whether you have questions, feedback, or need support, feel free to reach out.
         </Text>
 
+        {/* Perfil do responsável */}
+        <Box textAlign="center" mt={4}>
+          <Avatar src={leandroPhoto} size="2xl" name="Leandro Félix" mb={3} />
+          <Heading as="h2" size="md">Leandro Félix</Heading>
+          <Text fontSize="sm" color="gray.600">
+            Developer & Project Lead – Photomap Application
+          </Text>
+        </Box>
+
+        <Divider />
+
+        {/* Suporte ao cliente */}
         <Box textAlign="center">
           <Heading as="h2" size="md">📞 Customer Support</Heading>
           <Text>
@@ -22,11 +39,12 @@ const Contact = () => {
             <Icon as={FaPhone} mr={2} />
             +44 20 1234 5678
           </Text>
-          <Text fontSize="sm">Live Chat available from 9 AM - 6 PM (GMT)</Text>
+          <Text fontSize="sm" color="gray.600">Live Chat: 9 AM - 6 PM (GMT)</Text>
         </Box>
 
         <Divider />
 
+        {/* Endereço da empresa */}
         <Box textAlign="center">
           <Heading as="h2" size="md">🏢 Company Information</Heading>
           <Text>Photomap Ltd.</Text>
@@ -34,11 +52,12 @@ const Contact = () => {
             <Icon as={FaMapMarkerAlt} mr={2} />
             123 Tech Street, London, UK, W1A 1AA
           </Text>
-          <Text fontSize="sm">Business Hours: Monday - Friday, 9 AM - 5 PM (GMT)</Text>
+          <Text fontSize="sm" color="gray.600">Business Hours: Mon - Fri, 9 AM - 5 PM (GMT)</Text>
         </Box>
 
         <Divider />
 
+        {/* Redes sociais */}
         <Box textAlign="center">
           <Heading as="h2" size="md">🌍 Follow Us</Heading>
           <HStack spacing={5} mt={2}>
@@ -59,22 +78,23 @@ const Contact = () => {
 
         <Divider />
 
+        {/* Feedback */}
         <Box textAlign="center">
           <Heading as="h2" size="md">📩 Feedback & Suggestions</Heading>
           <Text>
-            Have an idea to improve Photomap? Submit your suggestions at 
+            Have an idea to improve Photomap? Email us at 
             <Link href="mailto:feedback@photomap.com" color="blue.500" ml={1}>feedback@photomap.com</Link>.
           </Text>
         </Box>
 
         <Divider />
 
+        {/* Suporte técnico */}
         <Box textAlign="center">
           <Heading as="h2" size="md">🛠 Technical Support</Heading>
           <Text>
-            If you encounter technical issues, visit our{" "}
-            <Link href="/404" isExternal color="blue.500">Help Center</Link> 
-            {" "}or check our FAQ before reaching out.
+            Experiencing technical issues? Visit our{" "}
+            <Link href="/404" isExternal color="blue.500">Help Center</Link> or check the FAQ section before reaching out.
           </Text>
         </Box>
       </VStack>
