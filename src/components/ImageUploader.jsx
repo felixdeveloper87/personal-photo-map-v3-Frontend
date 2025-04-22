@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Box, Button, Input, Heading, Flex, Select } from '@chakra-ui/react';
+import { Box, Button, Input, Heading, Flex, Select, useToast } from '@chakra-ui/react';
 
 /**
  * ImageUploader Component
@@ -18,6 +18,7 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
   const [isUploading, setIsUploading] = useState(false); // Tracks the upload status
   const [files, setFiles] = useState([]); // Stores selected files for upload
   const fileInputRef = useRef(null); // Reference to the file input field
+  const toast = useToast();
 
   // Generate an array of years from 1900 to the current year for selection
   const years = Array.from({ length: currentYear - 1899 }, (_, i) => 1900 + i);
@@ -49,7 +50,12 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
    */
   const handleImageUpload = async () => {
     if (files.length === 0) {
-      alert('No file selected.');
+      toast({
+        title: "No file selected.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     }
 
@@ -74,9 +80,15 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
       }
 
       const data = await response.json();
-      const uploadedImageUrls = data.imageUrls; // Assuming backend returns image URLs
+      const uploadedImageUrls = data.imageUrls;
 
-      alert('Image(s) uploaded successfully!');
+      toast({
+        title: "Success!",
+        description: "Image(s) uploaded successfully!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
 
       // Invoke callbacks if provided
       if (onUpload) {
@@ -91,7 +103,13 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
       if (fileInputRef.current) fileInputRef.current.value = null;
     } catch (error) {
       console.error('Upload error:', error);
-      alert(`Upload error: ${error.message}`);
+      toast({
+        title: "Upload error",
+        description: error.message,
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     } finally {
       setIsUploading(false);
     }
