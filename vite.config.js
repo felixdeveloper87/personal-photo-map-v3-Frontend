@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'logo.png', 'robots.txt'],
+        includeAssets: ['favicon.ico', 'robots.txt', 'logo.png'],
         manifest: {
           name: 'Photomap',
           short_name: 'Photomap',
@@ -21,25 +21,23 @@ export default defineConfig(({ mode }) => {
           start_url: '/',
           icons: [
             {
-              src: '/pwa-192x192.png',
+              src: 'pwa-192x192.png',
               sizes: '192x192',
               type: 'image/png'
             },
             {
-              src: '/pwa-512x512.png',
+              src: 'pwa-512x512.png',
               sizes: '512x512',
               type: 'image/png'
             }
           ]
+        },
+        workbox: {
+          maximumFileSizeToCacheInBytes: 30 * 1024 * 1024 // ⬅️ Corrige o erro
         }
       })
     ],
     base: '/',
-    define: {
-      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(
-        env.VITE_BACKEND_URL || 'https://personal-photomap-backend.onrender.com'
-      ),
-    },
     server: {
       port: env.VITE_PORT || 5173,
       host: true,
