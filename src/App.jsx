@@ -15,7 +15,6 @@ import AdminPage from './pages/AdminPage';
 import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
 import { CountriesProvider } from './context/CountriesContext';
-import SplashScreen from './components/SplashScreen';
 import './styles/leaflet.css';
 
 
@@ -33,14 +32,9 @@ import './styles/leaflet.css';
  */
 function App() {
 
-  const [showSplash, setShowSplash] = useState(true);
-
   return (
     <AuthProvider>
       <CountriesProvider>
-        {showSplash ? (
-          <SplashScreen onFinish={() => setShowSplash(false)} />
-        ) : (
           <Flex direction="column" minH="100vh">
             <Box as="header">
               <Header />

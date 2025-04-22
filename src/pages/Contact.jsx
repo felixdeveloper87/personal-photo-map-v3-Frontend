@@ -20,7 +20,7 @@ const Contact = () => {
         {/* Perfil do responsável */}
         <Box textAlign="center" mt={4}>
           <Avatar src={leandroPhoto} size="2xl" name="Leandro Félix" mb={3} />
-          <Heading as="h2" size="md">Leandro Félix</Heading>
+          <Heading as="h2" size="md">Leandro Felix</Heading>
           <Text fontSize="sm" color="gray.600">
             Developer & Project Lead – Photomap Application
           </Text>
