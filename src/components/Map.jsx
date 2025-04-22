@@ -181,7 +181,7 @@ const Map = () => {
   ];
 
   return (
-    <Box mt="-20px">
+    <Box mt="-20px" bg="white">
       <MapContainer
         center={[20, 0]}
         zoom={2.6}
