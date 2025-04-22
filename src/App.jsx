@@ -58,7 +58,6 @@ function App() {
               <Footer />
             </Box>
           </Flex>
-        )}
       </CountriesProvider>
     </AuthProvider>
   );
