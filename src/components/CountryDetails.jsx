@@ -172,20 +172,18 @@ const CountryDetails = () => {
       minH="50vh"
       p={5}
       bgGradient="linear(to-r, #006d77, #83c5be)"
-
     >
-
-      <IconButton
-        aria-label="Go back"
-        icon={<ArrowBackIcon />}
-        onClick={() => navigate('/')} // ou navigate(-1) se preferir voltar 1 página
-        variant="outline"
-        colorScheme="teal"
-        mb={4}
-      />
-
       {/* Semi-transparent overlay to improve text readability */}
       <Box bg="whiteAlpha.800" p={6} borderRadius="md">
+        <IconButton
+          aria-label="Go back"
+          icon={<ArrowBackIcon />}
+          onClick={() => navigate('/')} // ou navigate(-1) se preferir voltar 1 página
+          variant="outline"
+          colorScheme="teal"
+          mb={4}
+        />
+
         <Heading as="h1" mb={4} textAlign="center">
           Photos in {countries.getName(countryId.toUpperCase(), 'en') || countryId.toUpperCase()}
         </Heading>
