@@ -140,7 +140,9 @@ function Header() {
           cursor="pointer"
           onClick={() => navigate("/")}
           flex="1"
-          _hover={{ transform: "scale(1.05)", transition: "0.2s ease-in-out" }}
+          transition="transform 3s ease-in-out"
+          _hover={{ transform: "scale(1.10)" }} 
+
         >
           <Image
             src={logo}

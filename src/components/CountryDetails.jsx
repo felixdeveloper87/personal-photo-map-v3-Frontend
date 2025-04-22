@@ -4,9 +4,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Flag from 'react-world-flags';
 import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
-import { Box, Flex, Heading, Text, Link } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Link, IconButton } from '@chakra-ui/react';
 import PhotoManager from '../components/PhotoManager';
 import moment from 'moment-timezone';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 /**
  * Registers the English locale so that i18n-iso-countries can
@@ -173,6 +174,16 @@ const CountryDetails = () => {
       bgGradient="linear(to-r, #006d77, #83c5be)"
 
     >
+
+      <IconButton
+        aria-label="Go back"
+        icon={<ArrowBackIcon />}
+        onClick={() => navigate('/')} // ou navigate(-1) se preferir voltar 1 página
+        variant="outline"
+        colorScheme="teal"
+        mb={4}
+      />
+
       {/* Semi-transparent overlay to improve text readability */}
       <Box bg="whiteAlpha.800" p={6} borderRadius="md">
         <Heading as="h1" mb={4} textAlign="center">
