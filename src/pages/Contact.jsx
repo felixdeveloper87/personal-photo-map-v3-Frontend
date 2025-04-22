@@ -4,7 +4,7 @@ import {
 import { 
   FaEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaTwitter, FaFacebook, FaLinkedin 
 } from "react-icons/fa";
-import leandroPhoto from "../assets/leandro.jpg"; // 🖼️ Sua foto
+import leandroPhoto from "../assets/leandro.jpg"; 
 
 const Contact = () => {
   return (
@@ -30,7 +30,7 @@ const Contact = () => {
 
         {/* Suporte ao cliente */}
         <Box textAlign="center">
-          <Heading as="h2" size="md">📞 Customer Support</Heading>
+          <Heading as="h2" size="md">📞 Customer Supporttt</Heading>
           <Text>
             <Icon as={FaEnvelope} mr={2} />
             <Link href="mailto:support@photomap.com" color="blue.500">support@photomap.com</Link>
