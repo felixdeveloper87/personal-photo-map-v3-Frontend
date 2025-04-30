@@ -45,7 +45,7 @@ const Register = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        // 1. Tenta RestCountries (v3.1)
+        // 1. Try RestCountries (v3.1)
         const response = await fetch('https://restcountries.com/v3.1/all');
         if (!response.ok) throw new Error('RestCountries API failed');
         const data = await response.json();

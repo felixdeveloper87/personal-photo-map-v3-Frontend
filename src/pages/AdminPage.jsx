@@ -32,13 +32,13 @@ const AdminPage = () => {
           localStorage.setItem('email', email);
           setToken(data.token);
         } else {
-          setError('Você não tem permissão de administrador.');
+          setError('You do not have administrator permission.');
         }
       } else {
-        setError('Credenciais inválidas.');
+        setError('Invalid credentials.');
       }
     } catch (err) {
-      setError('Erro ao conectar ao servidor.');
+      setError('Error connecting to the server.');
     } finally {
       setLoading(false);
     }
@@ -53,15 +53,15 @@ const AdminPage = () => {
         const data = await response.json();
         setUsers(data);
       } else {
-        setError('Erro ao buscar usuários.');
+        setError('Failed to fetch users.');
       }
     } catch (err) {
-      setError('Erro ao conectar ao servidor.');
+      setError('Error connecting to the server.');
     }
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm('Tem certeza que deseja deletar este usuário?');
+    const confirm = window.confirm('Are you sure you want to delete this user?');
     if (!confirm) return;
     try {
       const response = await fetch(`${backendUrl}/api/admin/users/${id}`, {
@@ -71,10 +71,10 @@ const AdminPage = () => {
       if (response.ok) {
         setUsers(users.filter((user) => user.id !== id));
       } else {
-        alert('Erro ao deletar o usuário.');
+        alert('Failed to delete user.');
       }
     } catch (err) {
-      alert('Erro de conexão com o servidor.');
+      alert('Connection error.');
     }
   };
 
@@ -92,7 +92,7 @@ const AdminPage = () => {
         </Heading>
         <form onSubmit={handleLogin}>
           <FormControl mb={4}>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>Email address</FormLabel>
             <Input
               type="email"
               placeholder="admin@personalphotomap.co.uk"
@@ -105,18 +105,18 @@ const AdminPage = () => {
             <FormLabel>Password</FormLabel>
             <Input
               type="password"
-              placeholder="Senha"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               isRequired
             />
           </FormControl>
-          <Button type="submit" colorScheme="teal" width="100%" isLoading={loading}>
+          <Button type="submit" colourScheme="teal" width="100%" isLoading={loading}>
             Login
           </Button>
         </form>
         {error && (
-          <Text color="red.500" mt={4} fontWeight="semibold">
+          <Text colour="red.500" mt={4} fontWeight="semibold">
             {error}
           </Text>
         )}
@@ -126,8 +126,8 @@ const AdminPage = () => {
 
   return (
     <Box maxW="6xl" mx="auto" mt={10} p={5} boxShadow="md" bg="white" borderRadius="md">
-      <Heading mb={6} textAlign="center" color="teal.700">
-        Painel de Administração
+      <Heading mb={6} textAlign="center" colour="teal.700">
+        Administration Panel
       </Heading>
       {loading ? (
         <Spinner size="xl" />
@@ -135,11 +135,11 @@ const AdminPage = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>Nome</Th>
+              <Th>Name</Th>
               <Th>Email</Th>
-              <Th>País</Th>
-              <Th>Fotos</Th>
-              <Th>Ação</Th>
+              <Th>Country</Th>
+              <Th>Photos</Th>
+              <Th>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -151,11 +151,11 @@ const AdminPage = () => {
                 <Td>{user.photoCount}</Td>
                 <Td>
                   <Button
-                    colorScheme="red"
+                    colourScheme="red"
                     size="sm"
                     onClick={() => handleDelete(user.id)}
                   >
-                    Deletar
+                    Delete
                   </Button>
                 </Td>
               </Tr>
