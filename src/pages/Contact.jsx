@@ -17,7 +17,7 @@ const Contact = () => {
           We'd love to hear from you! Whether you have questions, feedback, or need support, feel free to reach out.
         </Text>
 
-        {/* Perfil do responsável */}
+        {/* Profile of the project lead */}
         <Box textAlign="center" mt={4}>
           <Avatar src={leandroPhoto} size="2xl" name="Leandro Félix" mb={3} />
           <Heading as="h2" size="md">Leandro Felix</Heading>
@@ -28,9 +28,9 @@ const Contact = () => {
 
         <Divider />
 
-        {/* Suporte ao cliente */}
+        {/* Customer support section */}
         <Box textAlign="center">
-          <Heading as="h2" size="md">📞 Customer Supporttt</Heading>
+          <Heading as="h2" size="md">📞 Customer Support</Heading>
           <Text>
             <Icon as={FaEnvelope} mr={2} />
             <Link href="mailto:support@photomap.com" color="blue.500">support@photomap.com</Link>
@@ -44,7 +44,7 @@ const Contact = () => {
 
         <Divider />
 
-        {/* Endereço da empresa */}
+        {/* Company address and info */}
         <Box textAlign="center">
           <Heading as="h2" size="md">🏢 Company Information</Heading>
           <Text>Photomap Ltd.</Text>
@@ -57,7 +57,7 @@ const Contact = () => {
 
         <Divider />
 
-        {/* Redes sociais */}
+        {/* Social media links */}
         <Box textAlign="center">
           <Heading as="h2" size="md">🌍 Follow Us</Heading>
           <HStack spacing={5} mt={2}>
@@ -78,7 +78,7 @@ const Contact = () => {
 
         <Divider />
 
-        {/* Feedback */}
+        {/* Feedback section */}
         <Box textAlign="center">
           <Heading as="h2" size="md">📩 Feedback & Suggestions</Heading>
           <Text>
@@ -89,12 +89,12 @@ const Contact = () => {
 
         <Divider />
 
-        {/* Suporte técnico */}
+        {/* Technical support section */}
         <Box textAlign="center">
           <Heading as="h2" size="md">🛠 Technical Support</Heading>
           <Text>
             Experiencing technical issues? Visit our{" "}
-            <Link href="/404" isExternal color="blue.500">Help Center</Link> or check the FAQ section before reaching out.
+            <Link href="/404" isExternal color="blue.500">Help Centre</Link> or check the FAQ section before reaching out.
           </Text>
         </Box>
       </VStack>
