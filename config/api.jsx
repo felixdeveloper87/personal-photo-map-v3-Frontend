@@ -1,10 +1,10 @@
-import axios from 'axios';
+// import axios from 'axios';
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL, // Use import.meta.env para variáveis do Vite
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_BACKEND_URL, // Use import.meta.env para variáveis do Vite
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
 
-export default api; // Exporta a instância pronta
+// export default api; // Exporta a instância pronta

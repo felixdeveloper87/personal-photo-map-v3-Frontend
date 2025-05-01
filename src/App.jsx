@@ -15,7 +15,7 @@ import AdminPage from './pages/AdminPage';
 import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
 import { CountriesProvider } from './context/CountriesContext';
-import './styles/leaflet.css';
+import './styles/leaflet.css'; 
 
 
 /**

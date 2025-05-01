@@ -1,11 +1,14 @@
-.country-tooltip {
-    background-color: white;
-    color: #2D3748; /* Chakra gray.700 */
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 14px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-    font-family: 'Inter', sans-serif;
+
+/* This custom tooltip was necessary to display the country name on hover,
+   as Leaflet.js does not integrate seamlessly with Chakra UI components. */
+   .country-tooltip { 
+    background-color: white; /* Tooltip background for clear visibility */
+    color: #2D3748; /* Text colour: equivalent to Chakra's gray.700 */
+    padding: 4px 8px; /* Inner spacing for better readability */
+    border-radius: 6px; /* Rounded corners for a smoother appearance */
+    font-weight: 600; /* Bold text for emphasis */
+    font-size: 14px; /* Optimised font size for tooltips */
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth effect */
+    font-family: 'Inter', sans-serif; /* Modern sans-serif typeface */
   }
   
