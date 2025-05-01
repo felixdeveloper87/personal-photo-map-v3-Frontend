@@ -1,3 +1,12 @@
+/**
+ * SearchForm Component
+ *
+ * Opens a modal to allow the user to pick a country or year, then either:
+ * - Navigates to /countries/[countryId]?year=[year], or
+ * - Navigates to /timeline/[year], if only a year is selected.
+ *
+ */
+
 import React, { useState, useContext } from 'react';
 import {
   Button,
@@ -14,16 +23,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { CountriesContext } from '../context/CountriesContext';
 
-/**
- * SearchForm Component
- *
- * Opens a modal to allow the user to pick a country or year, then either:
- * - Navigates to /countries/[countryId]?year=[year], or
- * - Navigates to /timeline/[year], if only a year is selected.
- *
- * @param {function} onSearch - A callback function triggered when a country is selected (extra logic if needed).
- * @returns {JSX.Element}
- */
+
 export default function SearchForm({ onSearch }) {
   // Chakra UI modal controls
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -1,12 +1,3 @@
-
-
-
-import React, { createContext, useState, useEffect } from 'react';
-import countries from 'i18n-iso-countries';
-
-// Create and export the context to provide global state access for countries-related data
-export const CountriesContext = createContext();
-
 /**
  * CountriesProvider Component
  * This component acts as a context provider for countries-related data, including:
@@ -15,6 +6,14 @@ export const CountriesContext = createContext();
  * - Photo and country counts
  * It wraps child components and exposes the above data through the context API.
  */
+
+import React, { createContext, useState, useEffect } from 'react';
+import countries from 'i18n-iso-countries';
+
+// Create and export the context to provide global state access for countries-related data
+export const CountriesContext = createContext();
+
+
 export const CountriesProvider = ({ children }) => {
     // State for storing countries that have associated photos
     const [countriesWithPhotos, setCountriesWithPhotos] = useState([]);

@@ -1,3 +1,11 @@
+/**
+ * AdminPage.jsx
+ *
+ * Admin-only panel that allows managing users of the Photomap app.
+ * Includes secure login, user listing, and delete functionality.
+ */
+
+
 import React, { useEffect, useState } from 'react';
 import {
   Box, Heading, Table, Thead, Tbody, Tr, Th, Td,

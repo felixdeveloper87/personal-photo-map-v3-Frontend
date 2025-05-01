@@ -1,12 +1,3 @@
-import React, { createContext, useState } from 'react';
-
-/**
- * AuthContext
- * This context is used to manage and provide authentication information throughout the application.
- * Exporting it allows any consumer to use AuthContext in other components.
- */
-export const AuthContext = createContext();
-
 /**
  * AuthProvider Component
  * This component acts as a wrapper that holds authentication-related state and methods.
@@ -19,10 +10,18 @@ export const AuthContext = createContext();
  * 
  * The context's state is kept in sync with localStorage to persist data across browser sessions.
  * 
- * @param {object} props - The properties for this component.
- * @param {JSX.Element} props.children - The child components that will consume the authentication data.
- * @returns {JSX.Element} A context provider that supplies authentication state and methods.
  */
+
+import React, { createContext, useState } from 'react';
+
+/**
+ * AuthContext
+ * This context is used to manage and provide authentication information throughout the application.
+ * Exporting it allows any consumer to use AuthContext in other components.
+ */
+export const AuthContext = createContext();
+
+
 export const AuthProvider = ({ children }) => {
   /**
    * Determines if a user is logged in by checking the presence of a "token" in localStorage.
@@ -54,11 +53,6 @@ export const AuthProvider = ({ children }) => {
    * in localStorage and in the component state. It also triggers a 'storage' event to notify
    * any other listeners (e.g., other browser tabs) of changes in localStorage.
    *
-   * @param {object} data - An object containing user information.
-   * @param {string} data.token - The authentication token for the user.
-   * @param {string} data.fullname - The user's full name.
-   * @param {string} data.email - The user's email address.
-   * @param {boolean|string} data.premium - Indicates whether the user is a premium member.
    */
   const login = (data) => {
     console.log("Data received in login function:", data);

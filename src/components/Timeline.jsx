@@ -1,3 +1,12 @@
+/**
+ * Timeline.jsx
+ *
+ * Displays all user-uploaded photos grouped by year, forming a chronological timeline.
+ * Uses React Query to fetch images, supports lazy loading with Suspense, and allows 
+ * expanding/collapsing years. Requires user authentication.
+ */
+
+
 import React, { useContext, lazy, Suspense, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,8 +26,6 @@ const LazyPhotoGallery = lazy(() => import('./PhotoGallery'));
 /**
  * Fetches photos from your backend, optionally filtering by year.
  * This function is called by the React Query hook below.
- * @param {string|number} year - The chosen year for filtering (if any).
- * @returns {Array} An array of photo objects.
  */
 const fetchAllPictures = async (year) => {
   let url = `${import.meta.env.VITE_BACKEND_URL}/api/images/allPictures`;
@@ -59,8 +66,6 @@ const fetchAllPictures = async (year) => {
  * (optionally filtered by a chosen year) in a chronological
  * grouping. It also allows users to delete selected images.
  *
- * @param {Object} props - The component props
- * @param {number|string} [props.selectedYear] - Year filter for images
  */
 const Timeline = ({ selectedYear }) => {
   /**

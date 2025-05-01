@@ -1,3 +1,11 @@
+/**
+ * About.jsx
+ *
+ * Displays a user's profile information and the list of countries
+ * where they have uploaded photos. Uses Chakra UI for layout and styling.
+ */
+
+
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import countries from 'i18n-iso-countries';

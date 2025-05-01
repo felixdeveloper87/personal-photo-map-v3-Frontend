@@ -1,3 +1,13 @@
+/**
+ * Register Component
+ *
+ * Handles new user registration by:
+ * - Fetching country data from RestCountries
+ * - Providing a form for name, email, password, and country
+ * - Submitting the form data to the backend for registration
+ *
+ */
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -11,16 +21,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 
-/**
- * Register Component
- *
- * Handles new user registration by:
- * - Fetching country data from RestCountries
- * - Providing a form for name, email, password, and country
- * - Submitting the form data to the backend for registration
- *
- * @returns {JSX.Element} A registration form with validation feedback
- */
+
 const Register = () => {
   // Form states
   const [fullname, setFullname] = useState('');
