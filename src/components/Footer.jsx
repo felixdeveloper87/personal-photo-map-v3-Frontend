@@ -1,3 +1,11 @@
+/**
+ * Footer.jsx
+ *
+ * This component renders a responsive footer section at the bottom of the application.
+ * It includes basic navigation links such as "About" and "Contact", and a dynamic
+ * copyright notice. Styled using Chakra UI for consistency across the application.
+ */
+
 import React from 'react';
 import { Box, Flex, Text, Link, HStack } from '@chakra-ui/react';
 
@@ -8,6 +16,7 @@ import { Box, Flex, Text, Link, HStack } from '@chakra-ui/react';
  *
  * @returns {JSX.Element} A responsive footer section.
  */
+
 const Footer = () => {
   return (
     <Box

@@ -1,3 +1,11 @@
+/**
+ * Map.jsx
+ *
+ * Renders a world map with dynamic highlighting for countries,
+ * supporting interactive navigation and visual feedback based on login state.
+ */
+
+
 import React, { useEffect, useContext, useCallback, useState } from 'react';
 import { MapContainer, GeoJSON, Rectangle } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
@@ -7,23 +15,7 @@ import { AuthContext } from '../context/AuthContext';
 import { CountriesContext } from '../context/CountriesContext';
 import { Box } from '@chakra-ui/react';
 
-/**
- * Map Component
- *
- * Renders an interactive world map using react-leaflet. It highlights:
- * 1) Countries that the user (if logged in) has photos for.
- * 2) Random countries for visual effect when the user is not logged in.
- *
- * Main Features:
- * - Restricts map panning using bounding coordinates, preventing infinite scrolling.
- * - Uses a background rectangle to display an "ocean" color fill behind all countries.
- * - Applies a highlight effect for logged out users (randomly chosen countries) and
- *   logged-in users (countries with photos).
- * - On hover, changes the style of a country to visually indicate interactivity.
- * - On click, navigates to that country's detail page if the user interacts with it.
- *
- * @returns {JSX.Element} The rendered map component.
- */
+
 const Map = () => {
   // Navigation hook to route to a country detail page on click
   const navigate = useNavigate();

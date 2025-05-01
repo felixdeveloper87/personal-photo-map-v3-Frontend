@@ -1,13 +1,14 @@
+/**
+ * NotFound Component
+ *
+ * Displays a user-friendly 404 error page when an invalid route is accessed.
+ */
+
+
 import React from 'react';
 import { Box, Heading, Text, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
-/**
- * The NotFound component renders a 404 error page,
- * informing the user that the requested page does not exist.
- *
- * @returns {JSX.Element} A styled "Page Not Found" screen.
- */
 const NotFound = () => {
   return (
     <Box textAlign="center" py={10} px={6}>

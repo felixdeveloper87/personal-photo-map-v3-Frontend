@@ -1,3 +1,14 @@
+/**
+ * PhotoManager Component
+ *
+ * Provides full image management for a selected country:
+ * - Upload, filter, delete images
+ * - Create and manage albums (Premium only)
+ * - Supports year and album filtering
+ * - Uses React Query for backend sync
+ */
+
+
 import React, { useContext, useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
 import PhotoGallery from './PhotoGallery';

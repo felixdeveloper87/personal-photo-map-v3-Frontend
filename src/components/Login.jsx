@@ -1,3 +1,12 @@
+/**
+ * Login.jsx
+ *
+ * This component renders the login interface for users of the Photomap application.
+ * It handles form input, submission of credentials to the backend, and state updates
+ * via the AuthContext. It also includes a modal for initiating password reset requests.
+ */
+
+
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';

@@ -1,3 +1,10 @@
+/**
+ * PhotoGallery Component
+ *
+ * Displays a grid of photos with selection, deletion, zoom, and fullscreen modal features.
+ */
+
+
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
@@ -18,22 +25,6 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
 
-/**
- * PhotoGallery Component
- *
- * Displays a grid of images with the following features:
- * - Selecting and deleting multiple images
- * - Enlarge images in a modal view
- * - Zoom in/out and reset within the modal
- * - Navigate between images using arrows or keyboard events
- *
- * @param {Array}   images               - An array of images to display (each object should contain `url` and `id`)
- * @param {Function} onDeleteSelectedImages - A callback for deleting selected images
- * @param {Array}   selectedImageIds     - An array storing the IDs of selected images
- * @param {Function} setSelectedImageIds - State setter for selected image IDs
- *
- * @returns {JSX.Element} A customizable photo gallery with zoom and deletion functionalities
- */
 
 countries.registerLocale(en);
 const PhotoGallery = ({

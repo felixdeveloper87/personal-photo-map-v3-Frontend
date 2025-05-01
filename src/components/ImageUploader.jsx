@@ -1,3 +1,13 @@
+/**
+ * ImageUploader.jsx
+ *
+ * This component provides a UI for authenticated users to upload one or more images
+ * associated with a specific country and year. It handles file selection, preview state,
+ * and interacts with the backend API to persist image data. Includes error handling
+ * and user feedback via toast notifications.
+ */
+
+
 import React, { useState, useRef } from 'react';
 import { Box, Button, Input, Heading, Flex, Select, useToast } from '@chakra-ui/react';
 

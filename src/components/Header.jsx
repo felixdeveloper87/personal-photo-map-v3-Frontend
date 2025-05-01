@@ -1,3 +1,14 @@
+/**
+ * Header.jsx
+ *
+ * This component renders the main navigation bar of the application,
+ * featuring logo, title, authentication controls, and responsive menus.
+ * It provides access to features like search, timeline, profile, premium upgrade,
+ * and modals showing photo and country statistics.
+ * Styled using Chakra UI for a consistent and adaptive design.
+ */
+
+
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
