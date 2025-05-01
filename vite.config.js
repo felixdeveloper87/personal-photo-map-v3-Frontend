@@ -1,3 +1,8 @@
+/**
+ * Vite Configuration – Defines the build, server, and plugin settings 
+ * for the React-based Photomap frontend application.
+ */
+
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 

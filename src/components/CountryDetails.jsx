@@ -1,4 +1,14 @@
-import React, { useEffect } from 'react';
+/**
+ * CountryDetails.jsx
+ *
+ * This component displays detailed information about a selected country,
+ * including its official language, currency, capital, population, current weather,
+ * and exchange rate. It also integrates the PhotoManager to allow users to manage
+ * images associated with the country. Data is fetched from external APIs and managed
+ * using React Query for caching and performance.
+ */
+
+
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Flag from 'react-world-flags';

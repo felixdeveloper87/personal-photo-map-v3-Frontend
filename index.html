@@ -1,13 +1,37 @@
+<!--
+  index.html – Entry Point for Vite + React Application
+
+  This HTML file serves as the main entry point for the React application when built with Vite.
+  It defines the root DOM element where React mounts the virtual DOM and includes the primary script.
+
+  Key features:
+  - Sets character encoding and responsive viewport
+  - Defines a favicon
+  - Mounts React app at #root div
+  - Loads the React app through main.jsx using ES modules
+-->
+
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Character encoding for proper text rendering -->
     <meta charset="UTF-8" />
+
+    <!-- Application icon (used in browser tab) -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- Ensures responsive design on all devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+
+    <!-- Page title shown in browser tab -->
+    <title>Photomap</title>
   </head>
+
   <body>
+    <!-- Root element where React app will be injected -->
     <div id="root"></div>
+
+    <!-- Entry point script for the application -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -1,84 +1,49 @@
+# This file is not being used for this project as Vercel does not support it.
 
-# Etapa 1: Construção do Frontend
+# This Dockerfile builds and serves a production-ready frontend with Vite and Nginx.
+
+# ──────────────────────────────────────────────
+# Stage 1: Build the React/Vite frontend
+# ──────────────────────────────────────────────
 FROM node:18-alpine AS build
 
+# Set the working directory
 WORKDIR /app
 
-# Copiar os arquivos necessários
+# Copy only the package files to install dependencies (improves cache efficiency)
 COPY package*.json ./
 RUN npm install
 
-# Copiar todo o código do frontend
+# Copy the rest of the project files
 COPY . .
 
-# Definir a URL do backend via argumento (passado no Render)
+# Pass the backend URL as an ARG (e.g. from Render)
 ARG VITE_BACKEND_URL
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
-# Criar o build de produção
+# Optional: Increase memory limit to avoid build errors on large apps
 ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Run the production build
 RUN npm run build
 
-# Etapa 2: Servir com Nginx
+# ──────────────────────────────────────────────
+# Stage 2: Serve static files with Nginx
+# ──────────────────────────────────────────────
 FROM nginx:stable-alpine
 
-# Remover arquivos padrão do Nginx
+# Clean default nginx static content
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copiar o build do React para a pasta do Nginx
+# Copy the built frontend from the previous stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copiar a configuração do Nginx (template)
+# Copy the Nginx template file (with backend substitution)
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
-# Copiar o script de entrada e dar permissão de execução
+# Copy and prepare the entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-# Definir o script de entrada antes de iniciar o Nginx
+# Set the custom entrypoint script (uses envsubst to inject VITE_BACKEND_URL into nginx.conf)
 CMD ["/docker-entrypoint.sh", "nginx", "-g", "daemon off;"]
-
-
-
-
-
-# Etapa 1: Construção do Frontend
-# FROM node:18-alpine AS build
-
-# WORKDIR /app
-
-# # Copiar os arquivos do package.json para instalar dependências
-# COPY package*.json ./
-
-# # Instalar dependências
-# RUN npm install
-
-# # Copiar todo o código do frontend
-# COPY . .
-
-# # Definir VITE_BACKEND_URL durante o build
-# ARG VITE_BACKEND_URL
-# ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
-
-# # Criar o build de produção
-# ENV NODE_OPTIONS="--max-old-space-size=4096"
-# RUN npm run build
-
-# # Etapa 2: Servir com Nginx
-# FROM nginx:stable-alpine
-
-# # Remover os arquivos padrão do Nginx
-# RUN rm -rf /usr/share/nginx/html/*
-
-# # Copiar o build do React para a pasta do Nginx
-# COPY --from=build /app/dist /usr/share/nginx/html
-
-# # Copiar a configuração do Nginx (template)
-# COPY nginx.conf.template /etc/nginx/nginx.conf.template
-
-# # Copiar o script de entrada e dar permissão de execução
-# COPY docker-entrypoint.sh /docker-entrypoint.sh
-# RUN chmod +x /docker-entrypoint.sh
-
-# # Definir o script de entrada antes de iniciar o Nginx
-# CMD ["/docker-entrypoint.sh", "nginx", "-g", "daemon off;"]
