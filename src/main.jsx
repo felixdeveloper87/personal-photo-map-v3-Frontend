@@ -1,12 +1,21 @@
+/**
+ * AppWithQueryClient Component
+ * 
+ * This component wraps the main `App` with the `QueryClientProvider`, enabling
+ * React Query for data fetching and caching.
+ * It also includes the `ReactQueryDevtools` for debugging.
+ * 
+ */
+
 import { StrictMode } from 'react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './styles/leaflet.css';
-import { ChakraProvider } from '@chakra-ui/react'; // Chakra UI for UI styling
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // React Query for data fetching and caching
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'; // Devtools for React Query debugging
+import { ChakraProvider } from '@chakra-ui/react'; 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'; 
 
 
 // Configuring the React Query client with caching and stale time options
@@ -19,15 +28,7 @@ const queryClient = new QueryClient({
   },
 });
 
-/**
- * AppWithQueryClient Component
- * 
- * This component wraps the main `App` with the `QueryClientProvider`, enabling
- * React Query for data fetching and caching.
- * It also includes the `ReactQueryDevtools` for debugging.
- * 
- * @returns {JSX.Element} The application wrapped with React Query functionality.
- */
+
 function AppWithQueryClient() {
   return (
     <QueryClientProvider client={queryClient}>

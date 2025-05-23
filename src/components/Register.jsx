@@ -125,7 +125,7 @@ const Register = () => {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data), // converts the data into JSON
       });
 
       if (response.ok) {
@@ -144,11 +144,11 @@ const Register = () => {
         setCountry('');
       } else {
         const result = await response.json();
-        setError(result.message || 'Registration failed.');
+        setError(result.message || 'Registration failed.'); // return an erro from backend, like email already in use
         setSuccess('');
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError('An error occurred. Please try again.'); // network, cold start backend errors
       setSuccess('');
     }
   };

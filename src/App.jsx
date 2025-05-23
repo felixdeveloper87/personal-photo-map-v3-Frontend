@@ -1,6 +1,18 @@
+/**
+ * App Component
+ * 
+ * This is the root component of the application. It sets up global providers,
+ * the main layout structure (Header, Footer, and Content), and defines the
+ * routing structure using React Router.
+ * 
+ * It also manages a state (`updateCounts`) to trigger updates when an upload
+ * event occurs.
+ * 
+ */
+
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Box, Flex } from '@chakra-ui/react'; // Chakra UI components for layout styling
+import { Box, Flex } from '@chakra-ui/react';
 import Home from './pages/Home';
 import Header from './components/Header';
 import Login from './components/Login';
@@ -17,19 +29,6 @@ import { AuthProvider } from './context/AuthContext';
 import { CountriesProvider } from './context/CountriesContext';
 import './styles/leaflet.css'; 
 
-
-/**
- * App Component
- * 
- * This is the root component of the application. It sets up global providers,
- * the main layout structure (Header, Footer, and Content), and defines the
- * routing structure using React Router.
- * 
- * It also manages a state (`updateCounts`) to trigger updates when an upload
- * event occurs.
- * 
- * @returns {JSX.Element} The main application wrapper.
- */
 function App() {
 
   return (

@@ -1,7 +1,15 @@
+/**
+ * Countries.jsx
+ *
+ * Renders the CountryDetails component based on the dynamic countryId from the route.
+ * Acts as a route-level container for viewing individual country pages in Photomap.
+ */
+
+
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import CountryDetails from '../components/CountryDetails';
-import { Box } from '@chakra-ui/react'; // Importing Chakra UI for styling
+import { Box } from '@chakra-ui/react'; 
 
 /**
  * Countries Component

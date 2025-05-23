@@ -1,3 +1,11 @@
+/**
+ * Contact.jsx
+ *
+ * Displays contact and support information for the Photomap application, including
+ * developer details, company address, customer support, social media links, and more.
+ */
+
+
 import { 
   Box, Container, Heading, Text, VStack, HStack, Link, Icon, Divider, Avatar 
 } from "@chakra-ui/react";

@@ -1,4 +1,10 @@
-// src/pages/Welcome.jsx
+/**
+ * Welcome.jsx
+ *
+ * Landing page for new users, introducing the Photomap application.
+ * Provides Sign In and Sign Up options with a visually engaging background.
+ */
+
 import { Box, Button, Heading, Stack, Text, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/continents.jpg";

@@ -63,8 +63,8 @@ const fetchCountryData = async (countryId) => {
       const country = result.data;
 
       return {
-        officialLanguage: 'N/A', // GeoDB não fornece isso
-        currency: 'N/A',          // Também não fornece diretamente
+        officialLanguage: 'N/A', 
+        currency: 'N/A',          
         capital: country.capital || 'N/A',
         population: country.population || 0,
       };
@@ -74,8 +74,6 @@ const fetchCountryData = async (countryId) => {
     }
   }
 };
-
-
 
 /**
  * Fetches current weather data for the provided capital city.
@@ -117,7 +115,7 @@ const fetchExchangeRate = async (currency) => {
  * - A photo manager to view/upload photos for that country
  */
 const CountryDetails = () => {
-  const { countryId } = useParams();
+  const { countryId } = useParams(); // id is extracted from the URL
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -188,7 +186,7 @@ const CountryDetails = () => {
         <IconButton
           aria-label="Go back"
           icon={<ArrowBackIcon />}
-          onClick={() => navigate('/')} // ou navigate(-1) se preferir voltar 1 página
+          onClick={() => navigate('/')} 
           variant="outline"
           colorScheme="teal"
           mb={4}
@@ -219,7 +217,7 @@ const CountryDetails = () => {
               <Box>
                 <Text mt={1 / 2}>
                   <b>Actual day in {countryInfo.capital}:</b>{" "}
-                  {new Date().toLocaleDateString("en-GB")} {/* Formato: DD/MM/YYYY */}
+                  {new Date().toLocaleDateString("en-GB")} {/* Format: DD/MM/YYYY */}
                 </Text>
                 <Text mt={1 / 2}>
                   <b>Actual Time in {countryInfo.capital}:</b> {currentTime}

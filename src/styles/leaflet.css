@@ -1,6 +1,8 @@
 
 /* This custom tooltip was necessary to display the country name on hover,
-   as Leaflet.js does not integrate seamlessly with Chakra UI components. */
+as Leaflet.js does not integrate seamlessly with Chakra UI components. 
+*/
+
    .country-tooltip { 
     background-color: white; /* Tooltip background for clear visibility */
     color: #2D3748; /* Text colour: equivalent to Chakra's gray.700 */
