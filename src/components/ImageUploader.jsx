@@ -70,13 +70,49 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
     }
 
     const formData = new FormData();
-    files.forEach((file) => formData.append("images", file)); // Append all selected files
-    formData.append("countryId", countryId);
-    formData.append("year", year);
-
-    setIsUploading(true);
 
     try {
+      for (const file of files) {
+        const isHeic =
+          file.type === "image/heic" ||
+          file.name.toLowerCase().endsWith(".heic");
+
+        if (isHeic) {
+          try {
+            const convertedBlob = await heic2any({
+              blob: file,
+              toType: "image/jpeg",
+              quality: 0.9,
+            });
+
+            const convertedFile = new File(
+              [convertedBlob],
+              file.name.replace(/\.heic$/i, ".jpg"),
+              { type: "image/jpeg" }
+            );
+
+            formData.append("images", convertedFile);
+          } catch (conversionError) {
+            console.error("Erro ao converter HEIC:", conversionError);
+            toast({
+              title: "Erro ao converter imagem",
+              description: "Formato HEIC não suportado. Tente usar JPG/PNG.",
+              status: "error",
+              duration: 4000,
+              isClosable: true,
+            });
+            return;
+          }
+        } else {
+          formData.append("images", file);
+        }
+      }
+
+      formData.append("countryId", countryId);
+      formData.append("year", year);
+
+      setIsUploading(true);
+
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/images/upload`, {
         method: 'POST',
         headers: {
@@ -100,7 +136,6 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
         isClosable: true,
       });
 
-      // Invoke callbacks if provided
       if (onUpload) {
         onUpload(uploadedImageUrls, year);
       }
@@ -108,9 +143,9 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
         onUploadSuccess();
       }
 
-      // Reset the file input and selected files
       setFiles([]);
       if (fileInputRef.current) fileInputRef.current.value = null;
+
     } catch (error) {
       console.error('Upload error:', error);
       toast({
@@ -142,7 +177,7 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
           type="file"
           onChange={handleFileSelection}
           multiple
-          accept=".jpg,.jpeg"
+          accept=".jpg,.jpeg,.png,.webp,.bmp,.heic,image/heic"
           width="auto"
           ref={fileInputRef}
         />
