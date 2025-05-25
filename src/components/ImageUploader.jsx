@@ -10,6 +10,8 @@
 
 import React, { useState, useRef } from 'react';
 import { Box, Button, Input, Heading, Flex, Select, useToast } from '@chakra-ui/react';
+import heic2any from 'heic2any';
+
 
 /**
  * ImageUploader Component
