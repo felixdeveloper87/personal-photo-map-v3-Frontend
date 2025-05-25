@@ -75,6 +75,9 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
 
     try {
       for (const file of files) {
+        console.log("🧪 Nome:", file.name);
+        console.log("🧪 Tipo MIME:", file.type);
+
         const isHeic =
           file.type === "image/heic" ||
           file.name.toLowerCase().endsWith(".heic");
@@ -184,6 +187,16 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
           ref={fileInputRef}
         />
       </Flex>
+
+      {files.length > 0 && (
+        <Box mt={4} bg="white" p={2} borderRadius="md" boxShadow="sm" fontSize="sm" maxHeight="100px" overflowY="auto">
+          {files.map((file, idx) => (
+            <Box key={idx}>
+              <strong>{file.name}</strong>: {file.type}
+            </Box>
+          ))}
+        </Box>
+      )}
 
       {/* Upload button */}
       <Button
