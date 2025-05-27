@@ -147,7 +147,6 @@ const Timeline = ({ selectedYear }) => {
       minH="100vh"
       p={5}
       display="flex"
-      fontFamily="'Rock Salt', cursive"
     >
       <Box w="100%" p={5}>
         <Text fontSize="2xl" textAlign="center" mb={4} fontWeight="bold">

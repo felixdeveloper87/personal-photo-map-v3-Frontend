@@ -225,7 +225,7 @@ const CountryDetails = () => {
           textAlign="center"
           fontFamily="'Rock Salt', cursive"
         >
-          Information About {countries.getName(countryId.toUpperCase(), 'en') || countryId.toUpperCase()}
+         {countries.getName(countryId.toUpperCase(), 'en') || countryId.toUpperCase()}
         </Heading>
 
         {countryInfo.nativeName && (
@@ -233,7 +233,6 @@ const CountryDetails = () => {
             fontSize={{ base: "lg" }}
             fontWeight="light"
             textAlign="center"
-            fontFamily="'Rock Salt', cursive"
             mb={2}
           >
             ({countryInfo.nativeName})
