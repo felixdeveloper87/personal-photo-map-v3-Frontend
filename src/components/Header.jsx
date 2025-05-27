@@ -322,7 +322,7 @@ function Header() {
                 cursor="pointer"
                 onClick={profileModal.onOpen}
               >
-                Welcome, {fullname} {isPremium && "(Premium 🌟)"}
+                {fullname} {isPremium && "(Premium 🌟)"}
               </Text>
 
               {!isPremium && (
