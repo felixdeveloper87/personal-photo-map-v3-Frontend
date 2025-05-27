@@ -10,7 +10,6 @@
  * 
  */
 
-import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 import Home from './pages/Home';
@@ -26,6 +25,7 @@ import Welcome from './pages/Welcome.jsx';
 import AdminPage from './pages/AdminPage';
 import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { CountriesProvider } from './context/CountriesContext';
 import './styles/leaflet.css'; 
 
@@ -57,6 +57,7 @@ function App() {
               <Footer />
             </Box>
           </Flex>
+          <SpeedInsights />
       </CountriesProvider>
     </AuthProvider>
   );
