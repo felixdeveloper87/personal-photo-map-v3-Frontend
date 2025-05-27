@@ -14,6 +14,7 @@
     "@chakra-ui/react": "^2.10.3",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@fontsource/rock-salt": "^5.2.5",
     "@stomp/stompjs": "^7.0.1",
     "@tanstack/react-query": "^5.67.3",
     "@tanstack/react-query-devtools": "^5.67.3",

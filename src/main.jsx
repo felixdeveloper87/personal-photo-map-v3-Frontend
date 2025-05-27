@@ -16,6 +16,7 @@ import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import theme from './theme';
+import '@fontsource/rock-salt';
 
 
 // Configuring the React Query client with caching and stale time options
