@@ -120,7 +120,14 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
                                 </Box>
                             )}
 
-                            {factbookError && (
+                            {factbookData?.religion ? (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">Major Religions</Text>
+                                    <Text fontSize="md" fontWeight="light">
+                                        {String(factbookData.religion)}
+                                    </Text>
+                                </Box>
+                            ) : factbookError && (
                                 <Box>
                                     <Text fontWeight="bold" fontSize="lg">Major Religions</Text>
                                     <Text fontSize="md" fontWeight="light" color="red.300">
@@ -128,6 +135,7 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
                                     </Text>
                                 </Box>
                             )}
+
                         </Stack>
                     </ModalBody>
                 </ModalContent>
