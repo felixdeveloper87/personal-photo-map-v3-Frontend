@@ -42,5 +42,6 @@ export const isoToGec = {
   dz: "ag",
   bw: "bc",
   bj: "bn",
-  cn: "ch"
+  cn: "ch",
+  pt: "po",
 };
