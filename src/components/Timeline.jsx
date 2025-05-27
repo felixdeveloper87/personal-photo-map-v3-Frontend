@@ -15,6 +15,7 @@ import {
   Spinner,
   Divider,
   IconButton,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useQuery } from '@tanstack/react-query';
@@ -75,6 +76,11 @@ const Timeline = ({ selectedYear }) => {
   const [collapsedYears, setCollapsedYears] = useState({});
 
   const navigate = useNavigate();
+
+  const backgroundGradient = useColorModeValue(
+    "linear(to-r, rgb(151, 205, 228),rgb(101, 191, 201))",
+    "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
+  );
 
   /**
    * Check for JWT token upon mounting or changing the selectedYear.
@@ -138,45 +144,46 @@ const Timeline = ({ selectedYear }) => {
 
   return (
     <Box
-    minH="100vh"
-    p={5}
-    bgGradient="linear(to-r, #006d77, #83c5be)"
-    display="flex"
-  >
-    <Box w="100%" p={5} bg="whiteAlpha.800">
-      <Text fontSize="2xl" textAlign="center" mb={4} fontWeight="bold">
-        {selectedYear ? `Timeline for ${selectedYear}` : 'All Photos'}
-      </Text>
-
-      {Object.keys(groupedByYear).length > 0 ? (
-        Object.keys(groupedByYear).map((year) => (
-          <Box key={year} mb={8}>
-            <Box display="flex" alignItems="center" justifyContent="space-between" cursor="pointer" onClick={() => toggleYear(year)}>
-              <Text fontSize="xl" fontWeight="semibold" color="teal.700">
-                {year}
-              </Text>
-              <IconButton
-                aria-label={`Toggle photos for ${year}`}
-                icon={collapsedYears[year] ? <ChevronDownIcon /> : <ChevronUpIcon />}
-                size="sm"
-                variant="ghost"
-              />
-            </Box>
-            <Divider mb={4} />
-            {!collapsedYears[year] && (
-              <Suspense fallback={<Spinner size="xl" />}>
-                <LazyPhotoGallery images={groupedByYear[year] || []} />
-              </Suspense>
-            )}
-          </Box>
-        ))
-      ) : (
-        <Text mt={4} mb={4} textAlign="center">
-          No photos to display
+      minH="100vh"
+      p={5}
+      display="flex"
+      fontFamily="'Rock Salt', cursive"
+    >
+      <Box w="100%" p={5}>
+        <Text fontSize="2xl" textAlign="center" mb={4} fontWeight="bold">
+          {selectedYear ? `Timeline for ${selectedYear}` : 'All Photos'}
         </Text>
-      )}
+
+        {Object.keys(groupedByYear).length > 0 ? (
+          Object.keys(groupedByYear).map((year) => (
+            <Box key={year} mb={8}>
+              <Box display="flex" alignItems="center" justifyContent="space-between" cursor="pointer" onClick={() => toggleYear(year)}>
+                <Text fontSize="xl" fontWeight="semibold" _hover={{ color: "teal.300" }}
+                  transition="color 0.2s ease">
+                  {year}
+                </Text>
+                <IconButton
+                  aria-label={`Toggle photos for ${year}`}
+                  icon={collapsedYears[year] ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                  size="sm"
+                  variant="ghost"
+                />
+              </Box>
+              <Divider mb={4}  borderColor="gray.500" borderWidth="1px" />
+              {!collapsedYears[year] && (
+                <Suspense fallback={<Spinner size="xl" />}>
+                  <LazyPhotoGallery images={groupedByYear[year] || []} />
+                </Suspense>
+              )}
+            </Box>
+          ))
+        ) : (
+          <Text mt={4} mb={4} textAlign="center">
+            No photos to display
+          </Text>
+        )}
+      </Box>
     </Box>
-  </Box>
   );
 };
 

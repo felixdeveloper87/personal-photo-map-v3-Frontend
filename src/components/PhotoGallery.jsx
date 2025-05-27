@@ -107,7 +107,7 @@ const PhotoGallery = ({
    * @param {string|number} imageId - The ID of the image to select/deselect
    */
   const toggleImageSelection = (imageId) => {
-    setSelectedImageIds((prev) =>
+    setSelectedImageIds?.((prev) =>
       prev.includes(imageId)
         ? prev.filter((id) => id !== imageId)
         : [...prev, imageId]
@@ -119,8 +119,8 @@ const PhotoGallery = ({
    * then clears the selectedImageIds array.
    */
   const handleDeleteSelected = () => {
-    onDeleteSelectedImages(selectedImageIds);
-    setSelectedImageIds([]); // Reset selection after deletion
+    onDeleteSelectedImages?.(selectedImageIds);
+    setSelectedImageIds?.([]);
   };
 
   // If there are no images to display, provide a simple fallback message
@@ -282,15 +282,17 @@ const PhotoGallery = ({
                     </Flex>
 
                     <TransformComponent>
-                      <Image
-                        src={images[currentImageIndex].url}
-                        alt={`Country image ${currentImageIndex + 1}`}
-                        maxWidth={isFullscreen ? '100%' : '90%'}
-                        maxHeight={isFullscreen ? '90vh' : '80vh'}
-                        width="auto"
-                        height="auto"
-                        objectFit="contain"
-                      />
+                      <Flex justify="center" align="center" w="100%" h="100%">
+                        <Image
+                          src={images[currentImageIndex].url}
+                          alt={`Country image ${currentImageIndex + 1}`}
+                          maxWidth={isFullscreen ? '100%' : '90%'}
+                          maxHeight={isFullscreen ? '90vh' : '80vh'}
+                          objectFit="contain"
+                          borderRadius="md"
+                          boxShadow="lg"
+                        />
+                      </Flex>
                     </TransformComponent>
                   </VStack>
                 )}
@@ -311,7 +313,6 @@ const PhotoGallery = ({
                   zIndex="10"
                   variant="ghost"
                   size="lg"
-                  colorScheme="blackAlpha"
                 />
                 <IconButton
                   icon={<Text fontSize="2xl">&#10095;</Text>}
@@ -324,7 +325,6 @@ const PhotoGallery = ({
                   zIndex="10"
                   variant="ghost"
                   size="lg"
-                  colorScheme="blackAlpha"
                 />
               </>
             )}

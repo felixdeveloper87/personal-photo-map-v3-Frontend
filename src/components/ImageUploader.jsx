@@ -75,9 +75,6 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
 
     try {
       for (const file of files) {
-        console.log("🧪 Nome:", file.name);
-        console.log("🧪 Tipo MIME:", file.type);
-
         const isHeic =
           file.type === "image/heic" ||
           file.name.toLowerCase().endsWith(".heic");
@@ -157,7 +154,7 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
         title: "Upload error",
         description: error.message,
         status: "error",
-        duration: 4000,
+        duration: 3000,
         isClosable: true,
       });
     } finally {
@@ -166,7 +163,7 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
   };
 
   return (
-    <Box p={5} bg="gray.100" borderRadius="md" boxShadow="md" maxWidth="600px" mx="auto">
+    <Box p={5} borderRadius="md" boxShadow="md" maxWidth="600px" mx="auto">
       <Heading as="h2" mb={4} textAlign="center">Upload Images</Heading>
 
       <Flex justify="space-between" align="center" mb={4}>
@@ -202,7 +199,6 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
       <Button
         isLoading={isUploading}
         loadingText="Uploading"
-        colorScheme="teal"
         width="100%"
         onClick={handleImageUpload}
         disabled={files.length === 0}

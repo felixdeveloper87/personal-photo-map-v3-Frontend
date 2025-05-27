@@ -19,6 +19,7 @@ import {
   ModalOverlay,
   Select,
   useDisclosure,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CountriesContext } from '../context/CountriesContext';
@@ -37,6 +38,12 @@ export default function SearchForm({ onSearch }) {
 
   // React Router navigation
   const navigate = useNavigate();
+
+  const backgroundGradient = useColorModeValue(
+    // "linear(to-r, teal.400, blue.300)",
+    'linear(to-r, rgb(235, 238, 239),rgb(186, 225, 230))',
+    "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
+  );
 
   /**
    * Handles the form submission when the user clicks "Search".
@@ -63,14 +70,14 @@ export default function SearchForm({ onSearch }) {
   return (
     <>
       {/* Button to open the "Search Photos" modal */}
-      <Button onClick={onOpen} colorScheme="cyan">
+      <Button onClick={onOpen} fontSize="lg">
         Search Photos
       </Button>
 
       {/* Modal for selecting a country/year */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bgGradient={backgroundGradient}>
           <ModalHeader>Search Photos</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -121,7 +128,7 @@ export default function SearchForm({ onSearch }) {
             <Button colorScheme="red" onClick={onClose}>
               Close
             </Button>
-            <Button type="submit" form="search-form" colorScheme="cyan">
+            <Button type="submit" form="search-form">
               Search
             </Button>
           </ModalFooter>

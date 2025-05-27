@@ -162,9 +162,9 @@ const Register = () => {
       boxShadow="md"
       borderWidth="1px"
       borderRadius="md"
-      bg="white"
+      borderColor={'blackAlpha.500'}
     >
-      <Heading mb={6} textAlign="center" color="teal.700">
+      <Heading mb={6} textAlign="center">
         Register
       </Heading>
 
@@ -178,7 +178,6 @@ const Register = () => {
             value={fullname}
             onChange={(e) => setFullname(e.target.value)}
             isRequired
-            focusBorderColor="teal.500"
           />
         </FormControl>
 
@@ -191,7 +190,6 @@ const Register = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             isRequired
-            focusBorderColor="teal.500"
           />
         </FormControl>
 
@@ -203,7 +201,6 @@ const Register = () => {
             placeholder="Type your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            focusBorderColor="teal.500"
           />
           {password.length > 0 && password.length < 6 && (
             <Text color="red.500" fontSize="sm">
@@ -221,7 +218,6 @@ const Register = () => {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             isRequired
-            focusBorderColor="teal.500"
           >
             {countries.map((country) => (
               <option key={country.code} value={country.name}>
@@ -232,7 +228,7 @@ const Register = () => {
         </FormControl>
 
         {/* Submit Button */}
-        <Button type="submit" colorScheme="teal" width="100%" mt={4}>
+        <Button type="submit" width="100%" mt={4}>
           Register
         </Button>
       </form>

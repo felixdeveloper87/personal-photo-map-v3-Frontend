@@ -14,10 +14,17 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Flag from 'react-world-flags';
 import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
-import { Box, Flex, Heading, Text, Link, IconButton } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Link, IconButton, Icon } from '@chakra-ui/react';
 import PhotoManager from '../components/PhotoManager';
 import moment from 'moment-timezone';
+import LiveClock from '../components/LiveClock';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import { fetchWorldBankIndicators } from "../data/worldBankService";
+import EconomicModal from '../components/EconomicModal';
+import SocialModal from '../components/SocialModal';
+import { FaPlaneDeparture } from 'react-icons/fa';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { fetchFactbookData } from '../components/SocialModal';
 
 /**
  * Registers the English locale so that i18n-iso-countries can
@@ -36,12 +43,16 @@ const fetchCountryData = async (countryId) => {
     if (!response.ok) throw new Error('Primary API failed');
     const data = await response.json();
     const countryData = data[0];
+    const nativeNameObj = countryData.name.nativeName;
+    const firstLangKey = nativeNameObj ? Object.keys(nativeNameObj)[0] : null;
+    const nativeName = firstLangKey ? nativeNameObj[firstLangKey].common : countryData.name.common;
 
     return {
       officialLanguage: Object.values(countryData.languages || {})[0] || 'N/A',
       currency: Object.keys(countryData.currencies || {})[0] || 'N/A',
       capital: countryData.capital ? countryData.capital[0] : 'N/A',
       population: countryData.population || 0,
+      nativeName: nativeName,
     };
 
   } catch (error) {
@@ -63,8 +74,8 @@ const fetchCountryData = async (countryId) => {
       const country = result.data;
 
       return {
-        officialLanguage: 'N/A', 
-        currency: 'N/A',          
+        officialLanguage: 'N/A',
+        currency: 'N/A',
         capital: country.capital || 'N/A',
         population: country.population || 0,
       };
@@ -88,6 +99,8 @@ const fetchWeatherData = async (capital) => {
   return {
     temperature: data.main.temp,
     timezone: data.timezone,
+    description: data.weather[0].description,
+    icon: data.weather[0].icon,
   };
 };
 
@@ -150,6 +163,23 @@ const CountryDetails = () => {
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 
+  const { data: factbookData } = useQuery({
+    queryKey: ['factbook', countryId],
+    queryFn: () => fetchFactbookData(countryId),
+    enabled: !!countryId,
+    staleTime: 1000 * 60 * 60 * 24,
+  });
+
+  const {
+    data: indicatorsData,
+    isLoading: indicatorsLoading,
+  } = useQuery({
+    queryKey: ['worldBank', countryId],
+    queryFn: () => fetchWorldBankIndicators(countryId),
+    enabled: !!countryId,
+    staleTime: 1000 * 60 * 60 * 24,
+  });
+
   /**
    * Debug: check which countries are currently in the cache
    */
@@ -176,80 +206,98 @@ const CountryDetails = () => {
   const googleFlightsUrl = `https://www.google.com/travel/flights?q=Flights+from+London+to+${countryInfo?.capital}`;
 
   return (
-    <Box
-      minH="50vh"
-      p={5}
-      bgGradient="linear(to-r, #006d77, #83c5be)"
-    >
-      {/* Semi-transparent overlay to improve text readability */}
-      <Box bg="whiteAlpha.800" p={6} borderRadius="md">
-        <IconButton
-          aria-label="Go back"
-          icon={<ArrowBackIcon />}
-          onClick={() => navigate('/')} 
-          variant="outline"
-          colorScheme="teal"
-          mb={4}
-        />
+    <Box>
+      <Box p={6} position="relative">
+        <>
+          <Box position="absolute" top="1rem" left="1rem" zIndex={1}>
+            <IconButton
+              aria-label="Go back"
+              icon={<ArrowBackIcon />}
+              onClick={() => navigate('/')}
+              variant="outline"
+            />
+          </Box>
+        </>
 
-        <Heading as="h1" mb={4} textAlign="center">
-          Photos in {countries.getName(countryId.toUpperCase(), 'en') || countryId.toUpperCase()}
+        <Heading
+          as="h1"
+          mb={0}
+          textAlign="center"
+          fontFamily="'Rock Salt', cursive"
+        >
+          Information About {countries.getName(countryId.toUpperCase(), 'en') || countryId.toUpperCase()}
         </Heading>
 
-        <Flex direction={['column', 'row']} align="center" justify="center" mb={8}>
-          <Box flex="0 0 auto" mb={[4, 0]} mr={[0, 8]}>
-            <Flag code={countryId.toUpperCase()} style={{ width: '350px', height: 'auto' }} />
+        {countryInfo.nativeName && (
+          <Text
+            fontSize={{ base: "lg" }}
+            fontWeight="light"
+            textAlign="center"
+            fontFamily="'Rock Salt', cursive"
+            mb={2}
+          >
+            ({countryInfo.nativeName})
+          </Text>
+        )}
+
+        <Flex
+          direction={['column', 'row']}
+          align="center"
+          justify="center"
+          mb={4}
+        >
+          <Box mb={[4, 0]} mr={[0, 8]} textAlign="center">
+            <Flag
+              code={countryId.toUpperCase()}
+              style={{ width: '350px', height: 'auto' }}
+            />
           </Box>
+
           <Box textAlign={['center', 'left']}>
-            <Text>
-              <b>Capital:</b> {countryInfo.capital}
-            </Text>
-            <Text>
-              <b>Official Language:</b> {countryInfo.officialLanguage}
-            </Text>
-            <Text>
-              <b>Currency:</b> {countryInfo.currency}
-            </Text>
-            <Text>
-              <b>Population:</b> {countryInfo.population.toLocaleString('en-US')}
-            </Text>
-            {currentTime && (
-              <Box>
-                <Text mt={1 / 2}>
-                  <b>Actual day in {countryInfo.capital}:</b>{" "}
-                  {new Date().toLocaleDateString("en-GB")} {/* Format: DD/MM/YYYY */}
-                </Text>
-                <Text mt={1 / 2}>
-                  <b>Actual Time in {countryInfo.capital}:</b> {currentTime}
-                </Text>
-              </Box>
+            {weatherData && (
+              <LiveClock
+                timezoneOffset={weatherData.timezone}
+                countryInfo={countryInfo}
+                temperature={weatherData.temperature}
+                weatherDescription={weatherData.description}
+                weatherIcon={weatherData.icon}
+              />
             )}
-            {weatherData?.temperature && (
-              <Text mt={1 / 2}>
-                <b>Current Temperature in {countryInfo.capital}:</b>{' '}
-                {weatherData.temperature}°C
-              </Text>
-            )}
-            {exchangeRate && (
-              <Text mt={1 / 2}>
-                <b>Exchange Rate: </b> 1 £ = {exchangeRate}{' '}
-                {countryInfo.currency}
-              </Text>
-            )}
-            {countryInfo.capital && countryInfo.capital !== 'N/A' && (
-              <Text mt={1 / 2}>
+          </Box>
+        </Flex>
+
+
+        <Flex direction="column" align="center" gap={3} mt={2} mb={4}>
+          <Flex justify="center" gap={4} flexWrap="wrap">
+            <EconomicModal
+              indicatorsData={indicatorsData}
+              exchangeRate={exchangeRate}
+              currency={countryInfo.currency}
+              countryInfo={countryInfo}
+            />
+            <SocialModal
+              indicatorsData={indicatorsData}
+              factbookData={factbookData}
+            />
+          </Flex>
+
+          {countryInfo.capital && countryInfo.capital !== 'N/A' && (
+            <Flex align="center" justify="center">
+              <Icon as={FaPlaneDeparture} boxSize={5} color="blue.500" mr={2} />
+              <Text textAlign="center">
                 <b>Flights from London:</b>{' '}
                 <Link
                   href={googleFlightsUrl}
                   isExternal
-                  color="blue.500"
-                  textDecoration="underline"
+                  color="teal.600"
+                  fontWeight="bold"
+                  _hover={{ textDecoration: 'underline', color: 'teal.800' }}
                 >
-                  Check availability
+                  Check availability <ExternalLinkIcon mx="3px" />
                 </Link>
               </Text>
-            )}
-          </Box>
+            </Flex>
+          )}
         </Flex>
 
         {/* Photo management section for this country */}

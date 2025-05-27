@@ -13,8 +13,7 @@ import 'leaflet/dist/leaflet.css';
 import countriesData from '../map/countries.json';
 import { AuthContext } from '../context/AuthContext';
 import { CountriesContext } from '../context/CountriesContext';
-import { Box } from '@chakra-ui/react';
-
+import { Box, useColorModeValue } from '@chakra-ui/react';
 
 const Map = () => {
   // Navigation hook to route to a country detail page on click
@@ -27,6 +26,7 @@ const Map = () => {
   // State controlling highlight animation for users not logged in
   const [highlightedCountries, setHighlightedCountries] = useState([]);
   const [isEffectActive, setIsEffectActive] = useState(!isLoggedIn);
+  const oceanColor = useColorModeValue('rgba(179, 229, 252, 1)', 'rgba(16, 62, 135, 0.4)');
 
   /**
    * Track changes to the logged in state: if user logs in,
@@ -182,13 +182,13 @@ const Map = () => {
         maxBounds={bounds}
         maxBoundsViscosity={1.0}
         worldCopyJump={false}
-        style={{ height: '1000px', width: '100%', backgroundColor: 'white' }}
+        style={{ height: '1000px', width: '100%' }}
       >
         {/* Rectangle for the ocean background fill */}
         <Rectangle
           bounds={oceanBounds}
           pathOptions={{
-            fillColor: '#B3E5FC',
+            fillColor: oceanColor,
             fillOpacity: 1,
             stroke: false,
           }}

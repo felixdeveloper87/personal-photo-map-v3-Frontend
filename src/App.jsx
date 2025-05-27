@@ -38,7 +38,7 @@ function App() {
             <Box as="header">
               <Header />
             </Box>
-            <Box as="main" flex="1" p={4}>
+            <Box as="main" flex="1" pt={isHomePage ? 5 : 0} px={0} pb={0}>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />

@@ -31,12 +31,15 @@ import {
   VStack,
   HStack,
   Collapse,
+  useColorMode,
+  useColorModeValue
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../context/AuthContext";
 import { CountriesContext } from "../context/CountriesContext";
 import SearchForm from "../components/SearchForm";
 import logo from "../assets/logo.png";
+import { FaMoon, FaSun } from 'react-icons/fa';
 
 
 /**
@@ -52,6 +55,12 @@ function Header() {
   const toast = useToast();
   const photoStorageModal = useDisclosure();
   const countriesModal = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  const backgroundGradient = useColorModeValue(
+    "linear(to-r, rgb(151, 205, 228),rgb(101, 191, 201))",
+    "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
+  );
 
 
   // Auth and Countries contexts
@@ -80,11 +89,6 @@ function Header() {
 
   // Responsive menu disclosure
   const { isOpen, onToggle, onClose } = useDisclosure();
-
-  useEffect(() => {
-    console.log("Component isPremium:", isPremium);
-    console.log("localStorage premium:", localStorage.getItem('premium'));
-  }, [isPremium]);
 
   // Function to upgrade the user to premium
   const handleBecomePremium = async () => {
@@ -132,11 +136,11 @@ function Header() {
     <Box
       w="100%"
       mx="auto"
-      bgGradient="linear(to-r, #006d77, #83c5be)"
+      bgGradient={backgroundGradient}
       boxShadow="lg"
       px={6}
-      py={4}
-      mb={4}
+      py={3}
+      mb={2.5}
     >
       <Flex
         justify="space-between"
@@ -152,7 +156,7 @@ function Header() {
           onClick={() => navigate("/")}
           flex="1"
           transition="transform 3s ease-in-out"
-          _hover={{ transform: "scale(1.10)" }} 
+          _hover={{ transform: "scale(1.10)" }}
 
         >
           <Image
@@ -171,13 +175,11 @@ function Header() {
             fontWeight="bold"
             mr={5}
             _hover={{ color: "cyan.300", transition: "0.2s ease-in-out" }}
-            textShadow="0 1px 2px black" 
+            textShadow="0 1px 2px black"
           >
-            Personal Photo Map
+            Photomap
           </Heading>
         </Flex>
-
-
 
         {/* Hamburger Menu (Mobile View) */}
         <IconButton
@@ -186,7 +188,6 @@ function Header() {
           icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
           variant="outline"
           aria-label="Toggle Navigation"
-          color="white"
         />
 
         {/* Desktop Navigation */}
@@ -194,14 +195,23 @@ function Header() {
           display={{ base: "none", md: "flex" }}
           spacing={4}
           ml="auto"
-          color="white"
           align="center"
         >
           {isLoggedIn ? (
             <>
+              <IconButton
+                aria-label="Toggle Dark Mode"
+                icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
+                onClick={toggleColorMode}
+                isRound
+                variant="ghost"
+                size="lg"
+                _hover={{ bg: "whiteAlpha.300" }}
+              />
+
               <Text
                 fontSize="md"
-                bg="whiteAlpha.300"
+                bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
@@ -210,9 +220,10 @@ function Header() {
               >
                 📸 Photos: {photoCount}
               </Text>
+
               <Text
                 fontSize="md"
-                bg="whiteAlpha.300"
+                bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
@@ -221,7 +232,6 @@ function Header() {
               >
                 🌍 Countries: {countryCount}
               </Text>
-
 
               {!loading ? (
                 <>
@@ -232,7 +242,7 @@ function Header() {
                     }
                   />
                   <Button
-                    colorScheme="cyan"
+                    fontSize="lg"
                     variant="solid"
                     onClick={() => navigate("/timeline")}
                   >
@@ -244,6 +254,7 @@ function Header() {
               )}
 
               <Text
+                fontSize="lg"
                 fontWeight="bold"
                 cursor="pointer"
                 onClick={profileModal.onOpen}
@@ -254,6 +265,7 @@ function Header() {
               {!isPremium && (
                 <Button
                   colorScheme="yellow"
+                  fontSize="lg"
                   variant="solid"
                   onClick={premiumModal.onOpen}
                 >
@@ -267,11 +279,10 @@ function Header() {
             </>
           ) : (
             <>
-              <Button colorScheme="cyan" variant="solid" onClick={() => navigate("/login")}>
+              <Button variant="solid" onClick={() => navigate("/login")}>
                 Sign in
               </Button>
               <Button
-                colorScheme="cyan"
                 variant="outline"
                 onClick={() => navigate("/register")}
               >
@@ -283,10 +294,10 @@ function Header() {
       </Flex>
 
       {/* Mobile Menu (Collapsible) */}
+      {/* Mobile Menu (Collapsible) */}
       <Collapse in={isOpen} animateOpacity>
         <Box
-          display={{ md: "none" }}
-          bg="teal.500"
+          display={{ base: "flex", md: "none" }}
           rounded="md"
           shadow="md"
           mt={2}
@@ -295,6 +306,17 @@ function Header() {
         >
           {isLoggedIn ? (
             <VStack align="start" spacing={3}>
+              <IconButton
+                aria-label="Toggle Dark Mode"
+                icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
+                onClick={toggleColorMode}
+                isRound
+                variant="ghost"
+                size="md"
+                alignSelf="flex-start"
+                _hover={{ bg: "whiteAlpha.300" }}
+              />
+
               <Text
                 fontWeight="bold"
                 cursor="pointer"
@@ -314,11 +336,10 @@ function Header() {
               )}
               <Text
                 fontSize="md"
-                bg="whiteAlpha.300"
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
-                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }}
+                _hover={{ transition: "0.2s" }}
                 onClick={photoStorageModal.onOpen}
               >
                 📸 Photos: {photoCount}
@@ -326,7 +347,6 @@ function Header() {
 
               <Text
                 fontSize="md"
-                bg="whiteAlpha.300"
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
@@ -345,7 +365,6 @@ function Header() {
               />
 
               <Button
-                colorScheme="cyan"
                 variant="solid"
                 onClick={() => {
                   navigate("/timeline");
@@ -355,14 +374,13 @@ function Header() {
                 Timeline
               </Button>
 
-              <Button colorScheme="red" variant="solid" onClick={logout}>
+              <Button variant="solid" onClick={logout}>
                 Sign out
               </Button>
             </VStack>
           ) : (
             <VStack align="start" spacing={3}>
               <Button
-                colorScheme="cyan"
                 variant="solid"
                 onClick={() => {
                   navigate("/login");
@@ -372,7 +390,6 @@ function Header() {
                 Sign in
               </Button>
               <Button
-                colorScheme="cyan"
                 variant="solid"
                 onClick={() => {
                   navigate("/register");
@@ -387,22 +404,22 @@ function Header() {
       </Collapse>
 
       {/* Photo Storage Modal */}
-      <Modal isOpen={photoStorageModal.isOpen} onClose={photoStorageModal.onClose} size="sm" motionPreset="slideInBottom">
+      <Modal isOpen={photoStorageModal.isOpen} onClose={photoStorageModal.onClose} size="sm" motionPreset="slideInBottom"  >
         <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl" bg="gray.50">
-          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" color="teal.700">
+        <ModalContent rounded="lg" shadow="xl" bgGradient={backgroundGradient} >
+          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" >
             Photo Storage
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box textAlign="center" p={4} borderRadius="md" bg="white" shadow="sm">
-              <Text fontSize="lg" fontWeight="medium" color="gray.700">
+            <Box textAlign="center" p={4} borderRadius="md" shadow="sm">
+              <Text fontSize="lg" fontWeight="medium" >
                 {isPremium ? "100GB Photo Storage 📸" : "5GB Photo Storage 📷"}
               </Text>
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" w="full" onClick={photoStorageModal.onClose}>
+            <Button w="full" onClick={photoStorageModal.onClose}>
               Close
             </Button>
           </ModalFooter>
@@ -410,16 +427,16 @@ function Header() {
       </Modal>
 
       {/* Countries Visited Modal */}
-      <Modal isOpen={countriesModal.isOpen} onClose={countriesModal.onClose} size="sm" motionPreset="slideInBottom">
+      <Modal isOpen={countriesModal.isOpen} onClose={countriesModal.onClose} size="sm" motionPreset="slideInBottom" >
         <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl" bg="gray.50">
-          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" color="teal.700">
+        <ModalContent rounded="lg" shadow="xl" bgGradient={backgroundGradient}>
+          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" >
             Countries Visited
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box textAlign="center" p={4} borderRadius="md" bg="white" shadow="sm">
-              <Text fontSize="lg" fontWeight="medium" color="gray.700">
+            <Box textAlign="center" p={4} borderRadius="md" shadow="sm">
+              <Text fontSize="lg" fontWeight="medium" >
                 You have visited <b>{countryCount}</b> out of <b>195</b> countries! 🌍
               </Text>
               <Box mt={4}>
@@ -448,30 +465,30 @@ function Header() {
 
 
       {/* Profile Modal */}
-      <Modal isOpen={profileModal.isOpen} onClose={profileModal.onClose} size="md" motionPreset="slideInBottom">
+      <Modal isOpen={profileModal.isOpen} onClose={profileModal.onClose} size="lg" motionPreset="slideInBottom"  >
         <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl" bg="gray.50">
-          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" color="teal.700">
+        <ModalContent rounded="lg" shadow="xl" >
+          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="semibold">
             My Profile
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box p={4} borderRadius="md" bg="white" shadow="sm">
-              <Text fontSize="lg" fontWeight="bold" color="teal.600">Full Name:</Text>
+            <Box p={4} borderRadius="md" shadow="sm">
+              <Text fontSize="lg" fontWeight="bold" >Full Name:</Text>
               <Text mb={2}>{fullname}</Text>
 
-              <Text fontSize="lg" fontWeight="bold" color="teal.600">Email:</Text>
+              <Text fontSize="lg" fontWeight="bold" >Email:</Text>
               <Text mb={2}>{email}</Text>
 
-              <Text fontSize="lg" fontWeight="bold" color="teal.600">Photos:</Text>
+              <Text fontSize="lg" fontWeight="bold" >Photos:</Text>
               <Text mb={2}>{photoCount}</Text>
 
-              <Text fontSize="lg" fontWeight="bold" color="teal.600">Countries:</Text>
+              <Text fontSize="lg" fontWeight="bold" >Countries:</Text>
               <Text>{countryCount}</Text>
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" w="full" onClick={profileModal.onClose}>
+            <Button w="full" onClick={profileModal.onClose}>
               Close
             </Button>
           </ModalFooter>
@@ -481,13 +498,13 @@ function Header() {
       {/* Premium Benefits Modal */}
       <Modal isOpen={premiumModal.isOpen} onClose={premiumModal.onClose} size="lg" motionPreset="slideInBottom">
         <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl" bg="gray.50">
+        <ModalContent rounded="lg" shadow="xl">
           <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" color="yellow.600">
             🎉 Premium User Benefits
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box p={4} borderRadius="md" bg="white" shadow="sm">
+            <Box p={4} borderRadius="md" shadow="sm">
               <Text mb={3} fontSize="lg" fontWeight="medium" color="gray.700">
                 By becoming a Premium user, you unlock:
               </Text>
@@ -499,10 +516,10 @@ function Header() {
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="gray" mr={3} onClick={premiumModal.onClose}>
+            <Button mr={3} onClick={premiumModal.onClose}>
               Cancel
             </Button>
-            <Button colorScheme="yellow" w="full" onClick={handleBecomePremium} isLoading={loadingPremium}>
+            <Button w="full" onClick={handleBecomePremium} isLoading={loadingPremium}>
               Upgrade to Premium
             </Button>
           </ModalFooter>

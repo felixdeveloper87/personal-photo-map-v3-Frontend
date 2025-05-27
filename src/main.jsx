@@ -8,14 +8,14 @@
  */
 
 import { StrictMode } from 'react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './styles/leaflet.css';
 import { ChakraProvider } from '@chakra-ui/react'; 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'; 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import theme from './theme'; 
 
 
 // Configuring the React Query client with caching and stale time options

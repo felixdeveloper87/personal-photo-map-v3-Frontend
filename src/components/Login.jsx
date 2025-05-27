@@ -107,7 +107,7 @@ function Login() {
       boxShadow="md"
       borderWidth="1px"
       borderRadius="md"
-      bg="white"
+      borderColor={'blackAlpha.500'}
     >
       <Heading mb={6} textAlign="center" color="teal.700">
         Login
@@ -129,7 +129,6 @@ function Login() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            focusBorderColor="teal.500"
           />
         </FormControl>
 
@@ -140,7 +139,6 @@ function Login() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            focusBorderColor="teal.500"
           />
         </FormControl>
 
@@ -152,8 +150,6 @@ function Login() {
             I've forgotten my password
           </Button>
         </Text>
-
-
       </form>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -183,10 +179,7 @@ function Login() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
     </Box>
-
-
   );
 }
 
