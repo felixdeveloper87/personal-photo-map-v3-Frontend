@@ -47,7 +47,6 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
             boxShadow="2xl"
             mt={{ base: 2, md: 4 }}
             color="white"
-            fontFamily="'Rock Salt', cursive"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
