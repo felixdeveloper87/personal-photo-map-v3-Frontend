@@ -3,7 +3,14 @@ import { Box, Text, Icon, Flex, Image, useColorModeValue } from '@chakra-ui/reac
 import moment from 'moment-timezone';
 import { motion } from 'framer-motion';
 import { BsClockHistory } from 'react-icons/bs';
-import { FaLanguage, FaMoneyBillWave, FaUsers } from 'react-icons/fa';
+import {
+    FaLanguage, FaMoneyBillWave, FaUsers, FaSun,
+    FaCloud,
+    FaCloudRain,
+    FaSnowflake,
+    FaSmog,
+    FaBolt,
+} from 'react-icons/fa';
 
 /**
  * Motion-enabled Box for animation
@@ -23,6 +30,19 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
         "linear(to-r,rgb(57, 84, 128),rgb(123, 126, 126))"   // dark mode
     );
 
+    const getWeatherIcon = (description) => {
+        const desc = description?.toLowerCase() || "";
+
+        if (desc.includes("clear")) return <FaSun size={20} />;
+        if (desc.includes("cloud")) return <FaCloud size={20} />;
+        if (desc.includes("rain")) return <FaCloudRain size={20} />;
+        if (desc.includes("snow")) return <FaSnowflake size={20} />;
+        if (desc.includes("fog") || desc.includes("mist")) return <FaSmog size={20} />;
+        if (desc.includes("thunder")) return <FaBolt size={20} />;
+
+        return <FaSun size={20} />; // fallback genérico
+    };
+
     useEffect(() => {
         const interval = setInterval(() => {
             setTime(moment().utcOffset(timezoneOffset / 60));
@@ -30,10 +50,6 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
 
         return () => clearInterval(interval);
     }, [timezoneOffset]);
-
-    const iconUrl = weatherIcon
-        ? `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`
-        : null;
 
     return (
         <MotionBox
@@ -99,28 +115,21 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                         >
                             {time.format('HH:mm:ss')}
                         </Box>{' '}
-                        {/* (UTC {timezoneOffset >= 0 ? '+' : ''}{timezoneOffset / 3600}) */}
+                        {/* (utc {timezoneOffset >= 0 ? '+' : ''}{timezoneOffset / 3600}) */}
                     </Text>
                 </Flex>
 
+
                 <Flex align="center" mt={1}>
-                    {iconUrl && (
-                        <Box
-                            boxSize="40px"
-                            mr={2}
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            <Image
-                                src={iconUrl}
-                                alt={weatherDescription}
-                                boxSize="100%"
-                                objectFit="contain"
-                                mt="-2px"
-                            />
-                        </Box>
-                    )}
+                    <Box
+                        mr={2}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        {getWeatherIcon(weatherDescription)}
+                    </Box>
+
                     <Text fontSize="lg" fontWeight="medium">
                         {temperature}°C – {weatherDescription}
                     </Text>
