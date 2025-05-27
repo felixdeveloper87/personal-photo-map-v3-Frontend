@@ -273,7 +273,7 @@ function Header() {
                 </Button>
               )}
 
-              <Button colorScheme= "red "variant="solid" onClick={logout}>
+              <Button colorScheme="red" variant="solid" onClick={logout}>
                 Sign out
               </Button>
             </>
