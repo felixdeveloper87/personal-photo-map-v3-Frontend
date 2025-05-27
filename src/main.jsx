@@ -12,10 +12,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './styles/leaflet.css';
-import { ChakraProvider } from '@chakra-ui/react'; 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
+import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import theme from './theme'; 
+import theme from './theme';
 
 
 // Configuring the React Query client with caching and stale time options
@@ -41,9 +41,10 @@ function AppWithQueryClient() {
 // Rendering the application inside a StrictMode wrapper for better debugging
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter> {/* Enables routing for the app */}
-      <ChakraProvider> {/* Provides Chakra UI theme and styling support */}
-        <AppWithQueryClient /> {/* Renders the app with React Query support */}
+    <BrowserRouter>
+      <ChakraProvider theme={theme}> {/* Aplique o tema aqui */}
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <AppWithQueryClient />
       </ChakraProvider>
     </BrowserRouter>
   </StrictMode>

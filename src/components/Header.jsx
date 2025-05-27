@@ -210,7 +210,7 @@ function Header() {
               />
 
               <Text
-                fontSize="md"
+                fontSize="lg"
                 bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
@@ -222,7 +222,7 @@ function Header() {
               </Text>
 
               <Text
-                fontSize="md"
+                fontSize="lg"
                 bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
@@ -273,7 +273,7 @@ function Header() {
                 </Button>
               )}
 
-              <Button colorScheme="red" variant="solid" onClick={logout}>
+              <Button colorScheme= "red "variant="solid" onClick={logout}>
                 Sign out
               </Button>
             </>
@@ -455,7 +455,7 @@ function Header() {
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" w="full" onClick={countriesModal.onClose}>
+            <Button w="full" onClick={countriesModal.onClose}>
               Close
             </Button>
           </ModalFooter>
