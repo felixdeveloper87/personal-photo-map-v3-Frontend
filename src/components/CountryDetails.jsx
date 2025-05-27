@@ -172,6 +172,7 @@ const CountryDetails = () => {
     queryFn: () => fetchFactbookData(countryId),
     enabled: !!countryId,
     staleTime: 1000 * 60 * 60 * 24,
+    retry: false,
   });
 
 
