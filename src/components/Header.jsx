@@ -255,7 +255,7 @@ function Header() {
 
               <Text
                 fontSize="lg"
-                fontWeight="bold"
+                fontWeight="semibold"
                 cursor="pointer"
                 onClick={profileModal.onOpen}
               >
