@@ -163,12 +163,17 @@ const CountryDetails = () => {
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 
-  const { data: factbookData } = useQuery({
+  const {
+    data: factbookData,
+    isError: factbookError,
+    error: factbookErrorDetails,
+  } = useQuery({
     queryKey: ['factbook', countryId],
     queryFn: () => fetchFactbookData(countryId),
     enabled: !!countryId,
     staleTime: 1000 * 60 * 60 * 24,
   });
+
 
   const {
     data: indicatorsData,
@@ -225,7 +230,7 @@ const CountryDetails = () => {
           textAlign="center"
           fontFamily="'Rock Salt', cursive"
         >
-         {countries.getName(countryId.toUpperCase(), 'en') || countryId.toUpperCase()}
+          {countries.getName(countryId.toUpperCase(), 'en') || countryId.toUpperCase()}
         </Heading>
 
         {countryInfo.nativeName && (
@@ -277,7 +282,9 @@ const CountryDetails = () => {
             <SocialModal
               indicatorsData={indicatorsData}
               factbookData={factbookData}
+              factbookError={factbookError}
             />
+
           </Flex>
 
           {countryInfo.capital && countryInfo.capital !== 'N/A' && (

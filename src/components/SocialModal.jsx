@@ -25,13 +25,20 @@ const getFactbookCode = (isoCode) => {
 
 export const fetchFactbookData = async (countryId) => {
     const region = getFactbookRegion(countryId);
-    if (!region) throw new Error('Região não mapeada para o país.');
+    if (!region) throw new Error('Region not mapped for this country.');
 
     const gecCode = getFactbookCode(countryId);
     const url = `https://raw.githubusercontent.com/factbook/factbook.json/master/${region}/${gecCode}.json`;
 
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Factbook data not found');
+
+    if (response.status === 404) {
+        throw new Error(`Factbook data not found for country code "${countryId}"`);
+    }
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch factbook data.');
+    }
 
     const data = await response.json();
 
@@ -43,7 +50,9 @@ export const fetchFactbookData = async (countryId) => {
     };
 };
 
-const SocialModal = ({ indicatorsData, factbookData }) => {
+
+const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
+
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const backgroundGradient = useColorModeValue(
@@ -111,11 +120,11 @@ const SocialModal = ({ indicatorsData, factbookData }) => {
                                 </Box>
                             )}
 
-                            {factbookData?.religion && (
+                            {factbookError && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg" >Major Religions</Text>
-                                    <Text fontSize="md" fontWeight="light">
-                                        {String(factbookData.religion)}
+                                    <Text fontWeight="bold" fontSize="lg">Major Religions</Text>
+                                    <Text fontSize="md" fontWeight="light" color="red.300">
+                                        No data available for this country.
                                     </Text>
                                 </Box>
                             )}
