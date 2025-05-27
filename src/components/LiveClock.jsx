@@ -19,7 +19,7 @@ const MotionBox = motion(Box);
 const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescription, weatherIcon }) => {
     const [time, setTime] = useState(moment().utcOffset(timezoneOffset / 60));
     const backgroundGradient = useColorModeValue(
-        "linear(to-r,rgb(80, 120, 106),rgb(142, 171, 159))" ,   // light mode
+        "linear(to-r,rgb(80, 120, 106),rgb(142, 171, 159))",   // light mode
         "linear(to-r,rgb(57, 84, 128),rgb(123, 126, 126))"   // dark mode
     );
 
@@ -55,7 +55,7 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
             <>
                 {countryInfo?.capital && (
                     <Flex align="center" mb={1}>
-                        <Icon as={BsClockHistory}  boxSize={5} mr={2} />
+                        <Icon as={BsClockHistory} boxSize={5} mr={2} />
                         <Text fontSize="lg" fontWeight="medium">
                             Capital: {countryInfo.capital}
                         </Text>
@@ -63,30 +63,43 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                 )}
 
                 <Flex align="center" mb={1}>
-                    <Icon as={FaLanguage}  boxSize={5} mr={2} />
+                    <Icon as={FaLanguage} boxSize={5} mr={2} />
                     <Text fontSize="lg" fontWeight="medium">
                         Official Language: {countryInfo.officialLanguage}
                     </Text>
                 </Flex>
 
                 <Flex align="center" mb={1}>
-                    <Icon as={FaMoneyBillWave}  boxSize={5} mr={2} />
+                    <Icon as={FaMoneyBillWave} boxSize={5} mr={2} />
                     <Text fontSize="lg" fontWeight="medium">
                         Currency: {countryInfo.currency}
                     </Text>
                 </Flex>
 
                 <Flex align="center" mb={1}>
-                    <Icon as={FaUsers}  boxSize={5} mr={2} />
+                    <Icon as={FaUsers} boxSize={5} mr={2} />
                     <Text fontSize="lg" fontWeight="medium">
                         Population: {countryInfo.population.toLocaleString('en-US')}
                     </Text>
                 </Flex>
 
                 <Flex align="center" mb={1}>
-                    <Icon as={BsClockHistory}  boxSize={5} mr={2} />
+                    <Icon as={BsClockHistory} boxSize={5} mr={2} />
                     <Text fontSize="lg" fontWeight="medium">
-                        {time.format('D MMMM YYYY')} – {time.format('HH:mm:ss')} (UTC {timezoneOffset >= 0 ? '+' : ''}{timezoneOffset / 3600})
+                        {time.format('D MMMM YYYY')} –{' '}
+                        <Box
+                            as="span"
+                            px={2}
+                            py={0.5}
+                            bg="gray.800"
+                            fontFamily="monospace"
+                            borderRadius="md"
+                            boxShadow="md"
+                            fontSize="lg"
+                        >
+                            {time.format('HH:mm:ss')}
+                        </Box>{' '}
+                        (UTC {timezoneOffset >= 0 ? '+' : ''}{timezoneOffset / 3600})
                     </Text>
                 </Flex>
 
