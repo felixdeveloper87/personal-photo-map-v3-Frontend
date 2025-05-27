@@ -27,37 +27,40 @@ import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { CountriesProvider } from './context/CountriesContext';
-import './styles/leaflet.css'; 
+import './styles/leaflet.css';
 
 function App() {
+
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   return (
     <AuthProvider>
       <CountriesProvider>
-          <Flex direction="column" minH="100vh">
-            <Box as="header">
-              <Header />
-            </Box>
-            <Box as="main" flex="1" pt={isHomePage ? 5 : 0} px={0} pb={0}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/countries/:countryId" element={<CountryDetails />} />
-                <Route path="/timeline" element={<TimelinePage />} />
-                <Route path="/welcome" element={<Welcome />} />
-                <Route path="/timeline/:year" element={<TimelinePage />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Box>
-            <Box as="footer">
-              <Footer />
-            </Box>
-          </Flex>
-          <SpeedInsights />
+        <Flex direction="column" minH="100vh">
+          <Box as="header">
+            <Header />
+          </Box>
+          <Box as="main" flex="1" pt={isHomePage ? 5 : 0} px={0} pb={0}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/countries/:countryId" element={<CountryDetails />} />
+              <Route path="/timeline" element={<TimelinePage />} />
+              <Route path="/welcome" element={<Welcome />} />
+              <Route path="/timeline/:year" element={<TimelinePage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Box>
+          <Box as="footer">
+            <Footer />
+          </Box>
+        </Flex>
+        <SpeedInsights />
       </CountriesProvider>
     </AuthProvider>
   );
