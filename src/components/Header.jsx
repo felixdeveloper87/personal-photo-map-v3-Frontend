@@ -259,7 +259,7 @@ function Header() {
                 cursor="pointer"
                 onClick={profileModal.onOpen}
               >
-                Welcome, {fullname} {isPremium && "(Premium 🌟)"}
+              {fullname} {isPremium && "(Premium 🌟)"}
               </Text>
 
               {!isPremium && (
@@ -294,7 +294,6 @@ function Header() {
       </Flex>
 
       {/* Mobile Menu (Collapsible) */}
-      {/* Mobile Menu (Collapsible) */}
       <Collapse in={isOpen} animateOpacity>
         <Box
           display={{ base: "flex", md: "none" }}
@@ -322,7 +321,7 @@ function Header() {
                 cursor="pointer"
                 onClick={profileModal.onOpen}
               >
-                {fullname} {isPremium && "(Premium 🌟)"}
+               {fullname} {isPremium && "(Premium 🌟)"}
               </Text>
 
               {!isPremium && (
