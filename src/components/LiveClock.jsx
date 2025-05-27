@@ -99,7 +99,7 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                         >
                             {time.format('HH:mm:ss')}
                         </Box>{' '}
-                        (UTC {timezoneOffset >= 0 ? '+' : ''}{timezoneOffset / 3600})
+                        {/* (UTC {timezoneOffset >= 0 ? '+' : ''}{timezoneOffset / 3600}) */}
                     </Text>
                 </Flex>
 
