@@ -186,7 +186,7 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
       </Flex>
 
       {files.length > 0 && (
-        <Box mt={4} bg="white" p={2} borderRadius="md" boxShadow="sm" fontSize="sm" maxHeight="100px" overflowY="auto">
+        <Box mt={4} p={2} borderRadius="md" boxShadow="sm" fontSize="sm" maxHeight="100px" overflowY="auto">
           {files.map((file, idx) => (
             <Box key={idx}>
               <strong>{file.name}</strong>: {file.type}

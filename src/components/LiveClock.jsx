@@ -20,7 +20,7 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
     const [time, setTime] = useState(moment().utcOffset(timezoneOffset / 60));
     const backgroundGradient = useColorModeValue(
         "linear(to-r,rgb(80, 120, 106),rgb(142, 171, 159))" ,   // light mode
-        "linear(to-r,rgb(71, 72, 71),rgb(123, 126, 126))"   // dark mode
+        "linear(to-r,rgb(57, 84, 128),rgb(123, 126, 126))"   // dark mode
     );
 
     useEffect(() => {
