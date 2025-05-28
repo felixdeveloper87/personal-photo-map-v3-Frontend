@@ -72,37 +72,80 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                 {countryInfo?.capital && (
                     <Flex align="center" mb={1}>
                         <Icon as={BsClockHistory} boxSize={5} mr={2} />
-                        <Text fontSize="lg" fontWeight="medium">
-                            Capital: {countryInfo.capital}
+                        <Text fontSize="lg">
+                            <Box
+                                as="span"
+                                fontSize="xl"
+                                letterSpacing="wide"
+                                mr={1}
+                            >
+                                Capital:
+                            </Box>
+                            <Box as="span" fontWeight="medium" color="gray.200">
+                                {countryInfo.capital}
+                            </Box>
+
                         </Text>
                     </Flex>
+
+
                 )}
 
                 <Flex align="center" mb={1}>
                     <Icon as={FaLanguage} boxSize={5} mr={2} />
-                    <Text fontSize="lg" fontWeight="medium">
-                        Official Language: {countryInfo.officialLanguage}
+                    <Text fontSize="lg">
+                        <Box as="span"
+                            fontSize="xl"
+                            letterSpacing="wide"
+                            mr={1}
+                        >
+                            Language:</Box>{' '}
+                        <Box as="span" fontWeight="medium" color="gray.200">
+                            {countryInfo.officialLanguage}
+                        </Box>
+
                     </Text>
                 </Flex>
 
                 <Flex align="center" mb={1}>
                     <Icon as={FaMoneyBillWave} boxSize={5} mr={2} />
-                    <Text fontSize="lg" fontWeight="medium">
-                        Currency: {countryInfo.currency}
+                    <Text fontSize="lg">
+                        <Box as="span"
+                            fontSize="xl"
+                            letterSpacing="wide"
+                            mr={1}
+                        >
+                            Currency: </Box>
+                        <Box as="span" fontWeight="medium" color="gray.200">
+                            {countryInfo.currencyName}
+                        </Box>
+
+
                     </Text>
                 </Flex>
 
                 <Flex align="center" mb={1}>
                     <Icon as={FaUsers} boxSize={5} mr={2} />
-                    <Text fontSize="lg" fontWeight="medium">
-                        Population: {countryInfo.population.toLocaleString('en-US')}
+                    <Text fontSize="lg">
+                        <Box as="span"
+                            fontSize="xl"
+                            letterSpacing="wide"
+                            mr={1}
+                        >
+                            Population: </Box>
+                        <Box as="span" fontWeight="medium" color="gray.200">
+                            {countryInfo.population.toLocaleString('en-US')}
+                        </Box>
+
                     </Text>
                 </Flex>
 
-                <Flex align="center" mb={1}>
+                <Flex align="center" mb={0}>
                     <Icon as={BsClockHistory} boxSize={5} mr={2} />
-                    <Text fontSize="lg" fontWeight="medium">
-                        {time.format('D MMMM YYYY')} –{' '}
+                    <Text fontSize="lg">
+                        <Box as="span" mr={1} fontSize="x1">
+                            {time.format('D MMMM YYYY')} –
+                        </Box>{' '}
                         <Box
                             as="span"
                             px={2}
@@ -115,7 +158,6 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                         >
                             {time.format('HH:mm:ss')}
                         </Box>{' '}
-                        {/* (utc {timezoneOffset >= 0 ? '+' : ''}{timezoneOffset / 3600}) */}
                     </Text>
                 </Flex>
 
@@ -130,10 +172,21 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                         {getWeatherIcon(weatherDescription)}
                     </Box>
 
-                    <Text fontSize="lg" fontWeight="medium">
-                        {temperature}°C – {weatherDescription}
+                    <Text fontSize="xl">
+                        <Box
+                            as="span"
+                            borderRadius="md"
+                            mr={2}
+                            letterSpacing="wide"
+                        >
+                            {temperature}°C
+                        </Box>
+                        <Box as="span" fontWeight="medium" color="gray.200">
+                            {weatherDescription}
+                        </Box>
                     </Text>
                 </Flex>
+
 
             </>
         </MotionBox>
