@@ -49,11 +49,6 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
 
                     <ModalBody pb={6}>
                         <Stack spacing={4}  >
-                            <Box>
-                                <Text fontWeight="bold" fontSize="lg" >Currency</Text>
-                                <Text fontSize="md" fontWeight="light">{countryInfo.currency}</Text>
-                            </Box>
-
                             {exchangeRate && (
                                 <Box>
                                     <Text fontWeight="bold" fontSize="lg">Exchange Rate</Text>
