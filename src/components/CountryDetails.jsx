@@ -90,9 +90,10 @@ const fetchCountryData = async (countryId) => {
  * Fetches current weather data for the provided capital city.
  * @param {string} capital - The capital city name
  */
-const fetchWeatherData = async (capital) => {
+const fetchWeatherData = async (capital, countryCode) => {
+  const query = `${capital},${countryCode}`; // <- garante país correto
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=e95265ec87670e7e1d84bd49cff7e84c`
+    `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=e95265ec87670e7e1d84bd49cff7e84c`
   );
   if (!response.ok) throw new Error('Weather data not found');
   const data = await response.json();
@@ -101,6 +102,7 @@ const fetchWeatherData = async (capital) => {
     timezone: data.timezone,
     description: data.weather[0].description,
     icon: data.weather[0].icon,
+    coord: data.coord,
   };
 };
 
@@ -149,10 +151,10 @@ const CountryDetails = () => {
 
   // Query for weather data (enabled if capital is valid)
   const { data: weatherData } = useQuery({
-    queryKey: ['weather', countryInfo?.capital],
-    queryFn: () => fetchWeatherData(countryInfo.capital),
+    queryKey: ['weather', countryId],
+    queryFn: () => fetchWeatherData(countryInfo.capital, countryId),
     enabled: !!countryInfo?.capital && countryInfo.capital !== 'N/A',
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 
   // Query for exchange rate (enabled if currency is valid)
