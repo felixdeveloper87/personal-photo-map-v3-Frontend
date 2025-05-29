@@ -62,7 +62,7 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
             borderRadius="2xl"
             boxShadow="2xl"
             mt={{ base: 2, md: 4 }}
-            color="white"
+            // color="white"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -78,17 +78,17 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                                 fontSize="xl"
                                 letterSpacing="wide"
                                 mr={1}
+                                fontWeight="bold"
                             >
                                 Capital:
                             </Box>
                             <Box as="span" fontWeight="medium" color="gray.200">
                                 {countryInfo.capital}
-                            </Box>
 
+                            </Box>
+                            <Box borderBottom="2px" borderColor="gray.300" opacity={0.3} />
                         </Text>
                     </Flex>
-
-
                 )}
 
                 <Flex align="center" mb={1}>
@@ -98,12 +98,13 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                             fontSize="xl"
                             letterSpacing="wide"
                             mr={1}
+                            fontWeight="bold"
                         >
                             Language:</Box>{' '}
                         <Box as="span" fontWeight="medium" color="gray.200">
                             {countryInfo.officialLanguage}
                         </Box>
-
+                        <Box borderBottom="2px" borderColor="gray.300" opacity={0.3} />
                     </Text>
                 </Flex>
 
@@ -114,12 +115,13 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                             fontSize="xl"
                             letterSpacing="wide"
                             mr={1}
+                            fontWeight="bold"
                         >
                             Currency: </Box>
                         <Box as="span" fontWeight="medium" color="gray.200">
                             {countryInfo.currencyName}
                         </Box>
-
+                        <Box borderBottom="2px" borderColor="gray.300" opacity={0.3} />
 
                     </Text>
                 </Flex>
@@ -131,19 +133,20 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                             fontSize="xl"
                             letterSpacing="wide"
                             mr={1}
+                            fontWeight="bold"
                         >
                             Population: </Box>
                         <Box as="span" fontWeight="medium" color="gray.200">
                             {countryInfo.population.toLocaleString('en-US')}
                         </Box>
-
+                        <Box borderBottom="2px" borderColor="gray.300" opacity={0.3} />
                     </Text>
                 </Flex>
 
                 <Flex align="center" mb={0}>
                     <Icon as={BsClockHistory} boxSize={5} mr={2} />
                     <Text fontSize="lg">
-                        <Box as="span" mr={1} fontSize="x1">
+                        <Box as="span" mr={1} fontSize="x1" fontWeight="bold">
                             {time.format('D MMMM YYYY')} –
                         </Box>{' '}
                         <Box
@@ -154,10 +157,11 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                             fontFamily="monospace"
                             borderRadius="md"
                             boxShadow="md"
-                            fontSize="lg"
+                            color="gray.200"
                         >
                             {time.format('HH:mm:ss')}
                         </Box>{' '}
+                        <Box borderBottom="2px" borderColor="gray.300" opacity={0.3} />
                     </Text>
                 </Flex>
 
@@ -172,18 +176,20 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                         {getWeatherIcon(weatherDescription)}
                     </Box>
 
-                    <Text fontSize="xl">
+                    <Text fontSize="lg">
                         <Box
                             as="span"
                             borderRadius="md"
                             mr={2}
                             letterSpacing="wide"
+                            fontWeight="bold"
                         >
                             {temperature}°C
                         </Box>
                         <Box as="span" fontWeight="medium" color="gray.200">
                             {weatherDescription}
                         </Box>
+                        <Box borderBottom="2px" borderColor="gray.300" opacity={0.3} />
                     </Text>
                 </Flex>
 
