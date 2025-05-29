@@ -7,16 +7,27 @@ export const fetchWorldBankIndicators = async (isoCode) => {
         internetUsers: "IT.NET.USER.ZS",
         urbanPopulation: "SP.URB.TOTL.IN.ZS",
         unemployment: "SL.UEM.TOTL.ZS",
-        gniPerCapitaPPP: "NY.GNP.PCAP.PP.CD", // usado como proxy para IDH
+        gniPerCapitaPPP: "NY.GNP.PCAP.PP.CD",
+        fertilityRate: "SP.DYN.TFRT.IN",
+        accessToEletricity: "EG.ELC.ACCS.ZS",
+        education: "SE.ADT.LITR.ZS",
+        healthExpenses: "SH.XPD.CHEX.GD.ZS",
+        netMigration: "SM.POP.NETM",
+        gdpPerCapitaCurrent: "NY.GDP.PCAP.CD",
+        inflationCPI: "FP.CPI.TOTL.ZG",
+        debtToGDP: "GC.DOD.TOTL.GD.ZS",
     };
 
     const fetchIndicator = async (code) => {
-        const url = `https://api.worldbank.org/v2/country/${isoCode}/indicator/${code}?format=json&per_page=10`;
+        const url = `https://api.worldbank.org/v2/country/${isoCode}/indicator/${code}?format=json&per_page=100`;
         const response = await fetch(url);
         if (!response.ok) return null;
 
         const data = await response.json();
-        const validEntry = data[1]?.find(entry => entry.value !== null);
+        const validEntry = data[1]
+            ?.filter(entry => entry.value !== null)
+            ?.sort((a, b) => parseInt(b.date) - parseInt(a.date))[0];
+
         return validEntry || null;
     };
 
@@ -29,8 +40,8 @@ export const fetchWorldBankIndicators = async (isoCode) => {
 
     const formatters = {
         currencyUSD: (val) => formatGDP(val),
-        percent: (val) => `${val.toFixed(1)}%`,
-        years: (val) => `${val.toFixed(1)} years`,
+        percent: (val) => val != null ? `${val.toFixed(1)}%` : 'N/A',
+        years: (val) => val != null ? `${val.toFixed(1)} years` : 'N/A',
     };
 
     const formatted = {};
@@ -64,10 +75,46 @@ export const fetchWorldBankIndicators = async (isoCode) => {
             case 'unemployment':
                 formatted[key] = { value: formatters.percent(val), year };
                 break;
+            case 'fertilityRate':
+            case 'accessToEletricity':
+            case 'education':
+            case 'healthExpenses':
+                formatted[key] = { value: formatters.percent(val), year };
+                break;
+            case 'netMigration':
+                formatted.netMigration = {
+                    value: val.toLocaleString('en-US'),
+                    year,
+                };
+                break;
+
+            case 'gdpPerCapitaCurrent':
+                formatted.gdpPerCapitaCurrent = {
+                    value: formatters.currencyUSD(val),
+                    year,
+                };
+                break;
+
+            case 'inflationCPI':
+                formatted.inflationCPI = {
+                    value: formatters.percent(val),
+                    year,
+                };
+                break;
+
+            case 'debtToGDP':
+                formatted.debtToGDP = {
+                    value: formatters.percent(val),
+                    year,
+                };
+                break;
+
+
             default:
                 break;
         }
     }
+    console.log("World Bank indicators:", formatted);
 
     return formatted;
 };

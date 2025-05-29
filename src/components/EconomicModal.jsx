@@ -13,7 +13,7 @@ import {
     Icon,
     useColorModeValue
 } from '@chakra-ui/react';
-import { FaChartLine } from 'react-icons/fa';
+import { FaChartLine, FaGlobeAmericas, FaHandHoldingUsd, FaUniversity, FaExchangeAlt, FaBalanceScale, FaMoneyBillWave } from 'react-icons/fa';
 
 const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,62 +38,138 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
                     borderRadius="2xl"
                     shadow="xl"
                     bgGradient={backgroundGradient}
-                    color={valueColor}
+                    maxHeight="50vh" // Limita a altura máxima da janela modal
+                    overflow="hidden"
                 >
-                    <ModalHeader display="flex" alignItems="center" gap={2} fontSize="2xl"
-                        fontWeight="bold">
+                    <ModalHeader
+                        display="flex"
+                        alignItems="center"
+                        gap={2}
+                        fontSize="2xl"
+                        fontWeight="bold"
+                    >
                         <Icon as={FaChartLine} />
                         Economic Indicators
                     </ModalHeader>
                     <ModalCloseButton />
 
-                    <ModalBody pb={6}>
-                        <Stack spacing={4}  >
+                    <ModalBody
+                        pb={6}
+                        overflowY="auto" // Habilita rolagem vertical
+                        maxHeight="calc(80vh - 80px)" // Altura considerando header + footer
+                        pr={2} // padding à direita para afastar da barra de rolagem
+                    >
+                        <Stack spacing={4}>
                             {exchangeRate && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg">Exchange Rate</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaExchangeAlt} mr={2} />
+                                        Exchange Rate
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="semibold" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
                                         1 £ = {exchangeRate} {currency}
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
                             {indicatorsData.gdp && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg" >GDP</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaMoneyBillWave} mr={2} />
+                                        GDP
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="semibold" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
                                         {indicatorsData.gdp.value} ({indicatorsData.gdp.year})
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            {indicatorsData.gdpPerCapitaCurrent && (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaUniversity} mr={2} />
+                                        GDP Per Capita
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="semibold" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.gdpPerCapitaCurrent.value} ({indicatorsData.gdpPerCapitaCurrent.year})
+                                    </Text>
+                                </Box>
+                            )}
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
                             {indicatorsData.gniPerCapita && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg" >GNI per Capita</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaHandHoldingUsd} mr={2} />
+                                        GNI per Capita
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="semibold" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
                                         {indicatorsData.gniPerCapita.value} ({indicatorsData.gniPerCapita.year})
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
                             {indicatorsData.hdiProxy && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg">GNI per Capita (PPP)</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaGlobeAmericas} mr={2} />
+                                        GNI per Capita (PPP)
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="semibold" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
                                         {indicatorsData.hdiProxy.value} ({indicatorsData.hdiProxy.year})
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
                             {indicatorsData.gdpGrowth && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg">GDP Growth</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaChartLine} mr={2} />
+                                        GDP Growth
+                                    </Text>
+                                    <Text
+                                        fontSize="md"
+                                        fontWeight="semibold"
+                                        bg="whiteAlpha.300"
+                                        px={2}
+                                        py={1}
+                                        borderRadius="md"
+                                        display="inline-block"
+                                        color={parseFloat(indicatorsData.gdpGrowth.value) >= 0 ? "green.400" : "red.400"}
+                                    >
                                         {indicatorsData.gdpGrowth.value} ({indicatorsData.gdpGrowth.year})
                                     </Text>
                                 </Box>
                             )}
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            <Box>
+                                <Text fontWeight="bold" fontSize="lg">
+                                    <Icon as={FaBalanceScale} mr={2} />
+                                    Public Debt (% of GDP)
+                                </Text>
+                                {indicatorsData.debtToGDP ? (
+                                    <Text fontSize="md" fontWeight="semibold" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.debtToGDP.value} ({indicatorsData.debtToGDP.year})
+                                    </Text>
+                                ) : (
+                                    <Text fontSize="md" fontWeight="light" color="red.300">
+                                        No data available for this indicator.
+                                    </Text>
+                                )}
+                            </Box>
                         </Stack>
+
                     </ModalBody>
                 </ModalContent>
             </Modal>

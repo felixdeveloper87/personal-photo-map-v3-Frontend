@@ -11,13 +11,30 @@ import {
     Stack,
     Box,
     Icon,
-    useColorModeValue
+    useColorModeValue,
+    chakra
 } from '@chakra-ui/react';
-import { FaUsers } from 'react-icons/fa';
+import {
+    FaUsers,
+    FaChartPie,
+    FaWifi,
+    FaCity,
+    FaUserTimes,
+    FaPrayingHands,
+    FaBaby,
+    FaBolt,
+    FaHeartbeat,
+    FaBook,
+    FaPlaneDeparture,
+    FaPercent
+} from 'react-icons/fa';
+import { motion } from 'framer-motion';
+
 import factbookRegionMap from '../data/factbookRegionMap.json';
 import { isoToGec } from '../data/isoToGecMap';
 
 const getFactbookRegion = (code) => factbookRegionMap[code.toLowerCase()] ?? null;
+
 
 const getFactbookCode = (isoCode) => {
     return isoToGec[isoCode.toLowerCase()] || isoCode.toLowerCase();
@@ -75,68 +92,203 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
                     borderRadius="2xl"
                     shadow="xl"
                     bgGradient={backgroundGradient}
+                    maxHeight="50vh" // Limita a altura máxima da janela modal
+                    overflow="hidden"
                 >
-                    <ModalHeader display="flex" alignItems="center" gap={2} fontSize="2xl"
-                        fontWeight="bold">
+                    <ModalHeader
+                        display="flex"
+                        alignItems="center"
+                        gap={2}
+                        fontSize="2xl"
+                        fontWeight="bold"
+                    >
                         <Icon as={FaUsers} color="blue.600" />
                         Social Indicators
                     </ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody pb={6}>
+
+                    <ModalBody
+                        pb={6}
+                        overflowY="auto" // Habilita rolagem vertical
+                        pr={2} // padding à direita para afastar da barra de rolagem
+                    >
+                        
                         <Stack spacing={4}>
-                            {indicatorsData.lifeExpectancy && (
-                                <Box>
-                                    <Text fontWeight="bold" fontSize="lg">Life Expectancy</Text>
-                                    <Text fontSize="md" fontWeight="light" >
-                                        {indicatorsData.lifeExpectancy.value} ({indicatorsData.lifeExpectancy.year})
-                                    </Text>
-                                </Box>
-                            )}
+                            <Box>
+                                <Text fontWeight="bold" fontSize="lg">
+                                    <Icon as={FaChartPie} mr={2} />
+                                    Life Expectancy
+                                </Text>
+                                <Text fontSize="md" fontWeight="light">
+                                    {indicatorsData.lifeExpectancy.value} ({indicatorsData.lifeExpectancy.year})
+                                </Text>
+                            </Box>
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
 
                             {indicatorsData.internetUsers && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg" >Internet Usage</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaWifi} mr={2} />
+                                        Internet Usage
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block" >
                                         {indicatorsData.internetUsers.value} ({indicatorsData.internetUsers.year})
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
                             {indicatorsData.urbanPopulation && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg" >Urban Population</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaCity} mr={2} />
+                                        Urban Population
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
                                         {indicatorsData.urbanPopulation.value} ({indicatorsData.urbanPopulation.year})
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
                             {indicatorsData.unemployment && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg">Unemployment Rate</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaUserTimes} mr={2} />
+                                        Unemployment Rate
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
                                         {indicatorsData.unemployment.value} ({indicatorsData.unemployment.year})
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
                             {factbookData?.religion ? (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg">Major Religions</Text>
-                                    <Text fontSize="md" fontWeight="light">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaPrayingHands} mr={2} />
+                                        Major Religions
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
                                         {String(factbookData.religion)}
                                     </Text>
                                 </Box>
                             ) : factbookError && (
                                 <Box>
-                                    <Text fontWeight="bold" fontSize="lg">Major Religions</Text>
-                                    <Text fontSize="md" fontWeight="light" color="red.300">
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaPrayingHands} mr={2} />
+                                        Major Religions
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block" color="red.300">
                                         No data available for this country.
                                     </Text>
                                 </Box>
                             )}
 
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            {indicatorsData.fertilityRate && (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaBaby} mr={2} />
+                                        Fertility Rate
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.fertilityRate.value} ({indicatorsData.fertilityRate.year})
+                                    </Text>
+                                </Box>
+                            )}
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            {indicatorsData.accessToEletricity && (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaBolt} mr={2} />
+                                        Access to Electricity
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.accessToEletricity.value} ({indicatorsData.accessToEletricity.year})
+                                    </Text>
+                                </Box>
+                            )}
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            {indicatorsData.healthExpenses && (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaHeartbeat} mr={2} />
+                                        Health Expenditure (% of GDP)
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.healthExpenses.value} ({indicatorsData.healthExpenses.year})
+                                    </Text>
+                                </Box>
+                            )}
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            <Box>
+                                <Text fontWeight="bold" fontSize="lg">
+                                    <Icon as={FaBook} mr={2} />
+                                    Literacy Rate
+                                </Text>
+                                {indicatorsData.education ? (
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.education.value} ({indicatorsData.education.year})
+                                    </Text>
+                                ) : (
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block" color="red.300">
+                                        No data available for this indicator.
+                                    </Text>
+                                )}
+                            </Box>
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            {indicatorsData.netMigration ? (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaPlaneDeparture} mr={2} />
+                                        Net Migration
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.netMigration.value} ({indicatorsData.netMigration.year})
+                                    </Text>
+                                </Box>
+                            ) : (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaPlaneDeparture} mr={2} />
+                                        Net Migration
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block" color="red.300">
+                                        No data available for this indicator.
+                                    </Text>
+                                </Box>
+                            )}
+
+                            <Box borderBottom="1px" borderColor="gray.300" opacity={0.5} />
+
+                            {indicatorsData.inflationCPI && (
+                                <Box>
+                                    <Text fontWeight="bold" fontSize="lg">
+                                        <Icon as={FaPercent} mr={2} />
+                                        Inflation Rate (CPI)
+                                    </Text>
+                                    <Text fontSize="md" fontWeight="light" bg="whiteAlpha.300" px={2} py={1} borderRadius="md" display="inline-block">
+                                        {indicatorsData.inflationCPI.value} ({indicatorsData.inflationCPI.year})
+                                    </Text>
+                                </Box>
+                            )}
                         </Stack>
+
                     </ModalBody>
                 </ModalContent>
             </Modal>
