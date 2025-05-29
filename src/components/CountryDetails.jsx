@@ -46,10 +46,12 @@ const fetchCountryData = async (countryId) => {
     const nativeNameObj = countryData.name.nativeName;
     const firstLangKey = nativeNameObj ? Object.keys(nativeNameObj)[0] : null;
     const nativeName = firstLangKey ? nativeNameObj[firstLangKey].common : countryData.name.common;
+    const currencyCode = Object.keys(countryData.currencies || {})[0];
+    const currencyName = currencyCode ? countryData.currencies[currencyCode].name : 'N/A';
 
     return {
       officialLanguage: Object.values(countryData.languages || {})[0] || 'N/A',
-      currency: Object.keys(countryData.currencies || {})[0] || 'N/A',
+      currencyName: currencyName,
       capital: countryData.capital ? countryData.capital[0] : 'N/A',
       population: countryData.population || 0,
       nativeName: nativeName,
