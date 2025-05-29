@@ -203,6 +203,7 @@ function Header() {
                 aria-label="Toggle Dark Mode"
                 icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
                 onClick={toggleColorMode}
+                bgGradient={backgroundGradient}
                 isRound
                 variant="ghost"
                 size="lg"
