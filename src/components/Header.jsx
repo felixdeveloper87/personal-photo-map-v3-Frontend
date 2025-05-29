@@ -335,6 +335,7 @@ function Header() {
               )}
               <Text
                 fontSize="md"
+                bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
@@ -346,6 +347,7 @@ function Header() {
 
               <Text
                 fontSize="md"
+                bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
                 cursor="pointer"

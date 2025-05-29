@@ -192,8 +192,6 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                         <Box borderBottom="2px" borderColor="gray.300" opacity={0.3} />
                     </Text>
                 </Flex>
-
-
             </>
         </MotionBox>
 
