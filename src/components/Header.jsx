@@ -309,6 +309,7 @@ function Header() {
                 aria-label="Toggle Dark Mode"
                 icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
                 onClick={toggleColorMode}
+                bgGradient={backgroundGradient}
                 isRound
                 variant="ghost"
                 size="md"
@@ -319,6 +320,7 @@ function Header() {
               <Text
                 fontWeight="bold"
                 cursor="pointer"
+                bgGradient={backgroundGradient}
                 onClick={profileModal.onOpen}
               >
                {fullname} {isPremium && "(Premium 🌟)"}

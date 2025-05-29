@@ -146,7 +146,7 @@ const LiveClock = ({ timezoneOffset, countryInfo, temperature, weatherDescriptio
                 <Flex align="center" mb={0}>
                     <Icon as={BsClockHistory} boxSize={5} mr={2} />
                     <Text fontSize="lg">
-                        <Box as="span" mr={1} fontSize="xl" fontWeight="bold">
+                        <Box as="span" mr={1} fontSize="x1" fontWeight="bold">
                             {time.format('D MMMM YYYY')} –
                         </Box>{' '}
                         <Box
