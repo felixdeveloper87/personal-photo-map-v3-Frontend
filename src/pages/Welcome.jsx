@@ -14,18 +14,17 @@ const Welcome = () => {
 
   return (
     <Flex
-      minH="100vh"
+      minH={["100vh", "100vh", "100vh"]}
       direction="column"
-      justify="flex-start"
+      justify={["center", "center", "flex-start"]}
       align="center"
       bgImage={`url(${bgImage})`}
-
-      bgSize="contain"
-      bgPosition="top"
+      bgSize={["cover", "cover", "contain"]} // cover para mobile, contain para desktop
+      bgPosition={["center", "top", "top"]}
       bgRepeat="no-repeat"
       position="relative"
       px={[4, 6, 8]}
-      pt={0}
+      pt={[8, 10, 0]}
     >
       {/* overlay */}
       <Box
