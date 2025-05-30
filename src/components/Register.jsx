@@ -20,6 +20,8 @@ import {
   Text,
   Select,
 } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, AlertDescription, Box } from '@chakra-ui/react';
+
 
 
 const Register = () => {
@@ -234,16 +236,30 @@ const Register = () => {
       </form>
 
       {/* Error or Success Feedback */}
-      {error && (
-        <Text color="red.500" mt={4} fontWeight="semibold">
-          {error}
-        </Text>
-      )}
-      {success && (
-        <Text color="green.500" mt={4} fontWeight="semibold">
-          {success}
-        </Text>
-      )}
+<Box maxW="md" mx="auto" mt={8}>
+  {success && (
+    <Alert status="success" borderRadius="md" mb={4}>
+      <AlertIcon />
+      <Box flex="1">
+        <AlertTitle>Success!</AlertTitle>
+        <AlertDescription>{success}</AlertDescription>
+      </Box>
+    </Alert>
+  )}
+
+  {error && (
+    <Alert status="error" borderRadius="md" mb={4}>
+      <AlertIcon />
+      <Box flex="1">
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error}</AlertDescription>
+      </Box>
+    </Alert>
+  )}
+
+  {/* Aqui vem seu formulário de registro */}
+</Box>
+
     </Box>
   );
 };
