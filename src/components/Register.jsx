@@ -19,9 +19,11 @@ import {
   FormLabel,
   Text,
   Select,
+  Alert, 
+  AlertIcon, 
+  AlertTitle, 
+  AlertDescription, 
 } from '@chakra-ui/react';
-import { Alert, AlertIcon, AlertTitle, AlertDescription, Box } from '@chakra-ui/react';
-
 
 
 const Register = () => {
