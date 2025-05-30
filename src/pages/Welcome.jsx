@@ -34,8 +34,7 @@ const Welcome = () => {
         left={0}
         w="100%"
         h="100%"
-        bg="gray.700"
-        opacity={0.1}
+        bg="rgba(0, 0, 0, 0.5)"
         zIndex={0}
       />
 
@@ -48,18 +47,21 @@ const Welcome = () => {
         color="white"
         py={[2, 4, 8]}
         px={[2, 4, 6]}
+        bg="rgba(0, 0, 0, 0.6)"
+        borderRadius="md"
+        boxShadow="lg"
       >
         <Heading
           fontSize={["3xl", "4xl", "5xl"]}
           mb={4}
-          textShadow="0 2px 4px black"
+          textShadow="2px 2px 6px rgba(0, 0, 0, 0.8)"
         >
           Welcome to Photomap
         </Heading>
         <Text
           fontSize={["md", "lg", "xl"]}
           mb={6}
-          textShadow="0 2px 4px black"
+          textShadow="2px 2px 6px rgba(0, 0, 0, 0.8)"
         >
           Explore new ideas, cultures and history around the world. Get real-time information about countries, register your memories and explore our beautiful planet.
         </Text>
@@ -68,7 +70,7 @@ const Welcome = () => {
           <Button colorScheme="blue" size="lg" onClick={() => navigate("/login")}>
             Sign In
           </Button>
-          <Button variant="outline" colorScheme="blue" size="lg" onClick={() => navigate("/register")}>
+          <Button colorScheme="blue" size="lg" onClick={() => navigate("/register")}>
             Sign Up
           </Button>
         </Stack>
