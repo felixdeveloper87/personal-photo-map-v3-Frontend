@@ -78,11 +78,11 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
         "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
     );
 
-    
+    if (!indicatorsData) return null;
 
     return (
         <>
-            <Button mt={1} ml={2} onClick={onOpen} isDisabled={!indicatorsData}>
+            <Button mt={1} ml={2} onClick={onOpen}>
   Social Info
 </Button>
 
