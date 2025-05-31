@@ -30,26 +30,9 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
 
     return (
         <>
-            <Button
-  mt={1}
-  ml={2}
-  onClick={onOpen}
-  leftIcon={<FaChartLine />}
-  bgGradient="linear(to-r, blue.400, blue.600)"
-  color="white"
-  _hover={{
-    bgGradient: 'linear(to-r, blue.500, blue.700)',
-    transform: 'scale(1.05)',
-    boxShadow: 'xl',
-  }}
-  _active={{
-    transform: 'scale(0.95)',
-    boxShadow: 'md',
-  }}
-  transition="all 0.2s ease-in-out"
->
-  Economic Info
-</Button>
+              <Button mt={1} onClick={onOpen}>
+                Economic Info
+            </Button>
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />
