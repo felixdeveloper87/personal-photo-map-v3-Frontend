@@ -30,7 +30,9 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
 
     return (
         <>
-              <Button mt={1} onClick={onOpen}>
+              <Button mt={1} onClick={onOpen} 
+                leftIcon={<FaChartLine />}
+                >
                 Economic Info
             </Button>
 
