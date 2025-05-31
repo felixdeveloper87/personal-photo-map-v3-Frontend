@@ -78,7 +78,7 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
         "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
     );
 
-    if (!indicatorsData) return null;
+    
 
     return (
         <>
