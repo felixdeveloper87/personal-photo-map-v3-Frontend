@@ -29,13 +29,11 @@ import {
     FaPercent
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-
 import factbookRegionMap from '../data/factbookRegionMap.json';
 import { isoToGec } from '../data/isoToGecMap';
 
 const getFactbookRegion = (code) => factbookRegionMap[code.toLowerCase()] ?? null;
-
-
+const MotionButton = motion(Button);
 const getFactbookCode = (isoCode) => {
     return isoToGec[isoCode.toLowerCase()] || isoCode.toLowerCase();
 };
@@ -82,9 +80,28 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
 
     return (
         <>
-            <Button mt={1} ml={2} onClick={onOpen}>
+            <MotionButton
+  mt={1}
+  ml={2}
+  leftIcon={<FaUsers />}
+  onClick={onOpen}
+  colorScheme="teal"
+  variant="solid"
+  size="md"
+  px={6}
+  py={5}
+  bgGradient="linear(to-r, teal.400, teal.600)"
+  _hover={{
+    bgGradient: 'linear(to-r, teal.500, teal.700)',
+    boxShadow: 'xl',
+    transform: 'scale(1.05)',
+  }}
+  whileTap={{ scale: 0.95 }}
+  whileHover={{ scale: 1.05 }}
+  transition={{ duration: 0.2 }}
+>
   Social Info
-</Button>
+</MotionButton>
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />
