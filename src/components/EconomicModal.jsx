@@ -14,6 +14,8 @@ import {
     useColorModeValue
 } from '@chakra-ui/react';
 import { FaChartLine, FaGlobeAmericas, FaHandHoldingUsd, FaUniversity, FaExchangeAlt, FaBalanceScale, FaMoneyBillWave } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+
 
 const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -21,21 +23,38 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
         "linear(to-r, rgb(151, 205, 228),rgb(101, 191, 201))",
         "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
     );
-
+    
     const valueColor = useColorModeValue("gray.900", "whiteAlpha.900");
 
     if (!indicatorsData) return null;
 
     return (
         <>
-            <Button mt={1} onClick={onOpen}>
-                Economic Info
-            </Button>
+            <Button
+  mt={1}
+  ml={2}
+  onClick={onOpen}
+  leftIcon={<FaChartLine />}
+  bgGradient="linear(to-r, blue.400, blue.600)"
+  color="white"
+  _hover={{
+    bgGradient: 'linear(to-r, blue.500, blue.700)',
+    transform: 'scale(1.05)',
+    boxShadow: 'xl',
+  }}
+  _active={{
+    transform: 'scale(0.95)',
+    boxShadow: 'md',
+  }}
+  transition="all 0.2s ease-in-out"
+>
+  Economic Info
+</Button>
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />
                 <ModalContent
-                    borderRadius="2xl"
+                   borderRadius="2xl"
                     shadow="xl"
                     bgGradient={backgroundGradient}
                     maxHeight="50vh" // Limita a altura máxima da janela modal
