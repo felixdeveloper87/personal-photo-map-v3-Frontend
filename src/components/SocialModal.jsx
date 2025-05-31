@@ -82,9 +82,9 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
 
     return (
         <>
-            <Button mt={1} ml={2} onClick={onOpen}>
-                Social Info
-            </Button>
+            <Button mt={1} ml={2} onClick={onOpen} isDisabled={!indicatorsData}>
+  Social Info
+</Button>
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />
