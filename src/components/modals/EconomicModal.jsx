@@ -23,7 +23,7 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
         "linear(to-r, rgb(151, 205, 228),rgb(101, 191, 201))",
         "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
     );
-    
+
     const valueColor = useColorModeValue("gray.900", "whiteAlpha.900");
     const MotionButton = motion(Button);
 
@@ -31,32 +31,32 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
 
     return (
         <>
-             <MotionButton
-  mt={1}
-  ml={2}
-  leftIcon={<FaChartLine />}
-  onClick={onOpen}
-  variant="solid"
-  bgGradient="linear(to-r, teal.400, teal.600)"
-  size="md"
-  px={6}
-  py={5}
-  _hover={{
-    bgGradient: 'linear(to-r, teal.500, teal.700)',
-    boxShadow: 'xl',
-    transform: 'scale(1.05)',
-  }}
-  whileTap={{ scale: 0.95 }}
-  whileHover={{ scale: 1.05 }}
-  transition={{ duration: 0.2 }}
->
-  Economic Info
-</MotionButton>
+            <MotionButton
+                mt={1}
+                ml={2}
+                leftIcon={<FaChartLine />}
+                onClick={onOpen}
+                variant="solid"
+                bgGradient="linear(to-r, teal.400, teal.600)"
+                size="md"
+                px={6}
+                py={5}
+                _hover={{
+                    bgGradient: 'linear(to-r, teal.500, teal.700)',
+                    boxShadow: 'xl',
+                    transform: 'scale(1.05)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+            >
+                Economic Info
+            </MotionButton>
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />
                 <ModalContent
-                   borderRadius="2xl"
+                    borderRadius="2xl"
                     shadow="xl"
                     bgGradient={backgroundGradient}
                     maxHeight="50vh" // Limita a altura máxima da janela modal

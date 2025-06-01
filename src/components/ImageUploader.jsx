@@ -9,8 +9,11 @@
 
 
 import React, { useState, useRef } from 'react';
-import { Box, Button, Input, Heading, Flex, Select, useToast } from '@chakra-ui/react';
+import { Box, Input, Heading, Flex, Select, useToast } from '@chakra-ui/react';
+import { UploadButton } from "../components/CustomButtons";
 import heic2any from 'heic2any';
+import { showSuccessToast, showErrorToast } from "../components/CustomToast";
+
 
 
 /**
@@ -62,15 +65,9 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
    */
   const handleImageUpload = async () => {
     if (files.length === 0) {
-      toast({
-        title: "No file selected.",
-        status: "warning",
-        duration: 3000,
-        isClosable: true,
-      });
+      showErrorToast(toast, "No file selected.");
       return;
     }
-
     const formData = new FormData();
 
     try {
@@ -96,13 +93,9 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
             formData.append("images", convertedFile);
           } catch (conversionError) {
             console.error("Erro ao converter HEIC:", conversionError);
-            toast({
-              title: "Erro ao converter imagem",
-              description: "Formato HEIC não suportado. Tente usar JPG/PNG.",
-              status: "error",
-              duration: 4000,
-              isClosable: true,
-            });
+            showErrorToast(toast, "Formato HEIC não suportado. Tente usar JPG/PNG.");
+
+
             return;
           }
         } else {
@@ -130,14 +123,8 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
       const data = await response.json();
       const uploadedImageUrls = data.imageUrls;
 
-      toast({
-        title: "Success!",
-        description: "Image(s) uploaded successfully!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      });
+      showSuccessToast(toast, "Image(s) uploaded successfully!");
+
 
       if (onUpload) {
         onUpload(uploadedImageUrls, year);
@@ -150,26 +137,24 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
       if (fileInputRef.current) fileInputRef.current.value = null;
 
     } catch (error) {
-      console.error('Upload error:', error);
-      toast({
-        title: "Upload error",
-        description: error.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      showErrorToast(toast, error.message);
+
     } finally {
       setIsUploading(false);
     }
   };
 
   return (
-    <Box p={5} borderRadius="md" boxShadow="md" maxWidth="600px" mx="auto">
+    <Box p={5} borderRadius="md" boxShadow="lg" maxWidth="600px" mx="auto">
       <Heading as="h2" mb={4} textAlign="center">Upload Images</Heading>
 
       <Flex justify="space-between" align="center" mb={4}>
         {/* Dropdown for selecting the year */}
-        <Select value={year} onChange={(e) => setYear(e.target.value)} width="150px">
+        <Select value={year}
+          onChange={(e) => setYear(e.target.value)}
+          width="150px"
+          border="1px"
+          borderColor="teal.800">
           {years.map((yr) => (
             <option key={yr} value={yr}>{yr}</option>
           ))}
@@ -182,12 +167,14 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
           multiple
           accept=".jpg,.jpeg,.png,.webp,.bmp,.heic,image/heic"
           width="auto"
+          border="1px"
+          borderColor="teal.800"
           ref={fileInputRef}
         />
       </Flex>
 
       {files.length > 0 && (
-        <Box mt={4} p={2} borderRadius="md" boxShadow="sm" fontSize="sm" maxHeight="100px" overflowY="auto">
+        <Box mt={4} p={2} borderRadius="md" boxShadow="sm" fontSize="sm" maxHeight="100px" overflowY="auto" >
           {files.map((file, idx) => (
             <Box key={idx}>
               <strong>{file.name}</strong>: {file.type}
@@ -197,15 +184,12 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
       )}
 
       {/* Upload button */}
-      <Button
+      <UploadButton
         isLoading={isUploading}
         loadingText="Uploading"
-        width="100%"
         onClick={handleImageUpload}
         disabled={files.length === 0}
-      >
-        Upload
-      </Button>
+      />
     </Box>
   );
 };

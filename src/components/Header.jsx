@@ -1,15 +1,4 @@
-/**
- * Header.jsx
- *
- * This component renders the main navigation bar of the application,
- * featuring logo, title, authentication controls, and responsive menus.
- * It provides access to features like search, timeline, profile, premium upgrade,
- * and modals showing photo and country statistics.
- * Styled using Chakra UI for a consistent and adaptive design.
- */
-
-
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -19,13 +8,6 @@ import {
   Button,
   Text,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   useToast,
   IconButton,
   VStack,
@@ -34,12 +16,24 @@ import {
   useColorMode,
   useColorModeValue
 } from "@chakra-ui/react";
+import {
+  SignInButton,
+  SignUpButton,
+  SignOutButton,
+  TimelineButton,
+} from "../components/CustomButtons";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../context/AuthContext";
 import { CountriesContext } from "../context/CountriesContext";
 import SearchForm from "../components/SearchForm";
+import UserProfileModal from "../components/modals/UserProfileModal";
+import PremiumBenefitsModal from "../components/modals/PremiumBenefitsModal";
+import PhotoStorageModal from "../components/modals/PhotoStorageModal";
+import { showSuccessToast, showErrorToast } from "../components/CustomToast";
+import CountriesVisitedModal from '../components/modals/CountriesVisitedModal';
 import logo from "../assets/logo.png";
 import { FaMoon, FaSun } from 'react-icons/fa';
+
 
 
 /**
@@ -56,6 +50,7 @@ function Header() {
   const photoStorageModal = useDisclosure();
   const countriesModal = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+
 
   const backgroundGradient = useColorModeValue(
     "linear(to-r, rgb(151, 205, 228),rgb(101, 191, 201))",
@@ -91,6 +86,7 @@ function Header() {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   // Function to upgrade the user to premium
+
   const handleBecomePremium = async () => {
     setLoadingPremium(true);
     try {
@@ -106,27 +102,12 @@ function Header() {
         throw new Error("Failed to upgrade to premium");
       }
 
-      // Update the premium status in context
       updatePremiumStatus(true);
-
-      toast({
-        title: "Success!",
-        description: "You are now a Premium user! 🎉",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-
+      showSuccessToast(toast, "You are now a Premium user! 🎉");
       premiumModal.onClose();
     } catch (error) {
       console.error("Premium upgrade error:", error);
-      toast({
-        title: "Error!",
-        description: "Failed to become premium.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      showErrorToast(toast, "Failed to become premium.");
     }
     setLoadingPremium(false);
   };
@@ -141,6 +122,7 @@ function Header() {
       px={6}
       py={3}
       mb={2.5}
+
     >
       <Flex
         justify="space-between"
@@ -188,6 +170,7 @@ function Header() {
           icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
           variant="outline"
           aria-label="Toggle Navigation"
+
         />
 
         {/* Desktop Navigation */}
@@ -203,7 +186,6 @@ function Header() {
                 aria-label="Toggle Dark Mode"
                 icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
                 onClick={toggleColorMode}
-                bgGradient={backgroundGradient}
                 isRound
                 variant="ghost"
                 size="lg"
@@ -216,12 +198,11 @@ function Header() {
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
-                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }} // 
+                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }} 
                 onClick={photoStorageModal.onOpen}
               >
                 📸 Photos: {photoCount}
               </Text>
-
               <Text
                 fontSize="lg"
                 bgGradient={backgroundGradient}
@@ -242,53 +223,36 @@ function Header() {
                       navigate(`/countries/${searchParams.country}?year=${searchParams.year}`)
                     }
                   />
-                  <Button
-                    fontSize="lg"
-                    variant="solid"
-                    onClick={() => navigate("/timeline")}
-                  >
-                    Timeline
-                  </Button>
+                  <TimelineButton onClick={() => navigate("/timeline")} color="white" />
                 </>
               ) : (
                 <Text>Loading search...</Text>
+                
               )}
 
               <Text
-                fontSize="lg"
                 fontWeight="semibold"
                 cursor="pointer"
+                fontSize="lg"
                 onClick={profileModal.onOpen}
               >
-              {fullname} {isPremium && "(Premium 🌟)"}
+                {fullname} {isPremium && "(Premium 🌟)"}
               </Text>
 
               {!isPremium && (
-                <Button
-                  colorScheme="yellow"
-                  fontSize="lg"
-                  variant="solid"
-                  onClick={premiumModal.onOpen}
-                >
-                  Upgrade to Premium 🌟
-                </Button>
+                <UpgradeToPremiumButton onClick={premiumModal.onOpen} />
+
               )}
 
-              <Button colorScheme="red" variant="solid" onClick={logout}>
-                Sign out
-              </Button>
+              <SignOutButton onClick={logout} />
             </>
           ) : (
             <>
-              <Button variant="solid" onClick={() => navigate("/login")}>
-                Sign in
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => navigate("/register")}
-              >
-                Sign up
-              </Button>
+              <SignInButton onClick={() => navigate("/login")} />
+
+              <SignUpButton onClick={() => navigate("/register")} />
+
+
             </>
           )}
         </HStack>
@@ -310,7 +274,6 @@ function Header() {
                 aria-label="Toggle Dark Mode"
                 icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
                 onClick={toggleColorMode}
-                bgGradient={backgroundGradient}
                 isRound
                 variant="ghost"
                 size="md"
@@ -321,24 +284,16 @@ function Header() {
               <Text
                 fontWeight="bold"
                 cursor="pointer"
-                bgGradient={backgroundGradient}
                 onClick={profileModal.onOpen}
               >
-               {fullname} {isPremium && "(Premium 🌟)"}
+                Welcome, {fullname} {isPremium && "(Premium 🌟)"}
               </Text>
 
               {!isPremium && (
-                <Button
-                  colorScheme="yellow"
-                  variant="solid"
-                  onClick={premiumModal.onOpen}
-                >
-                  Upgrade to Premium 🌟
-                </Button>
+                <UpgradeToPremiumButton onClick={premiumModal.onOpen} />
               )}
               <Text
                 fontSize="md"
-                bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
@@ -350,7 +305,6 @@ function Header() {
 
               <Text
                 fontSize="md"
-                bgGradient={backgroundGradient}
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
@@ -378,9 +332,7 @@ function Header() {
                 Timeline
               </Button>
 
-              <Button variant="solid" onClick={logout}>
-                Sign out
-              </Button>
+              <SignOutButton onClick={logout} />
             </VStack>
           ) : (
             <VStack align="start" spacing={3}>
@@ -408,129 +360,40 @@ function Header() {
       </Collapse>
 
       {/* Photo Storage Modal */}
-      <Modal isOpen={photoStorageModal.isOpen} onClose={photoStorageModal.onClose} size="sm" motionPreset="slideInBottom"  >
-        <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl" bgGradient={backgroundGradient} >
-          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" >
-            Photo Storage
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box textAlign="center" p={4} borderRadius="md" shadow="sm">
-              <Text fontSize="lg" fontWeight="medium" >
-                {isPremium ? "100GB Photo Storage 📸" : "5GB Photo Storage 📷"}
-              </Text>
-            </Box>
-          </ModalBody>
-          <ModalFooter>
-            <Button w="full" onClick={photoStorageModal.onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <PhotoStorageModal
+        isOpen={photoStorageModal.isOpen}
+        onClose={photoStorageModal.onClose}
+        isPremium={isPremium}
+      />
+
 
       {/* Countries Visited Modal */}
-      <Modal isOpen={countriesModal.isOpen} onClose={countriesModal.onClose} size="sm" motionPreset="slideInBottom" >
-        <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl" bgGradient={backgroundGradient}>
-          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" >
-            Countries Visited
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box textAlign="center" p={4} borderRadius="md" shadow="sm">
-              <Text fontSize="lg" fontWeight="medium" >
-                You have visited <b>{countryCount}</b> out of <b>195</b> countries! 🌍
-              </Text>
-              <Box mt={4}>
-                <progress
-                  value={countryCount}
-                  max="195"
-                  style={{
-                    width: "100%",
-                    height: "20px",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    backgroundColor: "#e0e0e0",
-                  }}
-                />
-              </Box>
-            </Box>
-          </ModalBody>
-          <ModalFooter>
-            <Button w="full" onClick={countriesModal.onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <CountriesVisitedModal
+        isOpen={countriesModal.isOpen}
+        onClose={countriesModal.onClose}
+        countryCount={countryCount}
+      />
 
 
 
       {/* Profile Modal */}
-      <Modal isOpen={profileModal.isOpen} onClose={profileModal.onClose} size="lg" motionPreset="slideInBottom"  >
-        <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl" >
-          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="semibold">
-            My Profile
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box p={4} borderRadius="md" shadow="sm">
-              <Text fontSize="lg" fontWeight="bold" >Full Name:</Text>
-              <Text mb={2}>{fullname}</Text>
-
-              <Text fontSize="lg" fontWeight="bold" >Email:</Text>
-              <Text mb={2}>{email}</Text>
-
-              <Text fontSize="lg" fontWeight="bold" >Photos:</Text>
-              <Text mb={2}>{photoCount}</Text>
-
-              <Text fontSize="lg" fontWeight="bold" >Countries:</Text>
-              <Text>{countryCount}</Text>
-            </Box>
-          </ModalBody>
-          <ModalFooter>
-            <Button w="full" onClick={profileModal.onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <UserProfileModal
+        isOpen={profileModal.isOpen}
+        onClose={profileModal.onClose}
+        fullname={fullname}
+        email={email}
+        photoCount={photoCount}
+        countryCount={countryCount}
+      />
 
       {/* Premium Benefits Modal */}
-      <Modal isOpen={premiumModal.isOpen} onClose={premiumModal.onClose} size="lg" motionPreset="slideInBottom">
-        <ModalOverlay />
-        <ModalContent rounded="lg" shadow="xl">
-          <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold" color="yellow.600">
-            🎉 Premium User Benefits
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box p={4} borderRadius="md" shadow="sm">
-              <Text mb={3} fontSize="lg" fontWeight="medium" color="gray.700">
-                By becoming a Premium user, you unlock:
-              </Text>
-              <VStack spacing={3} align="start" pl={2}>
-                <Text>✅ <b>100gb photo storage</b></Text>
-                <Text>✅ <b>Create Albums</b></Text>
-                <Text>✅ <b>Priority support</b></Text>
-              </VStack>
-            </Box>
-          </ModalBody>
-          <ModalFooter>
-            <Button mr={3} onClick={premiumModal.onClose}>
-              Cancel
-            </Button>
-            <Button w="full" onClick={handleBecomePremium} isLoading={loadingPremium}>
-              Upgrade to Premium
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <PremiumBenefitsModal
+        isOpen={premiumModal.isOpen}
+        onClose={premiumModal.onClose}
+        onUpgrade={handleBecomePremium}
+        isLoading={loadingPremium}
+      />
     </Box>
   );
 }
-
 export default Header;

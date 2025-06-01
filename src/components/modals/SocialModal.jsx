@@ -29,8 +29,8 @@ import {
     FaPercent
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import factbookRegionMap from '../data/factbookRegionMap.json';
-import { isoToGec } from '../data/isoToGecMap';
+import factbookRegionMap from '../../data/factbookRegionMap.json';
+import { isoToGec } from '../../data/isoToGecMap';
 
 const getFactbookRegion = (code) => factbookRegionMap[code.toLowerCase()] ?? null;
 const MotionButton = motion(Button);
@@ -81,26 +81,26 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
     return (
         <>
             <MotionButton
-  mt={1}
-  ml={2}
-  leftIcon={<FaUsers />}
-  onClick={onOpen}
-  bgGradient="linear(to-r, teal.400, teal.600)"
-  variant="solid"
-  size="md"
-  px={6}
-  py={5}
-  _hover={{
-    bgGradient: 'linear(to-r, teal.500, teal.700)',
-    boxShadow: 'xl',
-    transform: 'scale(1.05)',
-  }}
-  whileTap={{ scale: 0.95 }}
-  whileHover={{ scale: 1.05 }}
-  transition={{ duration: 0.2 }}
->
-  Social Info
-</MotionButton>
+                mt={1}
+                ml={2}
+                leftIcon={<FaUsers />}
+                onClick={onOpen}
+                bgGradient="linear(to-r, teal.400, teal.600)"
+                variant="solid"
+                size="md"
+                px={6}
+                py={5}
+                _hover={{
+                    bgGradient: 'linear(to-r, teal.500, teal.700)',
+                    boxShadow: 'xl',
+                    transform: 'scale(1.05)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+            >
+                Social Info
+            </MotionButton>
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />
@@ -128,7 +128,7 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
                         overflowY="auto" // Habilita rolagem vertical
                         pr={2} // padding à direita para afastar da barra de rolagem
                     >
-                        
+
                         <Stack spacing={4}>
                             <Box>
                                 <Text fontWeight="bold" fontSize="lg">

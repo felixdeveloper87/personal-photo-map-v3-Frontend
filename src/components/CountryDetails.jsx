@@ -20,11 +20,11 @@ import moment from 'moment-timezone';
 import LiveClock from '../components/LiveClock';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { fetchWorldBankIndicators } from "../data/worldBankService";
-import EconomicModal from '../components/EconomicModal';
-import SocialModal from '../components/SocialModal';
+import EconomicModal from './modals/EconomicModal';
+import SocialModal from './modals/SocialModal';
 import { FaPlaneDeparture } from 'react-icons/fa';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { fetchFactbookData } from '../components/SocialModal';
+import { fetchFactbookData } from './modals/SocialModal';
 
 /**
  * Registers the English locale so that i18n-iso-countries can
