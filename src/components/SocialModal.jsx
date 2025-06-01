@@ -85,7 +85,7 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
   ml={2}
   leftIcon={<FaUsers />}
   onClick={onOpen}
-  colorScheme="teal"
+  bgGradient={backgroundGradient}
   variant="solid"
   size="md"
   px={6}
