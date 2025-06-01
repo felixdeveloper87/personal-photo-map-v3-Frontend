@@ -25,6 +25,7 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
     );
     
     const valueColor = useColorModeValue("gray.900", "whiteAlpha.900");
+    const MotionButton = motion(Button);
 
     if (!indicatorsData) return null;
 
