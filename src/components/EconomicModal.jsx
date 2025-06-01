@@ -40,7 +40,6 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
   size="md"
   px={6}
   py={5}
-  bgGradient="linear(to-r, teal.400, teal.600)"
   _hover={{
     bgGradient: 'linear(to-r, teal.500, teal.700)',
     boxShadow: 'xl',
