@@ -198,7 +198,7 @@ function Header() {
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
-                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }} 
+                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }}
                 onClick={photoStorageModal.onOpen}
               >
                 📸 Photos: {photoCount}
@@ -227,7 +227,7 @@ function Header() {
                 </>
               ) : (
                 <Text>Loading search...</Text>
-                
+
               )}
 
               <Text
@@ -322,38 +322,14 @@ function Header() {
                 }}
               />
 
-              <Button
-                variant="solid"
-                onClick={() => {
-                  navigate("/timeline");
-                  onClose();
-                }}
-              >
-                Timeline
-              </Button>
+              <TimelineButton onClick={() => navigate("/timeline")} color="white" />
 
               <SignOutButton onClick={logout} />
             </VStack>
           ) : (
             <VStack align="start" spacing={3}>
-              <Button
-                variant="solid"
-                onClick={() => {
-                  navigate("/login");
-                  onClose();
-                }}
-              >
-                Sign in
-              </Button>
-              <Button
-                variant="solid"
-                onClick={() => {
-                  navigate("/register");
-                  onClose();
-                }}
-              >
-                Sign up
-              </Button>
+              <SignInButton onClick={() => navigate("/login")} />
+              <SignUpButton onClick={() => navigate("/register")} />
             </VStack>
           )}
         </Box>
@@ -366,15 +342,12 @@ function Header() {
         isPremium={isPremium}
       />
 
-
       {/* Countries Visited Modal */}
       <CountriesVisitedModal
         isOpen={countriesModal.isOpen}
         onClose={countriesModal.onClose}
         countryCount={countryCount}
       />
-
-
 
       {/* Profile Modal */}
       <UserProfileModal
@@ -396,4 +369,5 @@ function Header() {
     </Box>
   );
 }
+
 export default Header;
