@@ -136,6 +136,7 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
         status: "success",
         duration: 3000,
         isClosable: true,
+        position: "top",
       });
 
       if (onUpload) {
