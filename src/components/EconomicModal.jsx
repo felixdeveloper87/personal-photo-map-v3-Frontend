@@ -36,7 +36,6 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
   ml={2}
   leftIcon={<FaChartLine />}
   onClick={onOpen}
-  colorScheme="teal"
   variant="solid"
   size="md"
   px={6}
