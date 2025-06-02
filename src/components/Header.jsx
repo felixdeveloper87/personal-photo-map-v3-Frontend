@@ -20,7 +20,7 @@ import {
   SignUpButton,
   SignOutButton,
   TimelineButton,
-} from "../components/CustomButtons";
+} from "./Buttons/CustomButtons";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../context/AuthContext";
 import { CountriesContext } from "../context/CountriesContext";
