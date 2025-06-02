@@ -70,9 +70,7 @@ export default function SearchForm({ onSearch }) {
   return (
     <>
       {/* Button to open the "Search Photos" modal */}
-      <Button onClick={onOpen} fontSize="lg">
-        Search Photos
-      </Button>
+      <SearchButton onClick={onOpen} />
 
       {/* Modal for selecting a country/year */}
       <Modal isOpen={isOpen} onClose={onClose}>
