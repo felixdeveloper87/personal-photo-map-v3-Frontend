@@ -6,11 +6,9 @@ import {
   Flex,
   Text,
 } from '@chakra-ui/react';
-import { FiZoomIn, FiZoomOut, FiX, FiMaximize } from 'react-icons/fi';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
-import { DeleteButton } from '../components/CustomButtons';
+import { DeleteButton } from './Buttons/CustomButtons';
 import FullImageModal from './modals/FullImageModal';
 
 /**
