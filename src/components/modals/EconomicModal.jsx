@@ -7,14 +7,13 @@ import {
     ModalBody,
     Text,
     useDisclosure,
-    Button,
     Stack,
     Box,
     Icon,
     useColorModeValue
 } from '@chakra-ui/react';
 import { FaChartLine, FaGlobeAmericas, FaHandHoldingUsd, FaUniversity, FaExchangeAlt, FaBalanceScale, FaMoneyBillWave } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { EconomicInfoButton } from "../Buttons/CustomButtons";
 
 
 const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) => {
@@ -24,34 +23,12 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
         "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
     );
 
-    const valueColor = useColorModeValue("gray.900", "whiteAlpha.900");
-    const MotionButton = motion(Button);
-
     if (!indicatorsData) return null;
 
     return (
         <>
-            <MotionButton
-                mt={1}
-                ml={2}
-                leftIcon={<FaChartLine />}
-                onClick={onOpen}
-                variant="solid"
-                bgGradient="linear(to-r, teal.400, teal.600)"
-                size="md"
-                px={6}
-                py={5}
-                _hover={{
-                    bgGradient: 'linear(to-r, teal.500, teal.700)',
-                    boxShadow: 'xl',
-                    transform: 'scale(1.05)',
-                }}
-                whileTap={{ scale: 0.95 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-            >
-                Economic Info
-            </MotionButton>
+            <EconomicInfoButton onClick={onOpen} />
+
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />

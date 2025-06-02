@@ -7,7 +7,6 @@ import {
     ModalBody,
     Text,
     useDisclosure,
-    Button,
     Stack,
     Box,
     Icon,
@@ -28,12 +27,11 @@ import {
     FaPlaneDeparture,
     FaPercent
 } from 'react-icons/fa';
-import { motion } from 'framer-motion';
 import factbookRegionMap from '../../data/factbookRegionMap.json';
 import { isoToGec } from '../../data/isoToGecMap';
+import { SocialInfoButton } from '../Buttons/CustomButtons';
 
 const getFactbookRegion = (code) => factbookRegionMap[code.toLowerCase()] ?? null;
-const MotionButton = motion(Button);
 const getFactbookCode = (isoCode) => {
     return isoToGec[isoCode.toLowerCase()] || isoCode.toLowerCase();
 };
@@ -71,7 +69,6 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const backgroundGradient = useColorModeValue(
-        // "linear(to-r, teal.400, blue.300)",
         "linear(to-r, rgb(151, 205, 228),rgb(101, 191, 201))",
         "linear(to-r,rgb(78, 123, 151),rgb(22, 47, 72))"
     );
@@ -80,27 +77,7 @@ const SocialModal = ({ indicatorsData, factbookData, factbookError }) => {
 
     return (
         <>
-            <MotionButton
-                mt={1}
-                ml={2}
-                leftIcon={<FaUsers />}
-                onClick={onOpen}
-                bgGradient="linear(to-r, teal.400, teal.600)"
-                variant="solid"
-                size="md"
-                px={6}
-                py={5}
-                _hover={{
-                    bgGradient: 'linear(to-r, teal.500, teal.700)',
-                    boxShadow: 'xl',
-                    transform: 'scale(1.05)',
-                }}
-                whileTap={{ scale: 0.95 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-            >
-                Social Info
-            </MotionButton>
+            <SocialInfoButton onClick={onOpen} />
 
             <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered motionPreset="slideInBottom">
                 <ModalOverlay />
