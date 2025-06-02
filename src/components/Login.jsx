@@ -21,7 +21,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
-import { SignInButton } from "../components/CustomButtons";
+import { SignInButton } from "./Buttons/CustomButtons";
 import ResetPasswordModal from "../components/modals/ResetPasswordModal";
 
 
