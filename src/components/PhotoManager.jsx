@@ -472,12 +472,11 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
    */
   const images = Array.isArray(imagesData)
     ? imagesData.map((image) => ({
-      url: `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
+      url: image.filePath, // The full S3 URL is used directly
       id: image.id,
       year: image.year,
     }))
     : [];
-
   /**
    * Filter out only albums that actually contain images.
    */
