@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CountriesContext } from '../context/CountriesContext';
+import { SearchButton } from "../components/Buttons/CustomButtons";
 
 
 export default function SearchForm({ onSearch }) {
