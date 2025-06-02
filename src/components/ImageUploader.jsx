@@ -145,7 +145,12 @@ const ImageUploader = ({ countryId, onUpload, onUploadSuccess }) => {
   };
 
   return (
-    <Box p={5} borderRadius="md" boxShadow="lg" maxWidth="600px" mx="auto">
+    <Box p={5} borderRadius="md"
+      boxShadow="lg"
+      maxWidth="600px" mx="auto"
+      border="1px"
+      borderColor="teal.800">
+
       <Heading as="h2" mb={4} textAlign="center">Upload Images</Heading>
 
       <Flex justify="space-between" align="center" mb={4}>
