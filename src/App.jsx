@@ -27,7 +27,6 @@ import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { CountriesProvider } from './context/CountriesContext';
-import './styles/tooltip.css';
 
 function App() {
 
