@@ -10,7 +10,7 @@
 
 import React, { useState, useRef } from 'react';
 import { Box, Input, Heading, Flex, Select, useToast } from '@chakra-ui/react';
-import { UploadButton } from "../components/CustomButtons";
+import { UploadButton } from "../components/Buttons/CustomButtons";
 import heic2any from 'heic2any';
 import { showSuccessToast, showErrorToast } from "../components/CustomToast";
 
