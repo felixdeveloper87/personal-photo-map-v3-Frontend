@@ -222,7 +222,7 @@ function Header() {
                       navigate(`/countries/${searchParams.country}?year=${searchParams.year}`)
                     }
                   />
-                  <TimelineButton onClick={() => navigate("/timeline")} color="white" />
+                  <TimelineButton onClick={() => navigate("/timeline")} />
                 </>
               ) : (
                 <Text>Loading search...</Text>
