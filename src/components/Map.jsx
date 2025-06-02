@@ -14,6 +14,7 @@ import countriesData from '../map/countries.json';
 import { AuthContext } from '../context/AuthContext';
 import { CountriesContext } from '../context/CountriesContext';
 import { Box, useColorModeValue } from '@chakra-ui/react';
+import '../styles/tooltip.css';
 
 const Map = () => {
   // Navigation hook to route to a country detail page on click

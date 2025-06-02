@@ -1,30 +1,34 @@
-/**
- * PhotoGallery Component
- *
- * Displays a grid of photos with selection, deletion, zoom, and fullscreen modal features.
- */
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
-  Button,
   Image,
-  IconButton,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
   useDisclosure,
   Flex,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 import { FiZoomIn, FiZoomOut, FiX, FiMaximize } from 'react-icons/fi';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
+import { DeleteButton } from '../components/CustomButtons';
+import FullImageModal from './modals/FullImageModal';
 
+/**
+ * PhotoGallery Component
+ *
+ * Displays a grid of images with the following features:
+ * - Selecting and deleting multiple images
+ * - Enlarge images in a modal view
+ * - Zoom in/out and reset within the modal
+ * - Navigate between images using arrows or keyboard events
+ *
+ * @param {Array}   images               - An array of images to display (each object should contain `url` and `id`)
+ * @param {Function} onDeleteSelectedImages - A callback for deleting selected images
+ * @param {Array}   selectedImageIds     - An array storing the IDs of selected images
+ * @param {Function} setSelectedImageIds - State setter for selected image IDs
+ *
+ * @returns {JSX.Element} A customizable photo gallery with zoom and deletion functionalities
+ */
 
 countries.registerLocale(en);
 const PhotoGallery = ({
@@ -41,6 +45,7 @@ const PhotoGallery = ({
 
   const fullscreenRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
 
   /**
    * Opens the modal at the clicked image's index.
@@ -151,14 +156,20 @@ const PhotoGallery = ({
     };
   }, []);
 
+
   return (
     <Box>
       {/* Show delete button only if there are selected images */}
       {Array.isArray(selectedImageIds) && selectedImageIds.length > 0 && (
-        <Flex mb={4} gap={4}>
-          <Button colorScheme="red" onClick={handleDeleteSelected}>
-            Delete {selectedImageIds.length} image(s)
-          </Button>
+        <Flex mb={6} justify="center">
+          <DeleteButton
+            size="sm"
+            borderRadius="xl"
+            boxShadow="md"
+            onClick={handleDeleteSelected}
+          >
+            Delete {selectedImageIds.length} image{selectedImageIds.length > 1 ? 's' : ''}
+          </DeleteButton>
         </Flex>
       )}
 
@@ -172,7 +183,7 @@ const PhotoGallery = ({
             border={
               Array.isArray(selectedImageIds) &&
                 selectedImageIds.includes(image.id)
-                ? '4px solid red'
+                ? '2px solid red'
                 : '2px solid gray'
             }
             borderRadius="md"
@@ -224,113 +235,17 @@ const PhotoGallery = ({
       </Flex>
 
       {/* Full-size image modal */}
-      <Modal isOpen={isOpen} onClose={closeModal} size="4xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody p={4}>
-            {/* Close button */}
-            <IconButton
-              icon={<FiX />}
-              aria-label="Close modal"
-              position="absolute"
-              top="10px"
-              right="10px"
-              onClick={closeModal}
-              colorScheme="red"
-              zIndex="10"
-            />
-
-            {/* Zoom & Pan controls */}
-            <Box ref={fullscreenRef}>
-              <TransformWrapper
-                initialScale={1}
-                wheel={{ step: 0.2 }}
-                doubleClick={{ disabled: true }}
-                pinch={{ step: 5 }}
-              >
-                {({ zoomIn, zoomOut, resetTransform }) => (
-                  <VStack spacing={4}>
-                    <Flex justifyContent="center" mb={4}>
-                      <IconButton
-                        onClick={() => zoomOut()}
-                        icon={<FiZoomOut />}
-                        aria-label="Zoom out"
-                        mx={2}
-                        colorScheme="blue"
-                      />
-                      <IconButton
-                        onClick={() => zoomIn()}
-                        icon={<FiZoomIn />}
-                        aria-label="Zoom in"
-                        mx={2}
-                        colorScheme="blue"
-                      />
-                      <Button
-                        onClick={() => resetTransform()}
-                        mx={2}
-                        colorScheme="blue"
-                      >
-                        Reset
-                      </Button>
-                      <IconButton
-                        onClick={toggleFullScreen}
-                        icon={<FiMaximize />}
-                        aria-label="Fullscreen"
-                        mx={2}
-                        colorScheme="blue"
-                      />
-                    </Flex>
-
-                    <TransformComponent>
-                      <Flex justify="center" align="center" w="100%" h="100%">
-                        <Image
-                          src={images[currentImageIndex].url}
-                          alt={`Country image ${currentImageIndex + 1}`}
-                          maxWidth={isFullscreen ? '100%' : '90%'}
-                          maxHeight={isFullscreen ? '90vh' : '80vh'}
-                          objectFit="contain"
-                          borderRadius="md"
-                          boxShadow="lg"
-                        />
-                      </Flex>
-                    </TransformComponent>
-                  </VStack>
-                )}
-              </TransformWrapper>
-            </Box>
-
-            {/* Navigation between multiple images */}
-            {images.length > 1 && (
-              <>
-                <IconButton
-                  icon={<Text fontSize="2xl">&#10094;</Text>}
-                  onClick={showPrevImage}
-                  aria-label="Previous Image"
-                  position="absolute"
-                  top="50%"
-                  left="20px"
-                  transform="translateY(-50%)"
-                  zIndex="10"
-                  variant="ghost"
-                  size="lg"
-                />
-                <IconButton
-                  icon={<Text fontSize="2xl">&#10095;</Text>}
-                  onClick={showNextImage}
-                  aria-label="Next Image"
-                  position="absolute"
-                  top="50%"
-                  right="20px"
-                  transform="translateY(-50%)"
-                  zIndex="10"
-                  variant="ghost"
-                  size="lg"
-                />
-              </>
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <FullImageModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        imageUrl={images[currentImageIndex].url}
+        onNext={showNextImage}
+        onPrev={showPrevImage}
+        hasMultiple={images.length > 1}
+        fullscreenRef={fullscreenRef}
+        toggleFullScreen={toggleFullScreen}
+        isFullscreen={isFullscreen}
+      />
     </Box>
   );
 };

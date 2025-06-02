@@ -297,7 +297,7 @@ function Header() {
                 p={2}
                 borderRadius="md"
                 cursor="pointer"
-                _hover={{ transition: "0.2s" }}
+                _hover={{ bg: "whiteAlpha.500", transition: "0.2s" }}
                 onClick={photoStorageModal.onOpen}
               >
                 📸 Photos: {photoCount}

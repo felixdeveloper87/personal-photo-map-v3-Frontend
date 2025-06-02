@@ -1,33 +1,30 @@
-/**
- * Login.jsx
- *
- * This component renders the login interface for users of the Photomap application.
- * It handles form input, submission of credentials to the backend, and state updates
- * via the AuthContext. It also includes a modal for initiating password reset requests.
- */
-
-
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import {
-    Box,
-    Input,
-    Button,
-    Heading,
-    FormControl,
-    FormLabel,
-    Text,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useToast,
-  } from '@chakra-ui/react';
+  Box,
+  Input,
+  Button,
+  Heading,
+  FormControl,
+  FormLabel,
+  Text,
+  useDisclosure,
+  Modal,
+  Flex,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useToast,
+} from '@chakra-ui/react';
+import { InfoIcon } from '@chakra-ui/icons';
+import { SignInButton } from "../components/CustomButtons";
+import ResetPasswordModal from "../components/modals/ResetPasswordModal";
+
+
 
 /**
  * The Login component handles user authentication by:
@@ -43,16 +40,16 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [resetEmail, setResetEmail] = useState('');
-  const toast = useToast();
-
-
   // Navigation hook for redirecting upon successful login
   const navigate = useNavigate();
 
   // Auth context method for updating global authentication state
   const { login } = useContext(AuthContext);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [resetEmail, setResetEmail] = useState('');
+  const toast = useToast();
+
 
   /**
    * Submits the login form:
@@ -87,16 +84,33 @@ function Login() {
   const handleResetPassword = () => {
     onClose();
     toast({
-      title: 'Password reset',
-      description: 'You will soon receive an email with instructions to reset your password.',
-      status: 'info',
+      position: "top",
       duration: 6000,
       isClosable: true,
-      position: 'top',
+      render: () => (
+        <Box
+          bg="blue.500"
+          color="white"
+          px={6}
+          py={4}
+          borderRadius="lg"
+          maxW="420px"
+          boxShadow="xl"
+        >
+          <Flex direction="column">
+            <Flex align="center" mb={1}>
+              <InfoIcon boxSize={5} mr={3} />
+              <Text fontWeight="semibold">Password reset</Text>
+            </Flex>
+            <Text fontSize="sm">
+              You will soon receive an email with instructions to reset your password.
+            </Text>
+          </Flex>
+        </Box>
+      ),
     });
     setResetEmail('');
   };
-
 
   return (
     <Box
@@ -109,7 +123,7 @@ function Login() {
       borderRadius="md"
       borderColor={'blackAlpha.500'}
     >
-      <Heading mb={6} textAlign="center" color="teal.700">
+      <Heading mb={6} textAlign="center" >
         Login
       </Heading>
 
@@ -139,46 +153,24 @@ function Login() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+
           />
         </FormControl>
-
-        <Button type="submit" colorScheme="teal" width="100%" mt={6}>
-          Login
-        </Button>
+        <SignInButton type="submit" width="100%" mt={6} />
         <Text mt={4} textAlign="center">
           <Button variant="link" color="teal.500" onClick={onOpen}>
             I've forgotten my password
           </Button>
         </Text>
       </form>
+      <ResetPasswordModal
+        isOpen={isOpen}
+        onClose={onClose}
+        resetEmail={resetEmail}
+        setResetEmail={setResetEmail}
+        handleResetPassword={handleResetPassword}
+      />
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Reset your password</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl>
-              <FormLabel>Enter your email</FormLabel>
-              <Input
-                type="email"
-                placeholder="your-email@example.com"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-              />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={handleResetPassword}>
-              Reset my password
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </Box>
   );
 }

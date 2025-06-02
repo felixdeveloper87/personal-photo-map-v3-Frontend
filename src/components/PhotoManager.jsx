@@ -1,20 +1,10 @@
-/**
- * PhotoManager Component
- *
- * Provides full image management for a selected country:
- * - Upload, filter, delete images
- * - Create and manage albums (Premium only)
- * - Supports year and album filtering
- * - Uses React Query for backend sync
- */
-
-
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import ImageUploader from './ImageUploader';
 import PhotoGallery from './PhotoGallery';
 import { CountriesContext } from '../context/CountriesContext';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { ConfirmDialog } from './ConfirmDialog';
 import {
   Box,
   Button,
@@ -24,30 +14,42 @@ import {
   WrapItem,
   Input,
   useToast,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  showSuccessToast,
+  showErrorToast,
+  showWarningToast,
+} from './CustomToast';
+import {
+  DeleteAllByYearButton,
+  CreateAlbumButton,
+  DeleteAlbum,
+  DeleteByYearButton
+} from './Buttons/CustomButtons';
+import {
+  ShowAllButton,
+  YearSelectableButton,
+  AlbumSelectableButton,
+
+} from "../components/Buttons/SelectableButtons";
 
 /**
- * getAuthHeaders
- * Generates the headers needed for authenticated requests, including the JWT token.
- * @returns {Object} An object containing the Authorization header if a token exists.
+ * Returns a headers object containing the Authorization token, if any.
+ * Used to authenticate requests to the backend.
  */
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-/* ----------------------------------------------------------------
- *                       Fetcher Functions (GET)
- * ----------------------------------------------------------------
- * These functions retrieve data (years, albums, images) from the backend.
- */
+/* ---------------- Fetchers (GET) ---------------- */
 
 /**
- * fetchYears
- * Retrieves a list of available years for a specified country from the backend.
+ * Fetches a list of years for which the country has images.
  * @param {string} countryId - The country identifier (e.g., "br").
- * @returns {Promise<number[]>} A Promise that resolves to an array of years.
+ * @returns {Promise<Array<number>>} Array of available years.
  */
 async function fetchYears(countryId) {
   const response = await fetch(
@@ -61,14 +63,13 @@ async function fetchYears(countryId) {
 }
 
 /**
- * fetchAlbums
- * Retrieves the list of albums associated with a given country.
+ * Fetches albums associated with a particular country.
  * @param {string} countryId - The country identifier (e.g., "br").
- * @returns {Promise<Array>} A Promise that resolves to an array of album objects.
+ * @returns {Promise<Array>} Array of album objects.
  */
 async function fetchAlbums(countryId) {
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/albums/user/${countryId}`,
+    `${import.meta.env.VITE_BACKEND_URL}/api/albums/${countryId}`,
     { headers: getAuthHeaders() }
   );
   if (!response.ok) {
@@ -77,16 +78,13 @@ async function fetchAlbums(countryId) {
   return response.json();
 }
 
-
 /**
- * fetchImages
- * Retrieves images for a given country, optionally filtered by year or album.
- * Depending on the parameters, images are fetched from different endpoints.
- * @param {string} countryId   - The country identifier (e.g., "br").
- * @param {number} [year]      - (Optional) Year filter for images.
- * @param {string} [albumId]   - (Optional) Album ID filter for images.
- * @param {boolean} showAllSelected - Whether to show all images for the country.
- * @returns {Promise<Array>} A Promise that resolves to an array of image objects.
+ * Fetches images based on a country and optional filters (year, album).
+ * @param {string} countryId - The country identifier.
+ * @param {number} [year] - Optional year filter for images.
+ * @param {string} [albumId] - Optional album ID filter for images.
+ * @param {boolean} showAllSelected - Whether to display all images from the country.
+ * @returns {Promise<Array>} Array of image objects (filePaths, IDs, etc.)
  */
 async function fetchImages(countryId, year, albumId, showAllSelected) {
   let url = `${import.meta.env.VITE_BACKEND_URL}/api/images/${countryId}`;
@@ -103,55 +101,73 @@ async function fetchImages(countryId, year, albumId, showAllSelected) {
   return response.json();
 }
 
-/* ----------------------------------------------------------------
- *                       PhotoManager Component
- * ----------------------------------------------------------------
- * Manages uploads, filtering, and deletion of images for a specified country.
- * Implements React Query for data fetching and mutation.
+/**
+ * PhotoManager Component
+ *
+ * Manages displaying and handling images for a given country, including:
+ * - Uploading new images
+ * - Filtering images by year or album
+ * - Deleting images, albums, or all photos
+ * - Creating new albums (Premium feature)
  */
-
 const PhotoManager = ({ countryId, onUploadSuccess }) => {
-  // Hooks from React and external libraries
   const toast = useToast();
   const queryClient = useQueryClient();
   const { isPremium } = useContext(AuthContext);
   const { refreshCountriesWithPhotos } = useContext(CountriesContext);
   const navigate = useNavigate();
 
-  /* ----------------------------------------------------------------
-   *                          Local States
-   * ----------------------------------------------------------------
-   * selectedYear, selectedAlbum, etc., control which images are shown,
-   * and what operations (e.g., deletion) can be performed.
-   */
+  const [pendingDeleteIds, setPendingDeleteIds] = useState([]);
+  const [pendingAlbumId, setPendingAlbumId] = useState(null);
+  const [yearToDelete, setYearToDelete] = useState(null);
+
+  const {
+    isOpen: isDeleteConfirmOpen,
+    onOpen: onDeleteConfirmOpen,
+    onClose: onDeleteConfirmClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteAlbumOpen,
+    onOpen: onDeleteAlbumOpen,
+    onClose: onDeleteAlbumClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isYearDeleteOpen,
+    onOpen: onYearDeleteOpen,
+    onClose: onYearDeleteClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isAllDeleteOpen,
+    onOpen: onAllDeleteOpen,
+    onClose: onAllDeleteClose,
+  } = useDisclosure();
+
+
+  /** Local UI state */
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [newAlbumName, setNewAlbumName] = useState('');
   const [showAllSelected, setShowAllSelected] = useState(false);
-  const [selectedImageIds, setSelectedImageIds] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  /**
-   * Check for token presence on mount; redirect to login if missing.
-   */
+  /** Stores the IDs of images the user has selected for deletion/album creation */
+  const [selectedImageIds, setSelectedImageIds] = useState([]);
+
+  /** Check if the user is logged in */
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
     if (!token) {
-      // navigate('/login');
-      navigate('/welcome');
+      navigate('/login');
     }
   }, [navigate]);
 
-  /* ----------------------------------------------------------------
-   *                       React Query Calls
-   * ----------------------------------------------------------------
-   * 1. Use Query to fetch yearsData
-   * 2. Use Query to fetch albumsData
-   * 3. Use Query to fetch imagesData (depends on selected year/album)
-   */
+  /* ---------------- useQuery Calls ---------------- */
 
-  // 1. Years
+  // Fetch years for the given country
   const {
     data: yearsData = [],
     isLoading: isLoadingYears,
@@ -162,7 +178,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
     enabled: !!countryId && isLoggedIn,
   });
 
-  // 2. Albums
+  // Fetch albums for the given country
   const {
     data: albumsData = [],
     isLoading: isLoadingAlbums,
@@ -173,7 +189,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
     enabled: !!countryId && isLoggedIn,
   });
 
-  // 3. Images
+  // Fetch images for the given country, filtered by year/album if selected
   const {
     data: imagesData = [],
     isLoading: isLoadingImages,
@@ -185,22 +201,13 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
     enabled:
       !!countryId &&
       !!isLoggedIn &&
-      (!!selectedYear || !!selectedAlbum || showAllSelected),
-    // Only fetch images if the user selects a year, album, or toggles "Show All"
+      !!(selectedYear || selectedAlbum || showAllSelected),
+    // Only fetch images if the user selects a year, album, or toggles 'Show All'
   });
 
-  /* ----------------------------------------------------------------
-   *                       Mutations (POST/DELETE)
-   * ----------------------------------------------------------------
-   * Each useMutation handles a specific backend operation:
-   * 1. Delete multiple images
-   * 2. Create a new album
-   * 3. Delete an album
-   * 4. Delete images from a specific year
-   * 5. Delete all images from a country
-   */
+  /* ---------------- Mutations (POST/DELETE) ---------------- */
 
-  // 1. Deleting multiple images
+  // Deleting multiple images
   const deleteImagesMutation = useMutation({
     mutationFn: async (ids) => {
       const response = await fetch(
@@ -220,14 +227,8 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       return response;
     },
     onSuccess: (_, ids) => {
-      toast({
-        title: 'Images Deleted',
-        description: `${ids.length} image(s) deleted successfully.`,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-      // Invalidate queries so that React Query refetches fresh data
+      showSuccessToast(toast, `${ids.length} image(s) deleted successfully.`);
+      // Invalidate relevant queries so React Query refetches fresh data
       queryClient.invalidateQueries(['images']);
       queryClient.invalidateQueries(['years']);
       queryClient.invalidateQueries(['albums']);
@@ -235,17 +236,11 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       setSelectedImageIds([]);
     },
     onError: () => {
-      toast({
-        title: 'Deletion Failed',
-        description: 'There was an error deleting the images.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showErrorToast(toast, 'There was an error deleting the images.');
     },
   });
 
-  // 2. Creating a new album (Premium feature)
+  // Creating a new album (Premium only)
   const createAlbumMutation = useMutation({
     mutationFn: async ({ countryId, albumName, imageIds }) => {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/albums`, {
@@ -262,29 +257,17 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       return response.json();
     },
     onSuccess: () => {
-      toast({
-        title: 'Album Created',
-        description: 'The album was successfully created.',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
+      showSuccessToast(toast, 'The album was successfully created.');
       setNewAlbumName('');
       setSelectedImageIds([]);
-      queryClient.invalidateQueries(['albums', countryId]);
+      queryClient.invalidateQueries(['albums']);
     },
     onError: () => {
-      toast({
-        title: 'Creation Failed',
-        description: 'There was an error creating the album.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showErrorToast(toast, 'There was an error creating the album.');
     },
   });
 
-  // 3. Deleting an album
+  // Delete an entire album
   const deleteAlbumMutation = useMutation({
     mutationFn: async (albumId) => {
       const response = await fetch(
@@ -300,30 +283,18 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       return response;
     },
     onSuccess: () => {
-      toast({
-        title: 'Album Deleted',
-        description: 'The album was deleted successfully.',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
+      showSuccessToast(toast, 'The album was deleted successfully.');
       queryClient.invalidateQueries(['albums']);
       queryClient.invalidateQueries(['images']);
       queryClient.invalidateQueries(['years']);
       refreshCountriesWithPhotos();
     },
     onError: () => {
-      toast({
-        title: 'Deletion Failed',
-        description: 'There was an error deleting the album.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showErrorToast(toast, 'There was an error deleting the album.');
     },
   });
 
-  // 4. Deleting all images from a specific year
+  // Delete images by year
   const deleteImagesByYearMutation = useMutation({
     mutationFn: async ({ countryId, year }) => {
       const response = await fetch(
@@ -339,13 +310,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       return response;
     },
     onSuccess: (_, { year }) => {
-      toast({
-        title: 'Images Deleted',
-        description: `All images from year ${year} were deleted successfully.`,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
+      showSuccessToast(toast, `All images from year ${year} were deleted successfully.`);
       queryClient.invalidateQueries(['images']);
       queryClient.invalidateQueries(['years']);
       queryClient.invalidateQueries(['albums']);
@@ -353,17 +318,11 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       setSelectedYear(null);
     },
     onError: (_, { year }) => {
-      toast({
-        title: 'Deletion Failed',
-        description: `There was an error deleting images from year ${year}.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showErrorToast(toast, `There was an error deleting images from year ${year}.`);
     },
   });
 
-  // 5. Deleting all images for an entire country
+  // Delete all images for an entire country
   const deleteAllImagesByCountryMutation = useMutation({
     mutationFn: async (countryId) => {
       const response = await fetch(
@@ -381,13 +340,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       return response;
     },
     onSuccess: () => {
-      toast({
-        title: 'All Images Deleted',
-        description: `All images were deleted successfully.`,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
+      showSuccessToast(toast, 'All images were deleted successfully.');
       queryClient.invalidateQueries(['images']);
       queryClient.invalidateQueries(['years']);
       queryClient.invalidateQueries(['albums']);
@@ -395,73 +348,47 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
       setShowAllSelected(false);
     },
     onError: (_, countryId) => {
-      toast({
-        title: 'Deletion Failed',
-        description: `Error deleting all images of ${countryId?.toUpperCase()}.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showErrorToast(toast, `Error deleting all images of ${countryId?.toUpperCase()}.`);
     },
   });
 
-  /* ----------------------------------------------------------------
-   *                             Handlers
-   * ----------------------------------------------------------------
-   * These functions define how certain user actions (upload, delete, etc.)
-   * are processed, often triggering the mutations above or invalidating queries.
-   */
+  /* ---------------- Handlers ---------------- */
 
   /**
-   * handleUpload
-   * Called after a successful image upload. Invalidates queries so new data will be fetched.
-   * @param {Array} newImages - The newly uploaded images.
-   * @param {number} year     - The year associated with the uploaded images.
+   * Called after a successful image upload from ImageUploader.
+   * Optionally invalidates queries or triggers re-fetch to show new images.
    */
   const handleUpload = (newImages, year) => {
+    // Option 1: Invalidate queries to refetch new data
     queryClient.invalidateQueries(['images']);
     queryClient.invalidateQueries(['years']);
     queryClient.invalidateQueries(['albums']);
 
+    // Optionally call an onUploadSuccess prop
     if (onUploadSuccess) {
       onUploadSuccess();
     }
+    // Refresh countries context
     refreshCountriesWithPhotos();
   };
 
   /**
-   * handleCreateAlbum
-   * Creates a new album if the user is premium and has selected images.
+   * Attempts to create an album if user is Premium and
+   * has selected at least one image. Otherwise shows a warning toast.
    */
   const handleCreateAlbum = () => {
     if (!isPremium) {
-      toast({
-        title: 'Premium Feature',
-        description: 'Album creation is available only for premium users.',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
+      showWarningToast(toast, 'Album creation is available only for premium users.');
       return;
     }
+
     if (!newAlbumName.trim()) {
-      toast({
-        title: 'Album Name Required',
-        description: 'Please enter a name for the album.',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
+      showWarningToast(toast, 'Please enter a name for the album.');
       return;
     }
+
     if (selectedImageIds.length === 0) {
-      toast({
-        title: 'No images selected',
-        description: 'Please select at least one image to create an album.',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
+      showWarningToast(toast, 'Please select at least one image.');
       return;
     }
 
@@ -473,65 +400,48 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
   };
 
   /**
-   * handleDeleteMultipleImages
-   * Deletes multiple images after user confirmation.
-   * @param {string[]} ids - The IDs of images to delete.
+   * Deletes multiple selected images after user confirms.
+   * @param {Array<string>} ids - The IDs of the images to delete.
    */
   const handleDeleteMultipleImages = (ids) => {
     if (ids.length === 0) {
-      toast({
-        title: 'No images selected',
-        description: 'Please select at least one image to delete.',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
+      showWarningToast(toast, 'Please select at least one image.');
       return;
     }
-    if (window.confirm(`Are you sure you want to delete ${ids.length} image(s)?`)) {
-      deleteImagesMutation.mutate(ids);
-    }
+
+    setPendingDeleteIds(ids.map(id => Number(id)));
+    onDeleteConfirmOpen();
   };
 
   /**
-   * handleDeleteAlbum
    * Deletes an entire album after user confirmation.
    * @param {string} albumId - The ID of the album to delete.
    */
   const handleDeleteAlbum = (albumId) => {
-    if (window.confirm('Are you sure you want to delete this album and all of its images?')) {
-      deleteAlbumMutation.mutate(albumId);
-    }
+    setPendingAlbumId(albumId);
+    onDeleteAlbumOpen();
   };
 
+
   /**
-   * handleDeleteImagesByYear
-   * Deletes all images from a specific year after user confirmation.
-   * @param {number} year - The year from which images will be deleted.
+   * Deletes all images from a selected year for the current country.
+   * @param {number} year - The year from which to delete images.
    */
   const handleDeleteImagesByYear = (year) => {
-    if (window.confirm(`Are you sure you want to delete all images from year ${year}?`)) {
-      deleteImagesByYearMutation.mutate({ countryId, year });
-    }
+    setYearToDelete(year);
+    onYearDeleteOpen();
   };
 
   /**
-   * handleDeleteAllImagesByCountry
-   * Deletes all images for the specified country after user confirmation.
+   * Deletes ALL images for the current country.
    */
   const handleDeleteAllImagesByCountry = () => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete all images of ${countryId.toUpperCase()}?`
-      )
-    ) {
-      deleteAllImagesByCountryMutation.mutate(countryId);
-    }
+    onAllDeleteOpen();
   };
 
+
   /**
-   * toggleYearSelection
-   * Selects/deselects a particular year. Clears album selection and "Show All" status.
+   * Toggles the selected year. If the same year is clicked again, deselect.
    */
   const toggleYearSelection = (year) => {
     setSelectedYear((prevYear) => (prevYear === year ? null : year));
@@ -540,8 +450,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
   };
 
   /**
-   * toggleAlbumSelection
-   * Selects/deselects a particular album. Clears year selection and "Show All" status.
+   * Toggles the selected album. If the same album is clicked again, deselect.
    */
   const toggleAlbumSelection = (albumId) => {
     setSelectedAlbum((prev) => (prev === albumId ? null : albumId));
@@ -550,8 +459,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
   };
 
   /**
-   * toggleShowAll
-   * Toggles whether to display all images, ignoring year or album filters.
+   * Toggles whether to display all images regardless of year or album filter.
    */
   const toggleShowAll = () => {
     setShowAllSelected((prev) => !prev);
@@ -559,26 +467,22 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
     setSelectedAlbum(null);
   };
 
-  /* ----------------------------------------------------------------
-   *                       Image Data for Display
-   * ----------------------------------------------------------------
-   * Here is the key difference for S3:
-   * We assume each "filePath" from the backend is already a FULL S3 URL,
-   * so we use it directly (without prefixing import.meta.env.VITE_BACKEND_URL).
+  /**
+   * Convert imagesData from the backend into the shape <PhotoGallery> needs.
    */
   const images = Array.isArray(imagesData)
     ? imagesData.map((image) => ({
-      url: image.filePath, // The full S3 URL is used directly
+      url: `${import.meta.env.VITE_BACKEND_URL}${image.filePath}`,
       id: image.id,
       year: image.year,
     }))
     : [];
 
   /**
-   * Filter albums to only those that actually have images to display.
+   * Filter out only albums that actually contain images.
    */
   const albumsWithImages = Array.isArray(albumsData)
-    ? albumsData.filter((album) => album.numberOfImages > 0)
+    ? albumsData.filter((album) => album.images && album.images.length > 0)
     : [];
 
   return (
@@ -588,74 +492,62 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
         <ImageUploader countryId={countryId} onUpload={handleUpload} />
       </Box>
 
-      {/* (Optional) Album Creation Section - Requires Premium */}
-      {isPremium && images.length > 0 && (
-        <Flex mb={4} justify="center">
+      {/* Album Creation (Premium) */}
+      {isPremium && (
+        <Flex mb={4} justify="center" >
           <Input
             placeholder="Album Name"
             value={newAlbumName}
+            border="1px"
+            borderColor="teal.800"
             onChange={(e) => setNewAlbumName(e.target.value)}
             width="200px"
             mr={2}
           />
-          <Button
-            colorScheme="blue"
+          <CreateAlbumButton
             onClick={handleCreateAlbum}
             isLoading={createAlbumMutation.isLoading}
           >
             Create Album
-          </Button>
+          </CreateAlbumButton>
+
         </Flex>
       )}
 
-      {/* Filters for Years and Albums */}
+      {/* Year and Album Selection */}
       <Wrap spacing={4} justify="center" mb={4}>
-        {/* Display all available years */}
+        {/* List of Years */}
         {yearsData.map((year) => (
           <WrapItem key={year}>
-            <Button
-              colorScheme={selectedYear === year ? 'teal' : 'gray'}
+            <YearSelectableButton
+              year={year}
+              isSelected={selectedYear === year}
               onClick={() => toggleYearSelection(year)}
-            >
-              {year}
-            </Button>
+            />
           </WrapItem>
         ))}
 
-        {/* Display all albums that contain images */}
+        {/* List of Albums that have images */}
         {albumsWithImages.map((album) => (
           <WrapItem key={album.id}>
-            <Button
-              colorScheme={selectedAlbum === album.id ? 'purple' : 'gray'}
+            <AlbumSelectableButton
+              album={album}
+              isSelected={selectedAlbum === album.id}
               onClick={() => toggleAlbumSelection(album.id)}
-            >
-              {album.albumName}
-            </Button>
-            <Button
-              ml={2}
-              colorScheme="red"
-              onClick={() => handleDeleteAlbum(album.id)}
-              isLoading={deleteAlbumMutation.isLoading}
-            >
-              🗑️
-            </Button>
+            />
           </WrapItem>
         ))}
 
-        {/* Show All Images Button */}
-        {images.length > 0 && (
+        {/* "Show All" Button */}
+        {images.length > 0 && (yearsData.length > 1 || (yearsData.length >= 1 && albumsWithImages.length >= 1)) && (
           <WrapItem>
-            <Button
-              colorScheme={showAllSelected ? 'teal' : 'gray'}
-              onClick={toggleShowAll}
-            >
-              Show All
-            </Button>
+            <ShowAllButton isSelected={showAllSelected} onClick={toggleShowAll} />
           </WrapItem>
         )}
+
       </Wrap>
 
-      {/* Main Image Display */}
+      {/* Image Display */}
       {isLoadingImages ? (
         <Text mt={4} mb={4} textAlign="center">
           Loading photos...
@@ -672,28 +564,88 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
           No photos to display
         </Text>
       )}
+      {(selectedYear || selectedAlbum) && (
+        <Flex
+          mt={4}
+          justify="center"
+          direction={{ base: "column", sm: "row" }}
+          align="center"
+          gap={4}
 
-      {/* Deletion Controls for Year or All Country Images */}
-      {selectedYear && (
-        <Button
-          mt={4}
-          colorScheme="red"
-          onClick={() => handleDeleteImagesByYear(selectedYear)}
-          isLoading={deleteImagesByYearMutation.isLoading}
         >
-          Delete Images of {selectedYear}
-        </Button>
+          {selectedAlbum && (
+            <DeleteAlbum
+              onClick={() => handleDeleteAlbum(selectedAlbum)}
+              isLoading={deleteAlbumMutation.isLoading} borderRadius="xl"
+            />
+          )}
+
+          {selectedYear && (
+            <DeleteByYearButton
+              year={selectedYear}
+              onClick={() => handleDeleteImagesByYear(selectedYear)}
+              isLoading={deleteImagesByYearMutation.isLoading}
+            />
+          )}
+        </Flex>
       )}
+
+      {/* Delete all country images */}
       {showAllSelected && (
-        <Button
-          mt={4}
-          colorScheme="red"
-          onClick={handleDeleteAllImagesByCountry}
-          isLoading={deleteAllImagesByCountryMutation.isLoading}
-        >
-          Delete All Photos
-        </Button>
+        <Flex mt={3} justify="center">
+          <DeleteAllByYearButton
+            year={selectedYear}
+            onClick={() => handleDeleteImagesByYear(selectedYear)}
+            isLoading={deleteImagesByYearMutation.isLoading}
+          />
+        </Flex>
       )}
+
+      {/* 🔒 Modals de Confirmação */}
+      <ConfirmDialog
+        isOpen={isDeleteConfirmOpen}
+        onClose={onDeleteConfirmClose}
+        onConfirm={() => {
+          deleteImagesMutation.mutate(pendingDeleteIds);
+          onDeleteConfirmClose();
+        }}
+        title="Delete Images"
+        message={`Are you sure you want to delete ${pendingDeleteIds.length} image(s)? This action cannot be undone.`}
+      />
+
+      <ConfirmDialog
+        isOpen={isDeleteAlbumOpen}
+        onClose={onDeleteAlbumClose}
+        onConfirm={() => {
+          deleteAlbumMutation.mutate(pendingAlbumId);
+          onDeleteAlbumClose();
+        }}
+        title="Delete Album"
+        message="Are you sure you want to delete this album and all of its images?"
+      />
+
+      <ConfirmDialog
+        isOpen={isYearDeleteOpen}
+        onClose={onYearDeleteClose}
+        onConfirm={() => {
+          deleteImagesByYearMutation.mutate({ countryId, year: yearToDelete });
+          onYearDeleteClose();
+        }}
+        title="Delete Images by Year"
+        message={`Are you sure you want to delete all images from year ${yearToDelete}? This action cannot be undone.`}
+      />
+
+      <ConfirmDialog
+        isOpen={isAllDeleteOpen}
+        onClose={onAllDeleteClose}
+        onConfirm={() => {
+          deleteAllImagesByCountryMutation.mutate(countryId);
+          onAllDeleteClose();
+        }}
+        title="Delete All Images"
+        message={`Are you sure you want to delete all images of ${countryId.toUpperCase()}? This action cannot be undone.`}
+      />
+
     </Box>
   );
 };

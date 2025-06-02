@@ -8,8 +8,9 @@ import {
     FaSearch,
     FaUsers,
     FaCloudUploadAlt,
-    FaChartLine 
+    FaChartLine
 } from "react-icons/fa";
+import { WarningTwoIcon } from '@chakra-ui/icons';
 
 const MotionButton = motion(Button);
 
@@ -22,7 +23,7 @@ const BaseButton = ({
 }) => {
     const gradients = {
         teal: {
-            bg:"linear(to-r, teal.400, teal.600)",
+            bg: "linear(to-r, teal.400, teal.600)",
             hover: "linear(to-r, teal.500, teal.700)",
         },
         blue: {
@@ -39,7 +40,8 @@ const BaseButton = ({
             bg: "linear(to-r, yellow.300, yellow.500)",
             hover: "linear(to-r, yellow.400, yellow.600)",
             color: "black"
-        }
+        },
+
     };
 
     const g = gradients[gradient];
@@ -94,7 +96,7 @@ export const TimelineButton = (props) => (
 );
 
 export const SearchButton = (props) => (
-    <BaseButton icon={<FaSearch />} bgGradient="teal" {...props}>
+    <BaseButton icon={<FaSearch />} gradient="teal" {...props}>
         Search
     </BaseButton>
 );
@@ -121,8 +123,61 @@ export const UploadButton = (props) => (
 );
 
 export const EconomicInfoButton = (props) => (
-  <BaseButton icon={<FaChartLine />} gradient="teal" {...props}>
-    Economic Info
+    <BaseButton icon={<FaChartLine />} gradient="teal" {...props}>
+        Economic Info
+    </BaseButton>
+);
+
+export const DeleteButton = (props) => (
+    <BaseButton icon={<WarningTwoIcon />} gradient="red" {...props}>
+        {props.children || "Delete"}
+    </BaseButton>
+);
+
+export const DeleteAlbum = (props) => (
+    <BaseButton icon={<WarningTwoIcon />} gradient="red" {...props} size="sm" mb={2} >
+        {props.children || "Delete Album"}
+    </BaseButton>
+);
+export const CreateAlbumButton = (props) => (
+    <BaseButton gradient="yellow" {...props}>
+        {props.children || "Create Album"}
+    </BaseButton>
+);
+
+export const YearButton = ({ isActive, children, ...props }) => (
+    <BaseButton
+        gradient={isActive ? "blue" : "gray"}
+        variant={isActive ? "solid" : "outline"}
+        {...props}
+    >
+        {children}
+    </BaseButton>
+);
+
+export const DeleteByYearButton = ({ year, ...props }) => (
+  <BaseButton
+    icon={<WarningTwoIcon />}
+    gradient="red"
+    fontWeight="semibold"
+    size="sm"
+    borderRadius="xl"
+    boxShadow="md"
+    {...props}
+  >
+    Delete Images of {year}
+  </BaseButton>
+);
+export const DeleteAllByYearButton = ({ year, ...props }) => (
+  <BaseButton
+    icon={<WarningTwoIcon />}
+    gradient="red"
+    size="sm"
+    borderRadius="xl"
+    boxShadow="md"
+    {...props}
+  >
+    Delete All {year}
   </BaseButton>
 );
 
