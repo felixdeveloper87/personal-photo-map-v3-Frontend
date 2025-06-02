@@ -10,21 +10,14 @@ import {
   FormLabel,
   Text,
   useDisclosure,
-  Modal,
   Flex,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   useToast,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
-import { SignInButton } from "./Buttons/CustomButtons";
+import {
+  SignInButton
+} from "./Buttons/CustomButtons";
 import ResetPasswordModal from "../components/modals/ResetPasswordModal";
-
-
 
 /**
  * The Login component handles user authentication by:

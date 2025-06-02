@@ -5,7 +5,6 @@ import {
   Flex,
   Heading,
   Image,
-  Button,
   Text,
   useDisclosure,
   useToast,
