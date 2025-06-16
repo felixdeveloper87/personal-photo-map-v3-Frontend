@@ -156,14 +156,14 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
   const [selectedImageIds, setSelectedImageIds] = useState([]);
 
   /** Check if the user is logged in */
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-    if (!token) {
-      navigate('/login');
-    }
-  }, [navigate]);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   setIsLoggedIn(!!token);
+  //   if (!token) {
+  //     navigate('/welcome');
+  //   }
+  // }, [navigate]);
 
   /* ---------------- useQuery Calls ---------------- */
 

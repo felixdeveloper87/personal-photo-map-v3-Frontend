@@ -8,27 +8,15 @@
 //  */
 
 
-// import React from 'react';
-// import { Route, Redirect } from 'react-router-dom';
+// src/components/PrivateRoute.jsx
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
-// const PrivateRoute = ({ component: Component, ...rest }) => {
-//   // Retrieve authentication token from localStorage
-//   const token = localStorage.getItem('token');
+const PrivateRoute = ({ children }) => {
+  const { isLoggedIn } = useContext(AuthContext);
 
-//   return (
-//     <Route
-//       {...rest} // Pass any additional props to the Route component
-//       render={props =>
-//         token ? (
-//           // If token exists, render the requested component with its props
-//           <Component {...props} />
-//         ) : (
-//           // If token is missing, redirect the user to the login page
-//           <Redirect to="/login" />
-//         )
-//       }
-//     />
-//   );
-// };
+  return isLoggedIn ? children : <Navigate to="/welcome" replace />;
+};
 
-// export default PrivateRoute;
+export default PrivateRoute;

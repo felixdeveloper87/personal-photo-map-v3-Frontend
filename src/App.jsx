@@ -27,6 +27,7 @@ import TimelinePage from './pages/TimelinePage';
 import { AuthProvider } from './context/AuthContext';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { CountriesProvider } from './context/CountriesContext';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
 
@@ -48,7 +49,14 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/countries/:countryId" element={<CountryDetails />} />
+              <Route
+                path="/countries/:countryId"
+                element={
+                  <PrivateRoute>
+                    <CountryDetails />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/timeline" element={<TimelinePage />} />
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/timeline/:year" element={<TimelinePage />} />
