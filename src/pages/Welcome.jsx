@@ -55,15 +55,25 @@ const Welcome = () => {
           mb={4}
           textShadow="2px 2px 6px rgba(0, 0, 0, 0.8)"
         >
-          Welcome to Photomap
+          Welcome to Photomap - please create an account or log in if you're already registered.
         </Heading>
         <Text
           fontSize={["md", "lg", "xl"]}
-          mb={6}
+          mb={4}
           textShadow="2px 2px 6px rgba(0, 0, 0, 0.8)"
         >
           Explore new ideas, cultures and history around the world. Get real-time information about countries, register your memories and explore our beautiful planet.
         </Text>
+
+        <Text
+          fontSize={["sm", "md", "lg"]}
+          mb={6}
+          textShadow="1px 1px 4px rgba(0, 0, 0, 0.7)"
+          color="gray.200"
+        >
+          To access detailed country insights such as flags, capitals, economic and social data — and most importantly, to add your own photos linked chronologically to each country.
+        </Text>
+
 
         <Stack direction={["column", "row"]} spacing={4} justify="center">
           <Button colorScheme="blue" size="lg" onClick={() => navigate("/login")}>
