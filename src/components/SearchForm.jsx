@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CountriesContext } from '../context/CountriesContext';
+import { SearchButton } from "../components/Buttons/CustomButtons";
 
 
 export default function SearchForm({ onSearch }) {
@@ -70,9 +71,7 @@ export default function SearchForm({ onSearch }) {
   return (
     <>
       {/* Button to open the "Search Photos" modal */}
-      <Button onClick={onOpen} fontSize="lg">
-        Search Photos
-      </Button>
+      <SearchButton onClick={onOpen} />
 
       {/* Modal for selecting a country/year */}
       <Modal isOpen={isOpen} onClose={onClose}>
