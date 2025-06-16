@@ -36,7 +36,7 @@ const EconomicModal = ({ indicatorsData, exchangeRate, currency, countryInfo }) 
                     borderRadius="2xl"
                     shadow="xl"
                     bgGradient={backgroundGradient}
-                    maxHeight="50vh" // Limita a altura máxima da janela modal
+                    maxHeight="50vh"
                     overflow="hidden"
                 >
                     <ModalHeader

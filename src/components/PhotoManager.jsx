@@ -155,16 +155,6 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
   /** Stores the IDs of images the user has selected for deletion/album creation */
   const [selectedImageIds, setSelectedImageIds] = useState([]);
 
-  /** Check if the user is logged in */
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   setIsLoggedIn(!!token);
-  //   if (!token) {
-  //     navigate('/welcome');
-  //   }
-  // }, [navigate]);
-
   /* ---------------- useQuery Calls ---------------- */
 
   // Fetch years for the given country
