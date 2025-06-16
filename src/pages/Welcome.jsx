@@ -8,6 +8,10 @@
 import { Box, Button, Heading, Stack, Text, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/continents.jpg";
+import {
+  SignInButton,
+  SignUpButton,
+} from "./Buttons/CustomButtons";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -78,12 +82,9 @@ const Welcome = () => {
         </Text>
 
         <Stack direction={["column", "row"]} spacing={4} justify="center">
-          <Button colorScheme="blue" size="lg" onClick={() => navigate("/login")}>
-            Login
-          </Button>
-          <Button colorScheme="blue" size="lg" onClick={() => navigate("/register")}>
-            Register
-          </Button>
+              <SignInButton onClick={() => navigate("/login")} />
+
+              <SignUpButton onClick={() => navigate("/register")} />
         </Stack>
       </Box>
     </Flex>
