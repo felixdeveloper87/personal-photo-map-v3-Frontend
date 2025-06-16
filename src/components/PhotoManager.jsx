@@ -175,7 +175,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
   } = useQuery({
     queryKey: ['years', countryId],
     queryFn: () => fetchYears(countryId),
-    enabled: !!countryId && isLoggedIn,
+    enabled: !!countryId,
   });
 
   // Fetch albums for the given country
@@ -186,7 +186,7 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
   } = useQuery({
     queryKey: ['albums', countryId],
     queryFn: () => fetchAlbums(countryId),
-    enabled: !!countryId && isLoggedIn,
+    enabled: !!countryId,
   });
 
   // Fetch images for the given country, filtered by year/album if selected
@@ -200,7 +200,6 @@ const PhotoManager = ({ countryId, onUploadSuccess }) => {
     queryFn: () => fetchImages(countryId, selectedYear, selectedAlbum, showAllSelected),
     enabled:
       !!countryId &&
-      !!isLoggedIn &&
       !!(selectedYear || selectedAlbum || showAllSelected),
     // Only fetch images if the user selects a year, album, or toggles 'Show All'
   });
