@@ -217,6 +217,10 @@ const CountryDetails = () => {
   // Build a link to Google Flights for traveling from London to this capital
   const googleFlightsUrl = `https://www.google.com/travel/flights?q=Flights+from+London+to+${countryInfo?.capital}`;
 
+  console.log("💱 Currency (frontend):", countryInfo?.currency);
+  console.log("🏦 Exchange Rate:", exchangeRate);
+
+
   return (
     <Box>
       <Box p={6} position="relative">
