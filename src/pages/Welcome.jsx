@@ -11,7 +11,7 @@ import bgImage from "../assets/continents.jpg";
 import {
   SignInButton,
   SignUpButton,
-} from "../Buttons/CustomButtons";
+} from "../components/Buttons/CustomButtons";
 
 const Welcome = () => {
   const navigate = useNavigate();
